@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useBooking } from "@/components/common/BookingContext";
+import { useAuth } from "@/components/common/AuthContext";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -164,6 +165,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { openBooking } = useBooking();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -246,6 +248,24 @@ export default function Navbar() {
                 Call Us
               </a>
               <ThemeToggle />
+              {user ? (
+                <>
+                  <Link href="/dashboard">
+                    <Button variant="outline" className="rounded-full h-9 text-xs font-bold cursor-pointer">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button onClick={signOut} variant="ghost" className="text-xs font-bold rounded-full h-9 cursor-pointer">
+                    Log Out
+                  </Button>
+                </>
+              ) : (
+                <Link href="/login">
+                  <Button variant="outline" className="rounded-full h-9 text-xs font-bold cursor-pointer">
+                    Log In
+                  </Button>
+                </Link>
+              )}
               <Button
                 onClick={openBooking}
                 className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 rounded-full h-9 text-xs shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] active:scale-95 transition-all duration-150 flex items-center gap-1.5 cursor-pointer"
@@ -342,6 +362,18 @@ export default function Navbar() {
 
                 {/* CTA footer */}
                 <div className="mt-3 pt-3 border-t border-border flex flex-col gap-2.5">
+                  {user ? (
+                    <>
+                      <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                        <Button className="w-full" variant="outline">Dashboard</Button>
+                      </Link>
+                      <Button onClick={() => { signOut(); setMobileOpen(false); }} className="w-full" variant="ghost">Log Out</Button>
+                    </>
+                  ) : (
+                    <Link href="/login" onClick={() => setMobileOpen(false)}>
+                      <Button className="w-full" variant="outline">Log In / Sign Up</Button>
+                    </Link>
+                  )}
                   <Button
                     onClick={() => { openBooking(); setMobileOpen(false); }}
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-full text-sm h-10 cursor-pointer flex items-center justify-center gap-2"
