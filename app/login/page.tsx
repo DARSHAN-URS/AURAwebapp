@@ -80,6 +80,22 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setMessage(null);
+    try {
+      const { error: googleError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: window.location.origin + "/dashboard",
+        },
+      });
+      if (googleError) throw googleError;
+    } catch (err: any) {
+      setError(err.message || "An error occurred during Google Sign In.");
+    }
+  };
+
   return (
     <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 px-4 overflow-hidden bg-background">
       {/* Background Orbs */}
@@ -217,12 +233,50 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl h-10 mt-6 transition-all duration-150 flex items-center justify-center gap-1.5 shadow-lg shadow-primary/20"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl h-10 mt-6 transition-all duration-150 flex items-center justify-center gap-1.5 shadow-lg shadow-primary/20 cursor-pointer"
             >
               {loading ? "Processing..." : isLogin ? "Sign In" : "Sign Up"}
               {!loading && <ArrowRight className="w-4 h-4" />}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground font-bold">Or continue with</span>
+            </div>
+          </div>
+
+          {/* Google Sign In */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleGoogleSignIn}
+            className="w-full border-border bg-muted/20 hover:bg-muted/40 text-foreground font-bold rounded-xl h-10 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#4285F4"
+                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69a5.74 5.74 0 0 1-2.5 3.77v3.13h3.97c2.32-2.13 3.66-5.28 3.66-8.75z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.97-3.13c-1.1.73-2.5 1.16-3.96 1.16-3.05 0-5.63-2.06-6.55-4.83H1.46v3.23A11.99 11.99 0 0 0 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.45 14.29a7.22 7.22 0 0 1 0-4.58V6.48H1.46a11.99 11.99 0 0 0 0 11.04l3.99-3.23z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A11.99 11.99 0 0 0 1.46 6.48l3.99 3.23c.92-2.77 3.5-4.83 6.55-4.83z"
+              />
+            </svg>
+            Sign in with Google
+          </Button>
         </div>
       </motion.div>
     </div>
