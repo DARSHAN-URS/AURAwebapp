@@ -4,6 +4,7 @@ import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import { BookingProvider } from "@/components/common/BookingContext";
+import { AuthProvider } from "@/components/common/AuthContext";
 import { ThemeProvider } from "next-themes";
 
 export const viewport: Viewport = {
@@ -121,12 +122,14 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey="aura-theme"
         >
-          <BookingProvider>
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            <WhatsAppButton />
-          </BookingProvider>
+          <AuthProvider>
+            <BookingProvider>
+              <Navbar />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+              <WhatsAppButton />
+            </BookingProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
