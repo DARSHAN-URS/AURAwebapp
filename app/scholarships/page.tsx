@@ -291,10 +291,6 @@ export default function ScholarshipFinder() {
         {/* Module Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 border-b border-gray-100 pb-6">
           <div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase mb-3">
-              <Award className="w-3.5 h-3.5" />
-              <span>Funding Center</span>
-            </span>
             <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight">AI Scholarship Finder</h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">Discover grants, calculate tuition gap roadmaps, and compile financial plans.</p>
           </div>

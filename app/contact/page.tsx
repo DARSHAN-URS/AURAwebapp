@@ -30,9 +30,6 @@ export default function ContactPage() {
         
         {/* Page Header */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase tracking-wide mb-4">
-            Connect With Us
-          </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
             We are Here to Help
           </h1>

@@ -112,10 +112,6 @@ export default function LoginPage() {
         <div className="relative rounded-3xl border border-border bg-card/60 backdrop-blur-xl shadow-2xl p-6 sm:p-8 overflow-hidden">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-3">
-              <Sparkles className="w-3 h-3 animate-pulse" />
-              Aura Routes Student Portal
-            </div>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
               {isLogin ? "Welcome Back" : "Start Your Journey"}
             </h1>
