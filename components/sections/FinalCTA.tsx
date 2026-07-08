@@ -82,11 +82,11 @@ export default function FinalCTA() {
 
                 {/* Contact quick links */}
                 <div className="flex flex-wrap gap-5">
-                  <a href="tel:+919876543210" className="flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-xs font-semibold">
+                  <a href="tel:+919891263337" className="flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-xs font-semibold">
                     <Phone className="w-3.5 h-3.5" />
                     Call Our Advisors
                   </a>
-                  <a href="https://wa.me/919876543210" className="flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-xs font-semibold">
+                  <a href="https://wa.me/919891263337" className="flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-xs font-semibold">
                     <MessageCircle className="w-3.5 h-3.5" />
                     WhatsApp Us Now
                   </a>

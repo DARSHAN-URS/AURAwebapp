@@ -54,7 +54,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold text-gray-900 mb-1">Corporate HQ</h4>
                     <p className="text-xs text-gray-500 leading-relaxed">
-                      102, Innovation Arcade, Sector 5, HSR Layout, Bengaluru, Karnataka, India - 560102
+                      WZ-69, 1st Floor, Om Vihar Phase-1, Near Aryan International School, Main Kabaddi Road, Uttam Nagar, New Delhi — 110059 (Near Uttam Nagar West Metro)
                     </p>
                   </div>
                 </li>
@@ -75,8 +75,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 mb-1">Phone Helpline</h4>
-                    <a href="tel:+919876543210" className="text-xs text-gray-500 hover:text-blue-600 hover:underline">
-                      +91 98765 43210
+                    <a href="tel:+919891263337" className="text-xs text-gray-500 hover:text-blue-600 hover:underline">
+                      +91 98912 63337
                     </a>
                   </div>
                 </li>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
-                      placeholder="e.g. +91 98765 43210"
+                      placeholder="e.g. +91 98912 63337"
                       required
                     />
                   </div>

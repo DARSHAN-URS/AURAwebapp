@@ -48,6 +48,23 @@ export default function LoginPage() {
     }
 
     try {
+      const isPlaceholder = (!process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project")) &&
+        process.env.NODE_ENV !== "production";
+
+      if (isPlaceholder) {
+        // Development bypass
+        const mockUser = {
+          id: "guest_user",
+          email: email || "guest@auraroutes.com",
+          user_metadata: { full_name: fullName || "Guest Student" },
+          role: "authenticated",
+        };
+        localStorage.setItem("aura_mock_user", JSON.stringify(mockUser));
+        window.location.href = "/inbox";
+        return;
+      }
+
       if (isLogin) {
         // Sign In
         const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -83,6 +100,24 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setError(null);
     setMessage(null);
+    
+    const isPlaceholder = (!process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project")) &&
+      process.env.NODE_ENV !== "production";
+
+    if (isPlaceholder) {
+      // Development bypass
+      const mockUser = {
+        id: "guest_user",
+        email: "google_guest@auraroutes.com",
+        user_metadata: { full_name: "Google Guest Student" },
+        role: "authenticated",
+      };
+      localStorage.setItem("aura_mock_user", JSON.stringify(mockUser));
+      window.location.href = "/inbox";
+      return;
+    }
+
     try {
       const { error: googleError } = await supabase.auth.signInWithOAuth({
         provider: "google",

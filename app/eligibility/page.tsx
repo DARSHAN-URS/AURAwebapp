@@ -103,7 +103,6 @@ export default function EligibilityFormPage() {
     setLoading(true);
     setApiError(null);
     try {
-      loggerLog("Submitting student assessment details to AI evaluation server...");
       const response = await checkStudentEligibility(values);
       
       // Clear saved progress on success
@@ -118,10 +117,6 @@ export default function EligibilityFormPage() {
       setLoading(false);
     }
   };
-
-  function loggerLog(msg: string) {
-    console.log(`[Eligibility Wizard] ${msg}`);
-  }
 
   // Animation variants for step transitions
   const slideVariants: any = {

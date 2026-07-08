@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, 
@@ -28,9 +29,19 @@ import {
   Trash2, 
   ArrowRight,
   ExternalLink,
-  GraduationCap
+  GraduationCap,
+  MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/common/AuthContext";
+import ChatSidebar from "@/components/chat/ChatSidebar";
+import ChatWindow from "@/components/chat/ChatWindow";
+import { supabase } from "@/lib/supabaseClient";
+import JourneyTimeline from "@/components/journey/JourneyTimeline";
+import JourneyKanban from "@/components/journey/JourneyKanban";
+import JourneyCalendar from "@/components/journey/JourneyCalendar";
+import JourneyTasks from "@/components/journey/JourneyTasks";
+import JourneyAnalytics from "@/components/journey/JourneyAnalytics";
 
 interface Activity {
   id: string;
@@ -90,6 +101,7 @@ interface VaultFile {
 function StudentDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
   const initialTab = searchParams.get("tab") || "overview";
 
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -106,6 +118,32 @@ function StudentDashboardContent() {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [aiSops, setAiSops] = useState<any[]>([]);
   const [aiVisas, setAiVisas] = useState<any[]>([]);
+  
+  // Aura AI Chat State
+  const [chatSessions, setChatSessions] = useState<any[]>([]);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [chatFiles, setChatFiles] = useState<any[]>([]);
+  const [streamingMessage, setStreamingMessage] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Journey Dashboard State variables
+  const [journey, setJourney] = useState<any | null>(null);
+  const [journeyStages, setJourneyStages] = useState<any[]>([]);
+  const [journeyTasks, setJourneyTasks] = useState<any[]>([]);
+  const [journeyCalendar, setJourneyCalendar] = useState<any[]>([]);
+  const [journeyApplications, setJourneyApplications] = useState<any[]>([]);
+  const [journeyVisa, setJourneyVisa] = useState<any | null>(null);
+  const [journeyActivities, setJourneyActivities] = useState<any[]>([]);
+  const [journeyLoading, setJourneyLoading] = useState(false);
+  const [showAddAppModal, setShowAddAppModal] = useState(false);
+
+  // Application creation modal fields
+  const [newAppUni, setNewAppUni] = useState("");
+  const [newAppCountry, setNewAppCountry] = useState("");
+  const [newAppCourse, setNewAppCourse] = useState("");
+  const [newAppTuition, setNewAppTuition] = useState("");
   
   // Settings tab variables
   const [emailNotif, setEmailNotif] = useState(true);
@@ -137,8 +175,14 @@ function StudentDashboardContent() {
       const statsData = await statsRes.json();
       setStats(statsData);
 
+      // Force to Profile tab if completeness < 50%
+      if (statsData.profile_completeness < 50) {
+        setActiveTab("profile");
+        router.push("/dashboard?tab=profile");
+      }
+
       // Fetch student profile details
-      const profileRes = await fetch(`${apiBaseUrl}/api/profile`);
+      const profileRes = await fetch(`${apiBaseUrl}/api/dashboard/profile`);
       const profileData = await profileRes.json();
       setProfile(profileData);
 
@@ -187,70 +231,37 @@ function StudentDashboardContent() {
       }
 
     } catch (err) {
-      console.warn("Backend offline. Setting up local dashboard mock values.");
-      setupFallbackMockData();
+      console.error("Backend connection error during dashboard retrieval:", err);
+      setStats({
+        profile_completeness: 0,
+        purchased_services: [],
+        unread_notifications_count: 0,
+        total_drafts_count: 0,
+        total_payments_count: 0,
+        recent_activities: [],
+        upcoming_appointments: []
+      });
+      setProfile({
+        full_name: "",
+        email: user?.email || "",
+        phone: "",
+        country_residence: "",
+        nationality: "",
+        qualification: "",
+        preferred_country: "",
+        preferred_course: "",
+        preferred_intake: ""
+      });
+      setNotifications([]);
+      setAppointments([]);
+      setVaultFiles([]);
+      setInvoices([]);
+      setAiSops([]);
+      setAiVisas([]);
+      setWhatsappHistory([]);
     } finally {
       setLoading(false);
     }
-  };
-
-  const setupFallbackMockData = () => {
-    setStats({
-      profile_completeness: 80,
-      purchased_services: ["ai-sop-generator", "ai-visa-doc-checker"],
-      unread_notifications_count: 1,
-      total_drafts_count: 2,
-      total_payments_count: 1,
-      recent_activities: [
-        { id: "act_1", activity_type: "Payment", description: "Purchased AI SOP Generator package (₹999).", created_at: new Date().toISOString() },
-        { id: "act_2", activity_type: "SOP", description: "Autosaved Statement of Purpose draft.", created_at: new Date(Date.now() - 3600000).toISOString() }
-      ],
-      upcoming_appointments: [
-        { id: "apt_1", consultant_name: "Dr. Aris Vane (Senior Study Advisor)", date_time: new Date(Date.now() + 86400000).toISOString(), meeting_link: "https://zoom.us/j/983457193", status: "upcoming", notes: "Initial profile scoping & university shortlisting." }
-      ]
-    });
-
-    setProfile({
-      full_name: "Priyan Bose",
-      email: "priyan.bose@gmail.com",
-      phone: "+91 9876543210",
-      country_residence: "India",
-      nationality: "Indian",
-      qualification: "B.Tech Computer Science",
-      preferred_country: "Canada",
-      preferred_course: "M.S. Computer Science",
-      preferred_intake: "Fall 2026"
-    });
-
-    setNotifications([
-      { id: "n1", type: "success", title: "Premium Access Active", message: "AI SOP Generator package is ready for use.", is_read: false, created_at: new Date().toISOString() },
-      { id: "n2", type: "info", title: "Document Scanned", message: "Statement of Purpose draft completed with 90% readability score.", is_read: true, created_at: new Date(Date.now() - 86400000).toISOString() }
-    ]);
-
-    setAppointments([
-      { id: "apt_1", consultant_name: "Dr. Aris Vane (Senior Study Advisor)", date_time: new Date(Date.now() + 86400000).toISOString(), meeting_link: "https://zoom.us/j/983457193", status: "upcoming", notes: "Initial profile scoping & university shortlisting." }
-    ]);
-
-    setVaultFiles([
-      { id: "vf1", filename: "Passport_Scan_Main.pdf", document_type: "Passport", file_size: 1542000, created_at: new Date().toISOString() },
-      { id: "vf2", filename: "Tuition_Fee_Receipt.pdf", document_type: "Financial", file_size: 945000, created_at: new Date().toISOString() }
-    ]);
-
-    setInvoices([
-      { id: "inv_1", receipt_number: "INV_U8A329F1", service_title: "AI SOP Generator", amount: 999.00, payment_method: "NetBanking/UPI", status: "captured", date: new Date().toISOString() }
-    ]);
-
-    setAiSops([
-      { id: "sop_mock_1", category: "SOPs", title: "SOP University of Toronto", target: "U of T - Computer Science", updated_at: new Date().toISOString() }
-    ]);
-
-    setAiVisas([
-      { id: "visa_mock_1", category: "Visa Reports", title: "Canada Student Visa Report", target: "Readiness: 90% (Ready)", updated_at: new Date().toISOString() }
-    ]);
-
-    setWhatsappHistory([
-      { id: "wh1", event_type: "STUDENT_REGISTERED", phone_number: "+91 9876543210", template_name: "Welcome Message", message: "Hi Student Partner 👋\n\nWelcome to Aura Routes! Prepare your study abroad files with premium AI assistance.", status: "Sent", retry_count: 0, created_at: new Date().toISOString() }
-    ]);
   };
 
   useEffect(() => {
@@ -262,7 +273,7 @@ function StudentDashboardContent() {
     e.preventDefault();
     if (!profile) return;
     try {
-      const res = await fetch(`${apiBaseUrl}/api/profile`, {
+      const res = await fetch(`${apiBaseUrl}/api/dashboard/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profile),
@@ -333,9 +344,448 @@ function StudentDashboardContent() {
     }
   };
 
+  // Chat Session Handlers
+  const fetchChatHistory = async () => {
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/history`);
+      if (res.ok) {
+        const historyData = await res.json();
+        setChatSessions(historyData);
+      }
+    } catch (err) {
+      console.error("Failed to load chat history:", err);
+    }
+  };
+
+  const handleSelectChatSession = async (id: string) => {
+    setActiveSessionId(id);
+    setChatMessages([]);
+    setChatFiles([]);
+    setStreamingMessage("");
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/${id}`);
+      if (res.ok) {
+        const detail = await res.json();
+        setChatMessages(detail.messages);
+        setChatFiles(detail.files);
+      }
+    } catch (err) {
+      console.error("Failed to load session details:", err);
+    }
+  };
+
+  const handleCreateChatSession = () => {
+    setActiveSessionId(null);
+    setChatMessages([]);
+    setChatFiles([]);
+    setStreamingMessage("");
+  };
+
+  const handleDeleteChatSession = async (id: string) => {
+    if (confirm("Are you sure you want to delete this conversation session?")) {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/chat/${id}`, { method: "DELETE" });
+        if (res.ok) {
+          setChatSessions(prev => prev.filter(s => s.id !== id));
+          if (activeSessionId === id) {
+            handleCreateChatSession();
+          }
+        }
+      } catch (err) {
+        console.error("Failed to delete chat session:", err);
+      }
+    }
+  };
+
+  const handleRenameChatSession = async (id: string, newTitle: string) => {
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/rename`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: id, title: newTitle })
+      });
+      if (res.ok) {
+        setChatSessions(prev => prev.map(s => s.id === id ? { ...s, title: newTitle } : s));
+      }
+    } catch (err) {
+      console.error("Failed to rename chat session:", err);
+    }
+  };
+
+  const handleTogglePinSession = async (id: string) => {
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/pin/${id}`, { method: "PUT" });
+      if (res.ok) {
+        const detail = await res.json();
+        setChatSessions(prev => 
+          prev.map(s => s.id === id ? { ...s, is_pinned: detail.is_pinned } : s)
+          .sort((a, b) => {
+            if (a.id === id) return detail.is_pinned ? -1 : 1;
+            if (b.id === id) return detail.is_pinned ? 1 : -1;
+            return 0;
+          })
+        );
+      }
+    } catch (err) {
+      console.error("Failed to toggle pin on session:", err);
+    }
+  };
+
+  const handleSendChatMessage = async (text: string) => {
+    setIsGenerating(true);
+    setStreamingMessage("");
+
+    // Append user message locally for immediate feedback
+    const tempUserMsg = { id: `temp-user-${Date.now()}`, role: "user" as const, content: text };
+    setChatMessages(prev => [...prev, tempUserMsg]);
+
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: activeSessionId, message: text }),
+        signal: abortControllerRef.current.signal
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to communicate with Aura AI server.");
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) {
+        throw new Error("Failed to read response stream.");
+      }
+
+      const decoder = new TextDecoder();
+      let accumulatedReply = "";
+      let isFirstChunk = true;
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        
+        if (isFirstChunk && chunk.startsWith("[SESSION_ID:")) {
+          const sessionEndIdx = chunk.indexOf("]");
+          const newSessionId = chunk.substring(12, sessionEndIdx);
+          setActiveSessionId(newSessionId);
+          const cleanChunk = chunk.substring(sessionEndIdx + 1);
+          accumulatedReply += cleanChunk;
+          setStreamingMessage(accumulatedReply);
+          isFirstChunk = false;
+        } else {
+          accumulatedReply += chunk;
+          setStreamingMessage(accumulatedReply);
+        }
+      }
+
+      // Add full assistant response to the message array
+      const tempAiMsg = { id: `temp-ai-${Date.now()}`, role: "assistant" as const, content: accumulatedReply };
+      setChatMessages(prev => [...prev.filter(m => !m.id.startsWith("temp-")), tempUserMsg, tempAiMsg]);
+      setStreamingMessage("");
+      
+      // Refresh chat list to show correct latest updates/titles
+      await fetchChatHistory();
+
+      // If this was a new session, load details to match database schema IDs
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (token) {
+        // Refresh details
+        const historyRes = await fetch(`${apiBaseUrl}/api/chat/history`);
+        if (historyRes.ok) {
+          const hist = await historyRes.json();
+          setChatSessions(hist);
+          const activeId = activeSessionId || hist[0]?.id;
+          if (activeId) {
+            const detailRes = await fetch(`${apiBaseUrl}/api/chat/${activeId}`);
+            if (detailRes.ok) {
+              const detail = await detailRes.json();
+              setChatMessages(detail.messages);
+              setChatFiles(detail.files);
+            }
+          }
+        }
+      }
+
+    } catch (err: any) {
+      if (err.name !== "AbortError") {
+        console.error("Chat error:", err);
+        setChatMessages(prev => [
+          ...prev, 
+          { id: `err-${Date.now()}`, role: "assistant" as const, content: "Sorry, I encountered an issue processing your query. Please make sure OpenAI API key is properly configured." }
+        ]);
+      }
+    } finally {
+      setIsGenerating(false);
+      abortControllerRef.current = null;
+    }
+  };
+
+  const handleRegenerateChatMessage = async () => {
+    if (!activeSessionId || isGenerating) return;
+    setIsGenerating(true);
+    setStreamingMessage("");
+
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/regenerate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: activeSessionId }),
+        signal: abortControllerRef.current.signal
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to communicate with Aura AI server.");
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) {
+        throw new Error("Failed to read response stream.");
+      }
+
+      const decoder = new TextDecoder();
+      let accumulatedReply = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        accumulatedReply += chunk;
+        setStreamingMessage(accumulatedReply);
+      }
+
+      // Reload detail messages
+      const detailRes = await fetch(`${apiBaseUrl}/api/chat/${activeSessionId}`);
+      if (detailRes.ok) {
+        const detail = await detailRes.json();
+        setChatMessages(detail.messages);
+        setChatFiles(detail.files);
+      }
+      setStreamingMessage("");
+
+    } catch (err: any) {
+      if (err.name !== "AbortError") {
+        console.error("Regen chat error:", err);
+      }
+    } finally {
+      setIsGenerating(false);
+      abortControllerRef.current = null;
+    }
+  };
+
+  const handleStopGeneration = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      setIsGenerating(false);
+      setStreamingMessage("");
+    }
+  };
+
+  const handleUploadChatFile = async (file: File) => {
+    if (!activeSessionId) return;
+    const formData = new FormData();
+    formData.append("session_id", activeSessionId);
+    formData.append("file", file);
+
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chat/upload`, {
+        method: "POST",
+        body: formData
+      });
+      if (res.ok) {
+        const detail = await res.json();
+        setChatFiles(prev => [...prev, detail.file]);
+      }
+    } catch (err) {
+      console.error("Failed to upload reference doc:", err);
+    }
+  };
+
+  const handleChatMessageFeedback = async (messageId: string, rating: number, comment?: string) => {
+    try {
+      await fetch(`${apiBaseUrl}/api/chat/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message_id: messageId, rating, comment })
+      });
+    } catch (err) {
+      console.warn("Could not submit rating feedback.");
+    }
+  };
+
+  // Load chat sessions when tab changes to aura-ai
+  useEffect(() => {
+    if (activeTab === "aura-ai") {
+      fetchChatHistory();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchChatHistory();
+  }, []);
+
+  // Journey Action Handlers
+  const fetchJourneyData = async () => {
+    try {
+      setJourneyLoading(true);
+      const res = await fetch(`${apiBaseUrl}/api/journey`);
+      if (res.ok) {
+        const data = await res.json();
+        setJourney(data.journey);
+        setJourneyStages(data.stages);
+        setJourneyVisa(data.visa_tracker);
+        setJourneyActivities(data.recent_activities);
+      }
+
+      const tasksRes = await fetch(`${apiBaseUrl}/api/tasks`);
+      if (tasksRes.ok) {
+        const tasksData = await tasksRes.json();
+        setJourneyTasks(tasksData);
+      }
+
+      const appRes = await fetch(`${apiBaseUrl}/api/application`);
+      if (appRes.ok) {
+        const appData = await appRes.json();
+        setJourneyApplications(appData);
+      }
+
+      const calRes = await fetch(`${apiBaseUrl}/api/calendar`);
+      if (calRes.ok) {
+        const calData = await calRes.json();
+        setJourneyCalendar(calData);
+      }
+    } catch (err) {
+      console.error("Failed to load journey stats:", err);
+    } finally {
+      setJourneyLoading(false);
+    }
+  };
+
+  const handleUpdateJourneyStage = async (stageName: string) => {
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/journey`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current_stage: stageName })
+      });
+      if (res.ok) {
+        await fetchJourneyData();
+      }
+    } catch (err) {
+      console.error("Failed to shift journey milestone:", err);
+    }
+  };
+
+  const handleToggleJourneyTask = async (taskId: string, completed: boolean) => {
+    try {
+      // Optimistic update
+      setJourneyTasks(prev => 
+        prev.map(t => t.id === taskId ? { ...t, completed } : t)
+      );
+
+      const res = await fetch(`${apiBaseUrl}/api/tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed })
+      });
+      if (res.ok) {
+        await fetchJourneyData();
+      }
+    } catch (err) {
+      console.error("Failed to toggle task:", err);
+    }
+  };
+
+  const handleUpdateApplicationStatus = async (appId: string, newStatus: string) => {
+    try {
+      // Optimistic update
+      setJourneyApplications(prev => 
+        prev.map(a => a.id === appId ? { ...a, current_status: newStatus } : a)
+      );
+
+      const res = await fetch(`${apiBaseUrl}/api/application/${appId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current_status: newStatus })
+      });
+      if (res.ok) {
+        await fetchJourneyData();
+      }
+    } catch (err) {
+      console.error("Failed to transition application:", err);
+    }
+  };
+
+  const handleDeleteApplication = async (appId: string) => {
+    if (confirm("Are you sure you want to remove this application workspace?")) {
+      try {
+        const res = await fetch(`${apiBaseUrl}/api/application/${appId}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          setJourneyApplications(prev => prev.filter(a => a.id !== appId));
+          await fetchJourneyData();
+        }
+      } catch (err) {
+        console.error("Failed to remove application:", err);
+      }
+    }
+  };
+
+  const handleCreateApplication = async () => {
+    if (!newAppUni.trim() || !newAppCourse.trim()) {
+      alert("Please fill in the University Name and Course Title.");
+      return;
+    }
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/application`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          university: newAppUni,
+          country: newAppCountry || "Canada",
+          course: newAppCourse,
+          degree: "Masters",
+          tuition_fee: newAppTuition || "$25,000 CAD",
+          current_status: "Interested"
+        })
+      });
+      if (res.ok) {
+        setNewAppUni("");
+        setNewAppCountry("");
+        setNewAppCourse("");
+        setNewAppTuition("");
+        setShowAddAppModal(false);
+        await fetchJourneyData();
+      }
+    } catch (err) {
+      console.error("Failed to save application shortlist:", err);
+    }
+  };
+
+  // Load journey data when journey tab is selected
+  useEffect(() => {
+    if (activeTab === "journey") {
+      fetchJourneyData();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchJourneyData();
+  }, []);
+
   // Collapsible sidebar menu tab navigation items
   const menuItems = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
+    { id: "journey", label: "Student Journey", icon: TrendingUp },
+    { id: "aura-ai", label: "Aura AI Assistant", icon: MessageSquare },
     { id: "reports", label: "My AI Reports", icon: FileText },
     { id: "vault", label: "Document Vault", icon: FolderLock },
     { id: "payments", label: "Billing Center", icon: Receipt },
@@ -345,6 +795,15 @@ function StudentDashboardContent() {
   ];
 
   const handleTabChange = (tabId: string) => {
+    if (tabId === "profile" || tabId === "settings") {
+      setMobileMenuOpen(false);
+      router.push("/settings");
+      return;
+    }
+    if (stats && stats.profile_completeness < 50 && tabId !== "profile") {
+      alert(`Please complete at least 50% of your profile (current completeness: ${stats.profile_completeness}%) to explore all platform tools!`);
+      return;
+    }
     setActiveTab(tabId);
     setMobileMenuOpen(false);
     router.push(`/dashboard?tab=${tabId}`);
@@ -359,9 +818,11 @@ function StudentDashboardContent() {
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-150 h-screen sticky top-0 py-6 px-4 justify-between shrink-0">
         <div>
           {/* Logo brand */}
-          <div className="flex items-center gap-2 mb-8 px-2">
-            <GraduationCap className="w-6 h-6 text-blue-600" />
-            <span className="font-extrabold text-gray-950 text-base tracking-tight">Aura Routes</span>
+          <div className="flex items-center gap-2.5 mb-8 px-2">
+            <div className="relative w-7 h-7 overflow-hidden rounded-lg border border-gray-100 shadow-xs bg-white flex items-center justify-center shrink-0">
+              <Image src="/images/logo.jpeg" alt="Aura Routes" width={28} height={28} priority className="object-contain" />
+            </div>
+            <span className="font-extrabold text-gray-950 text-sm tracking-tight">Aura Routes</span>
           </div>
 
           {/* Nav log menu links */}
@@ -369,18 +830,26 @@ function StudentDashboardContent() {
             {menuItems.map((item) => {
               const Icon = item.icon;
               const active = activeTab === item.id;
+              const isLocked = stats && stats.profile_completeness < 50 && item.id !== "profile";
               return (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
                     active 
                       ? "bg-blue-50 text-blue-600" 
-                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                      : isLocked
+                        ? "text-gray-300 opacity-60 hover:bg-red-50/20"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.label}</span>
+                  </div>
+                  {isLocked && (
+                    <FolderLock className="w-3.5 h-3.5 text-gray-400" />
+                  )}
                 </button>
               );
             })}
@@ -413,8 +882,10 @@ function StudentDashboardContent() {
       {/* Mobile Header Nav Drawer */}
       <header className="md:hidden bg-white border-b border-gray-100 p-4 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <GraduationCap className="w-5 h-5 text-blue-600" />
-          <span className="font-extrabold text-gray-950 text-sm">Aura Routes</span>
+          <div className="relative w-6 h-6 overflow-hidden rounded-md border border-gray-100 shadow-xs bg-white flex items-center justify-center shrink-0">
+            <Image src="/images/logo.jpeg" alt="Aura Routes" width={24} height={24} priority className="object-contain" />
+          </div>
+          <span className="font-extrabold text-gray-950 text-xs">Aura Routes</span>
         </div>
         
         <div className="flex items-center gap-3">
@@ -462,16 +933,26 @@ function StudentDashboardContent() {
                 <nav className="flex flex-col gap-1">
                   {menuItems.map((item) => {
                     const Icon = item.icon;
+                    const isLocked = stats && stats.profile_completeness < 50 && item.id !== "profile";
                     return (
                       <button
                         key={item.id}
                         onClick={() => handleTabChange(item.id)}
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                          activeTab === item.id ? "bg-blue-50 text-blue-600" : "text-gray-500"
+                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
+                          activeTab === item.id 
+                            ? "bg-blue-50 text-blue-600" 
+                            : isLocked
+                              ? "text-gray-300 opacity-60"
+                              : "text-gray-500"
                         }`}
                       >
-                        <Icon className="w-4 h-4" />
-                        <span>{item.label}</span>
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-4 h-4" />
+                          <span>{item.label}</span>
+                        </div>
+                        {isLocked && (
+                          <FolderLock className="w-3.5 h-3.5 text-gray-300" />
+                        )}
                       </button>
                     );
                   })}
@@ -600,7 +1081,7 @@ function StudentDashboardContent() {
                     <div className="lg:col-span-2 bg-white border border-gray-150 rounded-3xl p-8 shadow-sm flex flex-col justify-between min-h-[220px]">
                       <div>
                         <h2 className="text-2xl font-black text-gray-950 leading-tight">
-                          Welcome Back, {profile?.full_name || "Priyan Bose"}!
+                          Welcome Back, {profile?.full_name || user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split("@")[0] || "New Student"}!
                         </h2>
                         <p className="text-xs text-gray-400 mt-1 leading-relaxed max-w-md">
                           You are currently tracking studies in <strong className="text-gray-900">{profile?.preferred_country}</strong> for <strong className="text-gray-900">{profile?.preferred_course}</strong>. Keep editing details.
@@ -755,6 +1236,43 @@ function StudentDashboardContent() {
                       </div>
                     </div>
 
+                  </div>
+
+                  {/* Recent AI Conversations Widget */}
+                  <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs mt-8">
+                    <div className="flex justify-between items-center border-b border-gray-50 pb-3 mb-6">
+                      <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider flex items-center gap-1.5">
+                        <MessageSquare className="w-4 h-4 text-blue-600" />
+                        Recent Aura AI Sessions
+                      </h3>
+                      <button onClick={() => handleTabChange("aura-ai")} className="text-[10px] text-blue-600 hover:underline font-bold cursor-pointer">
+                        Open Assistant Hub
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {chatSessions.slice(0, 3).length === 0 ? (
+                        <div className="sm:col-span-3 text-center py-6 text-xs text-gray-400 font-bold">
+                          No recent conversations. Ask Aura AI to get started!
+                        </div>
+                      ) : (
+                        chatSessions.slice(0, 3).map((session) => (
+                          <div 
+                            key={session.id}
+                            onClick={() => {
+                              handleSelectChatSession(session.id);
+                              handleTabChange("aura-ai");
+                            }}
+                            className="bg-gray-50 border border-gray-100 hover:border-blue-200 p-4 rounded-2xl cursor-pointer transition-all hover:shadow-xs flex flex-col justify-between min-h-[90px]"
+                          >
+                            <span className="text-[11px] font-bold text-gray-800 truncate block">{session.title}</span>
+                            <span className="text-[9px] text-gray-400 font-semibold mt-2 block">
+                              Updated: {new Date(session.updated_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </div>
 
                 </motion.div>
@@ -1318,6 +1836,183 @@ function StudentDashboardContent() {
                     </div>
                   </div>
 
+                </motion.div>
+              )}
+
+              {/* TAB: STUDENT JOURNEY DASHBOARD */}
+              {activeTab === "journey" && journey && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="flex flex-col gap-8 w-full"
+                >
+                  {/* Dashboard Title & Quick Stats */}
+                  <div className="border-b border-gray-100 pb-4 flex justify-between items-center select-none no-print">
+                    <div>
+                      <h2 className="text-xl font-black text-gray-950">Student Journey Tracker</h2>
+                      <p className="text-xs text-gray-400 mt-1">Navigate admissions milestones, documents checklists, and visa schedules.</p>
+                    </div>
+                    <span className="bg-blue-50 text-blue-700 text-xs font-black px-4.5 py-1.5 rounded-full border border-blue-100 shadow-xs uppercase tracking-wide">
+                      Active Stage: {journey.current_stage}
+                    </span>
+                  </div>
+
+                  {/* Journey Analytics Metrics cards */}
+                  <JourneyAnalytics
+                    stats={{
+                      overall_progress: journey.overall_progress,
+                      current_stage: journey.current_stage,
+                      health_score: journey.health_score,
+                      total_tasks: journeyTasks.length,
+                      completed_tasks: journeyTasks.filter(t => t.completed).length,
+                      applications_count: journeyApplications.length,
+                      visa_readiness: journeyVisa ? journeyVisa.readiness_score : 0
+                    }}
+                    onTabNavigate={handleTabChange}
+                  />
+
+                  {/* Journey stages timeline */}
+                  <JourneyTimeline
+                    stages={journeyStages}
+                    currentStage={journey.current_stage}
+                    onUpdateStage={handleUpdateJourneyStage}
+                  />
+
+                  {/* Tasks list and Calendar details row */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <JourneyTasks
+                      tasks={journeyTasks}
+                      onToggleTask={handleToggleJourneyTask}
+                      currentStage={journey.current_stage}
+                      isPremiumUnlocked={stats?.purchased_services?.includes("premium-advisor") || true}
+                    />
+                    <JourneyCalendar
+                      events={journeyCalendar}
+                    />
+                  </div>
+
+                  {/* University applications Kanban pipeline */}
+                  <JourneyKanban
+                    applications={journeyApplications}
+                    onUpdateAppStatus={handleUpdateApplicationStatus}
+                    onDeleteApplication={handleDeleteApplication}
+                    onCreateApplication={() => setShowAddAppModal(true)}
+                  />
+
+                  {/* Add Application shortlists Modal Overlay */}
+                  <AnimatePresence>
+                    {showAddAppModal && (
+                      <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4 no-print select-none">
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl flex flex-col gap-6"
+                        >
+                          <div>
+                            <h4 className="text-sm font-black text-gray-950">Add University Shortlist</h4>
+                            <p className="text-[11px] text-gray-400 mt-1">Shortlist choices to initialize admissions tracking pipeline logs.</p>
+                          </div>
+
+                          <div className="flex flex-col gap-4 text-xs">
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-xs font-bold text-gray-400 uppercase">University Name</label>
+                              <input 
+                                type="text"
+                                placeholder="e.g. University of Toronto"
+                                value={newAppUni}
+                                onChange={(e) => setNewAppUni(e.target.value)}
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                              />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-xs font-bold text-gray-400 uppercase">Country</label>
+                              <input 
+                                type="text"
+                                placeholder="e.g. Canada"
+                                value={newAppCountry}
+                                onChange={(e) => setNewAppCountry(e.target.value)}
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                              />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-xs font-bold text-gray-400 uppercase">Course / Programme</label>
+                              <input 
+                                type="text"
+                                placeholder="e.g. MSc Computer Science"
+                                value={newAppCourse}
+                                onChange={(e) => setNewAppCourse(e.target.value)}
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                              />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                              <label className="text-xs font-bold text-gray-400 uppercase">Tuition Fee Estimate</label>
+                              <input 
+                                type="text"
+                                placeholder="e.g. $35,000 CAD"
+                                value={newAppTuition}
+                                onChange={(e) => setNewAppTuition(e.target.value)}
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex justify-end gap-3.5 pt-2">
+                            <Button
+                              onClick={() => setShowAddAppModal(false)}
+                              className="bg-gray-150 hover:bg-gray-200 text-gray-800 border border-gray-200 font-bold py-2 px-6 rounded-full text-xs cursor-pointer"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={handleCreateApplication}
+                              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full text-xs cursor-pointer shadow-md"
+                            >
+                              Save Target
+                            </Button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+
+              {/* TAB: AURA AI ASSISTANT */}
+              {activeTab === "aura-ai" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="flex flex-col md:flex-row bg-white border border-gray-150 rounded-3xl overflow-hidden h-[calc(100vh-12rem)] min-h-[500px]"
+                >
+                  <ChatSidebar
+                    sessions={chatSessions}
+                    activeSessionId={activeSessionId}
+                    onSelectSession={handleSelectChatSession}
+                    onCreateSession={handleCreateChatSession}
+                    onDeleteSession={handleDeleteChatSession}
+                    onRenameSession={handleRenameChatSession}
+                    onTogglePinSession={handleTogglePinSession}
+                  />
+                  <ChatWindow
+                    messages={chatMessages}
+                    files={chatFiles}
+                    streamingMessage={streamingMessage}
+                    isGenerating={isGenerating}
+                    onSendMessage={handleSendChatMessage}
+                    onUploadFile={handleUploadChatFile}
+                    onRegenerate={handleRegenerateChatMessage}
+                    onStopGeneration={handleStopGeneration}
+                    onFeedback={handleChatMessageFeedback}
+                    activeSessionId={activeSessionId}
+                    profileCompleteness={stats?.profile_completeness || 0}
+                    onTabNavigate={handleTabChange}
+                  />
                 </motion.div>
               )}
 

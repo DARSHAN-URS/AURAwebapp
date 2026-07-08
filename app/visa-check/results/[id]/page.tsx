@@ -72,55 +72,9 @@ export default function VisaCheckResultPage() {
         const reportData = await res.json();
         setData(reportData);
       } catch (err: any) {
-        console.warn("Backend offline. Generating fallback local visa check mock data.");
-        // Simulated local fallback report details
-        const mockReport: VisaCheckReport = {
-          id: checkId,
-          country: "Canada",
-          visa_type: "Student Visa",
-          readiness_score: 55,
-          status: "Critical Issues",
-          created_at: new Date().toISOString(),
-          ai_response: {
-            readiness_score: 55,
-            status: "Critical Issues",
-            passed_checks: ["Valid IELTS Test Uploaded", "Designated DLI College Offer Verified"],
-            failed_checks: ["Expired Passport scan uploaded", "Bank balance holds missing"],
-            missing_documents: ["SOP Draft", "Financial Sponsor Affidavit"],
-            warnings: ["Proof of accommodation check missing"],
-            risk_assessment: "Refusal risk is extremely High due to critical passport expiration issues and insufficient proof of funds holding requirements.",
-            recommendations: [
-              "File passport renewal immediately.",
-              "Prepare GIC savings balance transaction proof of $20,635 CAD."
-            ],
-            next_steps: [
-              "Schedule consult mapping call with an advisor.",
-              "Re-upload renewed passport copy."
-            ],
-            estimated_approval: "55%"
-          },
-          analyses: [
-            {
-              id: "a1",
-              document_name: "Passport_Scan_Expired.pdf",
-              status: "Failed",
-              issues: ["Passport expiration date is July 2023, which is in the past."],
-              suggestions: ["Renew passport immediately before scheduling visa appointments."],
-              confidence_score: 0.98,
-              critical: true
-            },
-            {
-              id: "a2",
-              document_name: "IELTS_Report_overall_7.pdf",
-              status: "Passed",
-              issues: [],
-              suggestions: ["Keep copy available for presentation at port of entry."],
-              confidence_score: 0.99,
-              critical: false
-            }
-          ]
-        };
-        setData(mockReport);
+        console.error("Failed to load visa check report details:", err);
+        setError("Visa document check report not found or service is offline.");
+        setData(null);
       } finally {
         setLoading(false);
       }

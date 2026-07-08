@@ -128,69 +128,11 @@ export default function ApplicationManager() {
       const data = await res.json();
       setApplications(data);
     } catch (err) {
-      console.warn("Backend offline. Setting up local fallback application seeds.");
-      setupFallbackSeeds();
+      console.error("Backend offline. Failed to fetch live application logs:", err);
+      setApplications([]);
     } finally {
       setLoading(false);
     }
-  };
-
-  const setupFallbackSeeds = () => {
-    const mockApps: Application[] = [
-      {
-        id: "app_uoft",
-        university: "University of Toronto",
-        country: "Canada",
-        course: "M.S. in Computer Science",
-        degree: "Master's",
-        intake: "Fall 2026",
-        tuition_fee: "$38,000 CAD",
-        application_fee: "$125 CAD",
-        deadline: "2026-01-15",
-        current_status: "Shortlisted",
-        priority: "High",
-        notes: "Requires strong GPA and research experience summary.",
-        tasks: [
-          { id: "t1", title: "Draft Statement of Purpose", status: "completed", priority: "High" },
-          { id: "t2", title: "Request Academic LORs", status: "pending", priority: "Medium" }
-        ],
-        documents: [
-          { id: "d1", document_name: "Passport", status: "Uploaded" },
-          { id: "d2", document_name: "SOP", status: "Uploaded" },
-          { id: "d3", document_name: "Transcripts", status: "Pending" }
-        ],
-        notes_list: [],
-        timeline: [
-          { id: "tm1", event_title: "Application Created", event_description: "Shortlisted course for Fall 2026 intake.", created_at: new Date().toISOString() }
-        ]
-      },
-      {
-        id: "app_tum",
-        university: "TUM (Technical University of Munich)",
-        country: "Germany",
-        course: "M.S. in Software Engineering",
-        degree: "Master's",
-        intake: "Fall 2026",
-        tuition_fee: "€0 EUR",
-        application_fee: "€0 EUR",
-        deadline: "2026-05-31",
-        current_status: "Interested",
-        priority: "Medium",
-        notes: "No tuition fee. Verify credit matching rules.",
-        tasks: [
-          { id: "t3", title: "Get transcripts certified", status: "pending", priority: "Medium" }
-        ],
-        documents: [
-          { id: "d4", document_name: "Passport", status: "Uploaded" },
-          { id: "d5", document_name: "Resume", status: "Pending" }
-        ],
-        notes_list: [],
-        timeline: [
-          { id: "tm2", event_title: "Application Created", event_description: "Added to backlog list.", created_at: new Date().toISOString() }
-        ]
-      }
-    ];
-    setApplications(mockApps);
   };
 
   useEffect(() => {
@@ -206,9 +148,9 @@ export default function ApplicationManager() {
   const handleDrop = async (e: React.DragEvent, targetStatus: string) => {
     e.preventDefault();
     const appId = e.dataTransfer.getData("text/plain");
-    
+
     // Update state locally
-    setApplications((prev) => 
+    setApplications((prev) =>
       prev.map((app) => app.id === appId ? { ...app, current_status: targetStatus } : app)
     );
 
@@ -252,37 +194,12 @@ export default function ApplicationManager() {
       if (res.ok) {
         setShowCreateModal(false);
         fetchApplications();
+      } else {
+        alert("Failed to save application to server.");
       }
     } catch (err) {
-      console.warn("Offline. Appending simulated application.");
-      const simulatedApp: Application = {
-        id: `app_sim_${Math.random().toString(36).substr(2, 9)}`,
-        university: newUni,
-        country: newCountry,
-        course: newCourse,
-        degree: newDegree,
-        intake: newIntake,
-        tuition_fee: newTuition,
-        application_fee: newAppFee,
-        deadline: newDeadline,
-        current_status: "Interested",
-        priority: newPriority,
-        notes: newNotes,
-        tasks: [
-          { id: `t_${Math.random()}`, title: "Generate SOP", status: "pending", priority: "High" },
-          { id: `t_${Math.random()}`, title: "Upload Passport", status: "pending", priority: "High" }
-        ],
-        documents: [
-          { id: `d_${Math.random()}`, document_name: "Passport", status: "Pending" },
-          { id: `d_${Math.random()}`, document_name: "SOP", status: "Pending" }
-        ],
-        notes_list: [],
-        timeline: [
-          { id: `tm_${Math.random()}`, event_title: "Application Created", created_at: new Date().toISOString() }
-        ]
-      };
-      setApplications((prev) => [...prev, simulatedApp]);
-      setShowCreateModal(false);
+      console.error("Offline. Failed to save application:", err);
+      alert("Application could not be saved because the server is offline.");
     } finally {
       setLoading(false);
     }
@@ -331,15 +248,8 @@ export default function ApplicationManager() {
       setSelectedApp(updatedApp);
       setApplications(prev => prev.map(a => a.id === selectedApp.id ? updatedApp : a));
     } catch (err) {
-      const mockTask: Task = {
-        id: `t_sim_${Math.random()}`,
-        title: quickTaskTitle,
-        status: "pending",
-        priority: "Medium"
-      };
-      const updatedApp = { ...selectedApp, tasks: [...selectedApp.tasks, mockTask] };
-      setSelectedApp(updatedApp);
-      setApplications(prev => prev.map(a => a.id === selectedApp.id ? updatedApp : a));
+      console.error("Failed to add task:", err);
+      alert("Could not add task because the server is offline.");
     } finally {
       setQuickTaskTitle("");
     }

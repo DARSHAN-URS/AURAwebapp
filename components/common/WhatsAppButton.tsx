@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppButton() {
-  const rawNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919876543210";
+  const rawNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+919891263337";
   // Remove spaces, dashes, or plus signs from number for WhatsApp wa.me API
   const formattedNumber = rawNumber.replace(/[+\s-]/g, "");
   const message = encodeURIComponent(

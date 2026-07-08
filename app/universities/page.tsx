@@ -123,51 +123,10 @@ export default function UniversityMatcher() {
       setFilteredRecs(data.recommendations || []);
       setStep(3);
     } catch (err) {
-      console.warn("Backend offline. Loading local recommendations fallback.");
-      const mockRecs: UniversityRecommendation[] = [
-        {
-          match_percentage: 95,
-          university_name: "University of Toronto",
-          country: "Canada",
-          course: "M.S. in Computer Science",
-          tuition_fee: "$38,000 - $58,000 CAD",
-          living_cost: "$18,000 - $22,000 CAD",
-          scholarship_opportunities: "Eligible for standard international student merit waivers.",
-          admission_requirements: "GPA: 80% equivalent. IELTS: 7.0+ overall.",
-          visa_difficulty: "Medium",
-          employment_opportunities: "3 years PGWP (Post-Graduation Work Permit) with strong local tech hub options.",
-          ai_recommendation_summary: "Strong compatibility based on your solid GPA and preference for Canada. Excellent research facilities."
-        },
-        {
-          match_percentage: 92,
-          university_name: "TUM (Technical University of Munich)",
-          country: "Germany",
-          course: "M.S. in Software Engineering",
-          tuition_fee: "€0 - €6,000 EUR",
-          living_cost: "€11,000 - €13,000 EUR",
-          scholarship_opportunities: "TUM scholarship and DAAD grants available.",
-          admission_requirements: "Strict subject match on bachelor course credits. IELTS: 6.5+.",
-          visa_difficulty: "Low",
-          employment_opportunities: "18 months job-seeker visa with massive industrial links in Bavaria.",
-          ai_recommendation_summary: "Matches your budget parameters perfectly as tuition fees are negligible. Strong coding focus."
-        },
-        {
-          match_percentage: 88,
-          university_name: "NYU (New York University)",
-          country: "USA",
-          course: "M.S. in Computer Science",
-          tuition_fee: "$52,000 - $58,000 USD",
-          living_cost: "$22,000 - $26,000 USD",
-          scholarship_opportunities: "Limited merit scholarships for international students.",
-          admission_requirements: "GRE score recommended (315+). IELTS: 7.5+.",
-          visa_difficulty: "Medium",
-          employment_opportunities: "3 years OPT STEM extension. Major employers in NY Finance & Tech.",
-          ai_recommendation_summary: "Superb ranking and placement rates. Fits your interest in top-tier US education."
-        }
-      ];
-      setRecommendations(mockRecs);
-      setFilteredRecs(mockRecs);
-      setStep(3);
+      console.error("Failed to generate university recommendations:", err);
+      alert("Failed to find university matches. Server is offline.");
+      setRecommendations([]);
+      setFilteredRecs([]);
     } finally {
       setLoading(false);
     }

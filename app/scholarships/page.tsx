@@ -146,43 +146,10 @@ export default function ScholarshipFinder() {
       setMatches(data || []);
       setFilteredMatches(data || []);
     } catch (err) {
-      console.warn("Backend offline. Setting up local fallback scholarship matches.");
-      const mockMatches: ScholarshipMatch[] = [
-        {
-          scholarship_name: "Fulbright-Nehru Master's Fellowships",
-          provider: "USIEF (United States-India Educational Foundation)",
-          country: "USA",
-          university: "All USA Universities",
-          funding_amount: "$45,000 USD / Year",
-          coverage: "Full Tuition, Living Stipend, Travel Airfare, Health Insurance",
-          eligibility_criteria: "GPA 80% equivalent. Minimum 3 years work experience. IELTS 7.0+.",
-          required_documents: "Academic transcripts, SOP, LOR, Work certifications",
-          deadline: "2026-05-15",
-          website: "https://www.usief.org.in",
-          ai_match_percentage: 92,
-          difficulty_level: "High",
-          application_strategy: "Draft an outstanding Statement of Purpose highlighting your GPA and academic accomplishments early.",
-          reason_for_recommendation: "Strong match based on your GPA and preferred country USA."
-        },
-        {
-          scholarship_name: "Ontario Graduate Scholarship (OGS)",
-          provider: "Government of Ontario",
-          country: "Canada",
-          university: "Ontario Universities",
-          funding_amount: "$15,000 CAD / Year",
-          coverage: "Partial Tuition Offset",
-          eligibility_criteria: "A- average in last 2 years. Registered in graduate studies.",
-          required_documents: "Transcripts, SOP, LOR referrals",
-          deadline: "2026-01-31",
-          website: "https://osap.gov.on.ca",
-          ai_match_percentage: 84,
-          difficulty_level: "Medium",
-          application_strategy: "Identify research sponsors early at Ontario universities.",
-          reason_for_recommendation: "Matches your preference for Canada graduate study pathways."
-        }
-      ];
-      setMatches(mockMatches);
-      setFilteredMatches(mockMatches);
+      console.error("Failed to fetch matching scholarships:", err);
+      alert("Failed to find scholarships. Server is offline.");
+      setMatches([]);
+      setFilteredMatches([]);
     } finally {
       setLoading(false);
     }
@@ -214,26 +181,9 @@ export default function ScholarshipFinder() {
       const data = await res.json();
       setFundingResult(data);
     } catch (err) {
-      // Offline fallback
-      const total = payload.tuition_fee + payload.living_cost + payload.travel_cost + payload.visa_cost + payload.insurance + payload.misc_expenses;
-      const avail = payload.scholarship_amount + payload.loan_amount + payload.savings;
-      const gap = Math.max(0, total - avail);
-      const score = total > 0 ? Math.min(100, Math.round((avail / total) * 100)) : 100;
-      setFundingResult({
-        plan: {
-          total_cost: total,
-          total_available: avail,
-          funding_gap: gap,
-          readiness_score: score,
-          suggested_plan: gap > 0 
-            ? "Your liquid savings and education loans currently show a gap deficit. Consider securing sponsor certificates." 
-            : "Your available budget covers the estimated costs. Keep funds liquid."
-        },
-        recommendations: [
-          "Apply for merit waivers early.",
-          "Maintain block account targets."
-        ]
-      });
+      console.error("Failed to calculate funding plan:", err);
+      alert("Failed to calculate funding plan. Server is offline.");
+      setFundingResult(null);
     } finally {
       setFundingLoading(false);
     }
@@ -256,9 +206,12 @@ export default function ScholarshipFinder() {
       });
       if (res.ok) {
         setSavedMatches((prev) => [...prev, uni.scholarship_name]);
+      } else {
+        alert("Failed to save scholarship bookmark.");
       }
     } catch (err) {
-      setSavedMatches((prev) => [...prev, uni.scholarship_name]);
+      console.error("Failed to save scholarship bookmark:", err);
+      alert("Failed to save bookmark. Server is offline.");
     }
   };
 

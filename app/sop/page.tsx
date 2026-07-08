@@ -61,31 +61,9 @@ export default function SOPDashboard() {
         const data = await res.json();
         setDocuments(data);
       } catch (err) {
-        console.warn("FastAPI backend offline. Displaying fallback document history for evaluation.");
-        // Fallback mockup logs so that dashboard can be tested even if SQLite database is empty
-        const fallbackHistory: SOPDocument[] = [
-          {
-            id: "sop_mock_1",
-            title: "SOP - MS in Computer Science at Stanford University",
-            target_country: "USA",
-            target_university: "Stanford University",
-            target_course: "MS in Computer Science",
-            version: 2,
-            created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-            updated_at: new Date(Date.now() - 3600000 * 4).toISOString(),
-          },
-          {
-            id: "sop_mock_2",
-            title: "SOP - MBA at London Business School",
-            target_country: "UK",
-            target_university: "London Business School",
-            target_course: "MBA",
-            version: 1,
-            created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
-            updated_at: new Date(Date.now() - 86400000 * 10).toISOString(),
-          }
-        ];
-        setDocuments(fallbackHistory);
+        console.error("Failed to fetch SOP documents:", err);
+        alert("Failed to load Statement of Purpose documents. Server is offline.");
+        setDocuments([]);
       } finally {
         setLoading(false);
       }
@@ -107,8 +85,8 @@ export default function SOPDashboard() {
         setDocuments((prev) => prev.filter((doc) => doc.id !== docId));
       }
     } catch (err) {
-      // Offline fallback deletion filter
-      setDocuments((prev) => prev.filter((doc) => doc.id !== docId));
+      console.error("Failed to delete SOP document:", err);
+      alert("Failed to delete statement of purpose document. Server is offline.");
     } finally {
       setDeletingId(null);
     }
@@ -139,18 +117,8 @@ export default function SOPDashboard() {
         setDocuments((prev) => [newDoc, ...prev]);
       }
     } catch (err) {
-      // Local mockup duplication
-      const duplicatedDoc: SOPDocument = {
-        id: `sop_mock_${Math.random().toString(36).substr(2, 9)}`,
-        title: `${doc.title} (Copy)`,
-        target_country: doc.target_country,
-        target_university: doc.target_university,
-        target_course: doc.target_course,
-        version: 1,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      setDocuments((prev) => [duplicatedDoc, ...prev]);
+      console.error("Failed to duplicate SOP document:", err);
+      alert("Failed to duplicate Statement of Purpose. Server is offline.");
     }
   };
 

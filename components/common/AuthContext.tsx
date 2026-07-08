@@ -27,6 +27,7 @@ const PROTECTED_ROUTES = [
   "/universities",
   "/applications",
   "/visa-success",
+  "/explorer",
 ];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -37,6 +38,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const pathname = usePathname();
 
   useEffect(() => {
+    const isPlaceholder = (!process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project")) &&
+      process.env.NODE_ENV !== "production";
+
+    if (isPlaceholder) {
+      const cachedUser = typeof window !== "undefined" ? localStorage.getItem("aura_mock_user") : null;
+      if (cachedUser) {
+        try {
+          const parsed = JSON.parse(cachedUser);
+          setUser(parsed);
+          setSession({ access_token: "mock-dev-token", user: parsed } as any);
+        } catch (e) {
+          // ignore
+        }
+      }
+      setLoading(false);
+      return;
+    }
+
     // Check active session on load
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -109,6 +129,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     setLoading(true);
+    const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-supabase-project");
+
+    if (isPlaceholder) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("aura_mock_user");
+      }
+      setUser(null);
+      setSession(null);
+      setLoading(false);
+      router.push("/login");
+      return;
+    }
+
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);

@@ -124,9 +124,9 @@ export default function PricingPage() {
         const data = await res.json();
         setServices(data);
       } catch (err: any) {
-        console.warn("FastAPI service list unreachable. Displaying fallback service catalog.");
-        // Set mock catalog fallback
-        setServices(fallbackServices);
+        console.error("FastAPI service list unreachable:", err);
+        setError("Failed to load services catalog. Server is offline.");
+        setServices([]);
       } finally {
         setLoading(false);
       }
@@ -164,6 +164,13 @@ export default function PricingPage() {
             Choose a custom service package to accelerate your admissions. Pay once with secure Razorpay checkouts. No subscriptions.
           </p>
         </div>
+
+        {/* Error State */}
+        {error && (
+          <div className="max-w-md mx-auto text-center py-6 px-4 bg-rose-50 border border-rose-100 rounded-2xl mb-8">
+            <p className="text-sm font-semibold text-rose-600">{error}</p>
+          </div>
+        )}
 
         {/* Loader */}
         {loading && (
