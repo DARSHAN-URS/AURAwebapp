@@ -6,7 +6,8 @@ from typing import List, Optional
 
 from ..database import get_db
 from ..auth import get_current_user
-from ..models import Service, Order, SOPDocument, SOPVersion
+from ..models import Service, Order, SOPDocument, SOPVersion, EligibilityRequest
+from ..services.notifications.dispatcher import dispatch_whatsapp_event
 from ..schemas import (
     SOPGenerateRequest,
     SOPDocumentSave,
@@ -18,24 +19,27 @@ from ..services.sop_service import (
     generate_sop_draft,
     rewrite_sop_segment
 )
+from ..rate_limiter import rate_limit
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["sop"])
 
-def verify_sop_purchase(db: Session):
+def verify_sop_purchase(db: Session, user_id: str):
     """
-    Enforces access control. Verifies if there is a paid order for the 'ai-sop-generator' service.
+    Enforces access control. Verifies if there is a paid order for the 'ai-sop-generator' service for the specific user.
     Raises HTTP 402 if not paid.
     """
-    logger.info("Verifying purchase authorization for AI SOP Generator...")
+    logger.info(f"Verifying purchase authorization for AI SOP Generator for user {user_id}...")
     # Lookup paid orders for the AI SOP Generator
     paid_order = db.query(Order).join(Service).filter(
+        Order.user_id == user_id,
         Order.payment_status == "paid",
         Service.slug == "ai-sop-generator"
     ).first()
     
     if not paid_order:
-        logger.warning("No paid order found for AI SOP Generator. Access denied.")
+        logger.warning(f"No paid order found for user {user_id} for AI SOP Generator. Access denied.")
         raise HTTPException(
             status_code=status.HTTP_402_PAYMENT_REQUIRED,
             detail="Access Locked: Please purchase the AI SOP Generator package to unlock this feature."
@@ -47,9 +51,9 @@ def verify_sop_purchase(db: Session):
 @router.post("/api/sop/generate", response_model=SOPDocumentResponse, status_code=status.HTTP_201_CREATED)
 def generate_sop(
     payload: SOPGenerateRequest,
-    bypass_check: bool = Query(False),  # Developer bypass purchase lock
     db: Session = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user),
+    _rl: None = Depends(rate_limit(limit=5, window_seconds=60))
 ):
     """
     Validates purchase lock, generates Statement of Purpose, and creates database records.
@@ -57,8 +61,7 @@ def generate_sop(
     if current_user.get("sub") == "guest_user":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required")
     user_id = current_user.get("sub")
-    if not bypass_check:
-        verify_sop_purchase(db)
+    verify_sop_purchase(db, user_id)
 
     try:
         # Extract metadata
@@ -97,6 +100,31 @@ def generate_sop(
         db.add(db_version)
         db.commit()
         db.refresh(db_doc)
+
+        # Trigger Journey Automation
+        try:
+            from ..services.journey_automation import JourneyAutomationService
+            JourneyAutomationService.on_sop_generated(
+                db=db,
+                user_id=user_id,
+                doc_title=title
+            )
+        except Exception as journey_err:
+            logger.error(f"Failed to trigger SOP generation automation: {str(journey_err)}")
+
+        # Dispatch WhatsApp Notification
+        try:
+            profile = db.query(EligibilityRequest).filter(EligibilityRequest.email == current_user.get("email")).first()
+            phone = profile.phone if profile else "+919891263337"
+            dispatch_whatsapp_event(
+                db=db,
+                user_id=user_id,
+                event_type="SOP_GENERATED",
+                payload={"student_name": payload.personal_info.full_name},
+                phone_number=phone
+            )
+        except Exception as dispatch_err:
+            logger.error(f"Failed to auto-dispatch WhatsApp notification: {str(dispatch_err)}")
 
         return db_doc
     except Exception as e:

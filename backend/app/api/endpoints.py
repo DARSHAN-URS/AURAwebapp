@@ -16,6 +16,10 @@ from ..schemas import (
 )
 from ..services.openai_service import evaluate_student_profile
 from ..services.analytics_service import get_eligibility_analytics_report
+from ..services.notifications.dispatcher import dispatch_whatsapp_event
+from ..rate_limiter import rate_limit
+
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/eligibility", tags=["eligibility"])
@@ -24,7 +28,8 @@ router = APIRouter(prefix="/api/eligibility", tags=["eligibility"])
 async def check_eligibility(
     payload: EligibilityRequestCreate,
     request: Request,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _rl: None = Depends(rate_limit(limit=10, window_seconds=60))
 ):
     """
     Submits a student's profile assessment, processes it using OpenAI ChatGPT,
@@ -115,8 +120,24 @@ async def check_eligibility(
         db.refresh(db_result)
         db.refresh(db_request)
         
+        # Dispatch WhatsApp Notification
+        try:
+            dispatch_whatsapp_event(
+                db=db,
+                user_id="guest_user",
+                event_type="ELIGIBILITY_COMPLETED",
+                payload={"student_name": db_request.full_name},
+                phone_number=db_request.phone
+            )
+        except Exception as dispatch_err:
+            logger.error(f"Failed to auto-dispatch WhatsApp notification: {str(dispatch_err)}")
+            
         return EligibilityCheckResponse(request=db_request, result=db_result)
         
+    except HTTPException as http_exc:
+        db_request.status = "failed"
+        db.commit()
+        raise http_exc
     except Exception as e:
         logger.error(f"Failed to generate evaluation for request {db_request.id}: {str(e)}")
         db_request.status = "failed"

@@ -50,7 +50,7 @@ export default function PersonalInfo({ register, errors }: StepProps) {
         <input
           type="tel"
           {...register("personalInfo.phone")}
-          placeholder="e.g. +91 98765 43210"
+          placeholder="e.g. +91 98912 63337"
           className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
         />
         {errors.personalInfo?.phone && (

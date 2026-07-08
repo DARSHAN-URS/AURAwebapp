@@ -58,28 +58,8 @@ export default function VisaCheckerDashboard() {
         const data = await res.json();
         setHistory(data);
       } catch (err) {
-        console.warn("Backend offline. Loading local simulated visa checks for preview.");
-        const fallbackHistory: VisaCheck[] = [
-          {
-            id: "visa_mock_1",
-            country: "Canada",
-            visa_type: "Student Visa",
-            readiness_score: 90,
-            status: "Ready",
-            created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-            updated_at: new Date(Date.now() - 3600000 * 2).toISOString()
-          },
-          {
-            id: "visa_mock_2",
-            country: "UK",
-            visa_type: "Student Visa",
-            readiness_score: 55,
-            status: "Critical Issues",
-            created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
-            updated_at: new Date(Date.now() - 86400000 * 3).toISOString()
-          }
-        ];
-        setHistory(fallbackHistory);
+        console.error("Backend offline. Failed loading visa check audits history:", err);
+        setHistory([]);
       } finally {
         setLoading(false);
       }

@@ -14,6 +14,8 @@ import {
   ShieldAlert
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/common/AuthContext";
+
 
 interface ServiceData {
   id: string;
@@ -43,6 +45,18 @@ function CheckoutContent() {
 
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const rzpKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_simulation";
+
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      if (user.email && !billingEmail) setBillingEmail(user.email);
+      const metadata = user.user_metadata || {};
+      const fullName = metadata.full_name || metadata.name || "";
+      if (fullName && !billingName) setBillingName(fullName);
+    }
+  }, [user, billingEmail, billingName]);
+
 
   // Mock catalog local fallbacks if API is offline
   const fallbackServices: ServiceData[] = [
@@ -134,13 +148,9 @@ function CheckoutContent() {
           throw new Error("Mismatched Service ID");
         }
       } catch (err) {
-        console.warn("Failed fetching from server. Resolving service from local mock catalog.");
-        const matched = fallbackServices.find((item) => item.id === serviceId);
-        if (matched) {
-          setService(matched);
-        } else {
-          router.push("/services");
-        }
+        console.error("Failed fetching service details from server:", err);
+        alert("Failed to retrieve service checkout details. Server is offline.");
+        router.push("/services");
       } finally {
         setLoading(false);
       }
@@ -163,7 +173,7 @@ function CheckoutContent() {
       const orderRes = await fetch(`${apiBaseUrl}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ service_id: service?.id, user_id: "guest_user" })
+        body: JSON.stringify({ service_id: service?.id, user_id: user?.id || "guest_user" })
       });
 
       if (!orderRes.ok) throw new Error("Unable to create checkout order on the server.");
@@ -171,13 +181,12 @@ function CheckoutContent() {
 
       // 2. If running in simulated sandbox, approve immediately without loading script
       if (orderData.razorpay_order_id.startsWith("order_sim_")) {
-        console.log("Simulating checkout signature approval...");
         const verifyRes = await fetch(`${apiBaseUrl}/api/payment/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             razorpay_order_id: orderData.razorpay_order_id,
-            razorpay_payment_id: `pay_sim_${Math.random().toString(36).slice(2, 12)}`,
+            razorpay_payment_id: `pay_sim_${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`,
             razorpay_signature: "simulated_verification_sig",
             billing_name: billingName,
             email: billingEmail

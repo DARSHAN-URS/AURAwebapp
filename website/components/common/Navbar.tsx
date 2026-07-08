@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import {
   Menu, X, ArrowRight, Sparkles, GraduationCap,
   UserCheck, FileText, SearchCode, Award, Building2,
-  Phone, BookOpen, BedDouble, CircleDollarSign, ChevronDown,
+  Phone, BookOpen, BedDouble, CircleDollarSign, ChevronDown, Globe2, Inbox, Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -162,6 +162,9 @@ function NavDropdown({
 
 export default function Navbar() {
   const pathname = usePathname();
+  if (pathname && (pathname.startsWith("/dashboard") || pathname.startsWith("/settings"))) {
+    return null;
+  }
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { openBooking } = useBooking();
@@ -237,19 +240,39 @@ export default function Navbar() {
                 isActive={isActive("/ai-tools")}
               />
 
-              <Link href="/universities" className={navLinkClass("/universities")}>Universities</Link>
+              <Link href="/universities" className={navLinkClass("/universities")}>AI Matcher</Link>
+              <Link href="/explorer" className={navLinkClass("/explorer")}>
+                <Globe2 className="w-3.5 h-3.5 mr-1" />
+                Explorer
+              </Link>
+              <Link href="/learn" className={navLinkClass("/learn")}>
+                <BookOpen className="w-3.5 h-3.5 mr-1" />
+                Learn
+              </Link>
               <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
             </nav>
 
             {/* ── Desktop Right ────────────────────────────────────── */}
             <div className="hidden lg:flex items-center gap-1.5 shrink-0">
-              <a href="tel:+919876543210" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-accent transition-all">
+              <a href="tel:+919891263337" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-accent transition-all">
                 <Phone className="w-3.5 h-3.5" />
                 Call Us
               </a>
               <ThemeToggle />
               {user ? (
                 <>
+                  <Link href="/inbox">
+                    <Button variant="ghost" className="rounded-full h-9 text-xs font-bold cursor-pointer gap-1 text-muted-foreground hover:text-foreground">
+                      <Inbox className="w-3.5 h-3.5" />
+                      Inbox
+                    </Button>
+                  </Link>
+                  <Link href="/settings">
+                    <Button variant="ghost" className="rounded-full h-9 text-xs font-bold cursor-pointer gap-1.5 text-muted-foreground hover:text-foreground">
+                      <Settings className="w-3.5 h-3.5" />
+                      Settings
+                    </Button>
+                  </Link>
                   <Link href="/dashboard">
                     <Button variant="outline" className="rounded-full h-9 text-xs font-bold cursor-pointer">
                       Dashboard
@@ -318,7 +341,9 @@ export default function Navbar() {
                   { label: "Home", href: "/" },
                   { label: "About", href: "/about" },
                   { label: "Services", href: "/services" },
-                  { label: "Universities", href: "/universities" },
+                  { label: "AI Matcher", href: "/universities" },
+                  { label: "Explorer", href: "/explorer" },
+                  { label: "Learn", href: "/learn" },
                   { label: "Contact", href: "/contact" },
                 ].map((link) => (
                   <Link
@@ -364,6 +389,12 @@ export default function Navbar() {
                 <div className="mt-3 pt-3 border-t border-border flex flex-col gap-2.5">
                   {user ? (
                     <>
+                      <Link href="/inbox" onClick={() => setMobileOpen(false)}>
+                        <Button className="w-full" variant="outline">Inbox</Button>
+                      </Link>
+                      <Link href="/settings" onClick={() => setMobileOpen(false)}>
+                        <Button className="w-full" variant="ghost">Settings</Button>
+                      </Link>
                       <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
                         <Button className="w-full" variant="outline">Dashboard</Button>
                       </Link>
@@ -382,7 +413,7 @@ export default function Navbar() {
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+919891263337"
                     className="flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors py-1"
                   >
                     <Phone className="w-3.5 h-3.5" />

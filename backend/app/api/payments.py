@@ -6,7 +6,8 @@ from typing import List, Optional
 import json
 
 from ..database import get_db
-from ..models import Service, Order, Payment
+from ..models import Service, Order, Payment, EligibilityRequest
+from ..services.notifications.dispatcher import dispatch_whatsapp_event
 from ..schemas import (
     ServiceResponse,
     OrderCreate,
@@ -19,6 +20,8 @@ from ..services.payment_service import (
     create_order_transaction,
     verify_payment_signature_and_log
 )
+from ..rate_limiter import rate_limit
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["payments"])
@@ -46,7 +49,8 @@ def get_service_by_slug(slug: str, db: Session = Depends(get_db)):
 @router.post("/api/payment/create-order", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)
 def create_payment_order(
     payload: OrderCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _rl: None = Depends(rate_limit(limit=20, window_seconds=60))
 ):
     """
     Prepares a transaction checkout by generating a Razorpay Order and saving a pending record in DB.
@@ -85,6 +89,38 @@ def verify_payment(
             billing_name=payload.billing_name,
             email=payload.email
         )
+
+        # Trigger Journey Automation
+        try:
+            from ..services.journey_automation import JourneyAutomationService
+            p_user_id = db_payment.order.user_id if db_payment.order else "guest_user"
+            if p_user_id != "guest_user":
+                JourneyAutomationService.on_payment_completed(
+                    db=db,
+                    user_id=p_user_id,
+                    service_slug=db_payment.order.service.slug
+                )
+        except Exception as journey_err:
+            logger.error(f"Failed to trigger payment completion automation: {str(journey_err)}")
+
+        # Dispatch WhatsApp Notification
+        try:
+            profile = db.query(EligibilityRequest).filter(EligibilityRequest.email == payload.email).first()
+            phone = profile.phone if profile else "+919891263337"
+            dispatch_whatsapp_event(
+                db=db,
+                user_id=db_payment.order.user_id or "guest_user",
+                event_type="PAYMENT_SUCCESS",
+                payload={
+                    "student_name": payload.billing_name,
+                    "amount": f"Rs {db_payment.amount}",
+                    "service_name": db_payment.order.service.title
+                },
+                phone_number=phone
+            )
+        except Exception as dispatch_err:
+            logger.error(f"Failed to auto-dispatch WhatsApp notification: {str(dispatch_err)}")
+
         return db_payment
     except ValueError as val_err:
         logger.error(f"Payment validation failed: {str(val_err)}")
@@ -109,8 +145,46 @@ async def handle_payment_webhook(request: Request, db: Session = Depends(get_db)
     
     logger.info("Webhook received from Razorpay.")
     
-    # In production, verify the webhook signature here using a webhook secret key.
-    # For now, we decode and parse the event payload
+    import os
+    import hmac
+    import hashlib
+    
+    app_env = os.getenv("APP_ENV", "production").lower()
+    webhook_secret = os.getenv("RAZORPAY_WEBHOOK_SECRET")
+    
+    # Strictly require signature validation in production, or if secret is configured
+    if app_env != "development" or webhook_secret:
+        if not webhook_secret:
+            logger.critical("RAZORPAY_WEBHOOK_SECRET is not configured in production mode. Rejecting webhook request.")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Webhook configuration error on server. Verification unavailable."
+            )
+            
+        try:
+            expected_signature = hmac.new(
+                webhook_secret.encode("utf-8"),
+                body_bytes,
+                hashlib.sha256
+            ).hexdigest()
+            
+            if not hmac.compare_digest(expected_signature, signature):
+                logger.error("Razorpay webhook signature verification failed.")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid webhook signature."
+                )
+            logger.info("Razorpay webhook signature verified successfully.")
+        except HTTPException:
+            raise
+        except Exception as sig_err:
+            logger.error(f"Error checking webhook signature: {str(sig_err)}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Signature validation failed."
+            )
+
+    # Decode and parse the event payload
     try:
         event_data = json.loads(body_bytes.decode("utf-8"))
         event_type = event_data.get("event")
@@ -144,6 +218,25 @@ async def handle_payment_webhook(request: Request, db: Session = Depends(get_db)
                     db.add(db_payment)
                 db.commit()
                 
+                # Dispatch Webhook Payment Success Notification
+                try:
+                    email = payment_payload.get("email")
+                    profile = db.query(EligibilityRequest).filter(EligibilityRequest.email == email).first() if email else None
+                    phone = profile.phone if profile else payment_payload.get("contact", "+919891263337")
+                    dispatch_whatsapp_event(
+                        db=db,
+                        user_id=db_order.user_id or "guest_user",
+                        event_type="PAYMENT_SUCCESS",
+                        payload={
+                            "student_name": payment_payload.get("billing_address", {}).get("name", "Student Partner"),
+                            "amount": f"Rs {db_order.amount}",
+                            "service_name": db_order.service.title
+                        },
+                        phone_number=phone
+                    )
+                except Exception as dispatch_err:
+                    logger.error(f"Failed to webhook-dispatch WhatsApp notification: {str(dispatch_err)}")
+                
         elif event_type == "payment.failed":
             payment_payload = event_data["payload"]["payment"]["entity"]
             order_id = payment_payload.get("order_id")
@@ -153,6 +246,25 @@ async def handle_payment_webhook(request: Request, db: Session = Depends(get_db)
                     logger.warning(f"Webhook transition Order {db_order.id} status to 'failed'")
                     db_order.payment_status = "failed"
                     db.commit()
+                    
+                    # Dispatch Webhook Payment Failed Notification
+                    try:
+                        email = payment_payload.get("email")
+                        profile = db.query(EligibilityRequest).filter(EligibilityRequest.email == email).first() if email else None
+                        phone = profile.phone if profile else payment_payload.get("contact", "+919891263337")
+                        dispatch_whatsapp_event(
+                            db=db,
+                            user_id=db_order.user_id or "guest_user",
+                            event_type="PAYMENT_FAILED",
+                            payload={
+                                "student_name": "Student Partner",
+                                "amount": f"Rs {db_order.amount}",
+                                "service_name": db_order.service.title
+                            },
+                            phone_number=phone
+                        )
+                    except Exception as dispatch_err:
+                        logger.error(f"Failed to webhook-dispatch fail WhatsApp notification: {str(dispatch_err)}")
 
         return {"status": "event processed"}
     except Exception as e:

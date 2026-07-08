@@ -3,10 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname && pathname.startsWith("/dashboard")) {
+    return null;
+  }
   const currentYear = new Date().getFullYear();
 
   return (
@@ -110,8 +115,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-blue-600 shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-blue-600 hover:underline transition-all">
-                  +91 98765 43210
+                <a href="tel:+919891263337" className="hover:text-blue-600 hover:underline transition-all">
+                  +91 98912 63337
                 </a>
               </li>
             </ul>

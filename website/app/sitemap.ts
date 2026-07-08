@@ -10,6 +10,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/services",
     "/ai-tools",
     "/universities",
+    "/explorer",
+    "/learn",
+    "/learn/search",
+    "/learn/bookmarks",
+    "/learn/history",
     "/contact",
     "/privacy-policy",
     "/terms",
@@ -19,6 +24,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: lastModified,
     changeFrequency: "weekly",
-    priority: route === "" ? 1.0 : 0.8,
+    priority: route === "" ? 1.0 : route.startsWith("/learn") ? 0.7 : 0.8,
   }));
 }

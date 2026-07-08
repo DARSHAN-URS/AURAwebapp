@@ -135,9 +135,6 @@ export default function EligibilityResultPage() {
         
         {/* Title */}
         <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase tracking-wide mb-4">
-            AI Profile Audit
-          </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
             Eligibility Evaluation Report
           </h1>

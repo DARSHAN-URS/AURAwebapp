@@ -92,7 +92,7 @@ export default function RootLayout({
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-98765-43210",
+      "telephone": "+91-98912-63337",
       "contactType": "customer service",
       "email": "info@auraroutes.com",
       "availableLanguage": ["en", "hi"]

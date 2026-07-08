@@ -34,13 +34,6 @@ export default function AboutPage() {
         
         {/* Intro Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase tracking-wide mb-4"
-          >
-            Our Mission
-          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

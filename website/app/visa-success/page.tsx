@@ -194,15 +194,9 @@ export default function VisaSuccessCenter() {
       setShowAssessment(false);
       fetchDashboard(selectedCountry);
     } catch (err) {
-      // Mock result fallback
-      const mockReport = {
-        overall_score: intCalcReadiness(),
-        risk_level: intCalcReadiness() > 75 ? "Low" : "Medium",
-        critical_issues: ["Sponsor assets proof needs validation logs."],
-        suggested_improvements: ["Verify sponsor bank statement signatures."]
-      };
-      setReadinessReport(mockReport);
-      setShowAssessment(false);
+      console.error("Failed to generate visa readiness assessment:", err);
+      alert("Failed to compute readiness assessment. Server is offline.");
+      setReadinessReport(null);
     } finally {
       setAssessLoading(false);
     }
@@ -236,22 +230,9 @@ export default function VisaSuccessCenter() {
       setFinancialResult(data);
       fetchDashboard(selectedCountry);
     } catch (err) {
-      // Offline calculation fallback
-      const req = payload.tuition_fee + payload.living_expenses;
-      const avail = payload.scholarship_amount + payload.education_loan + payload.savings;
-      const gap = Math.max(0, req - avail);
-      const score = req > 0 ? Math.min(100, Math.round((avail / req) * 100)) : 100;
-      setFinancialResult({
-        tuition_fee: payload.tuition_fee,
-        living_expenses: payload.living_expenses,
-        scholarship_amount: payload.scholarship_amount,
-        education_loan: payload.education_loan,
-        savings: payload.savings,
-        required_funds: req,
-        available_funds: avail,
-        funding_gap: gap,
-        readiness_score: score
-      });
+      console.error("Failed to calculate visa financials:", err);
+      alert("Failed to evaluate financials. Server is offline.");
+      setFinancialResult(null);
     } finally {
       setFinLoading(false);
     }
@@ -281,15 +262,9 @@ export default function VisaSuccessCenter() {
         setCoachFeedback(data.questions[data.questions.length - 1]);
       }
     } catch (err) {
-      // Mock feedback response fallback
-      setTimeout(() => {
-        setCoachFeedback({
-          feedback: "Good response outline. However, you should add precise career opportunities you will target back in India.",
-          score: 80,
-          rating: "Good",
-          suggestions: "Try adding sentences like: 'Upon graduation, I intend to join top tech consulting firms in Mumbai as a Systems Engineer.'"
-        });
-      }, 1000);
+      console.error("Failed to evaluate visa interview practice answer:", err);
+      alert("Failed to evaluate your practice answer. Server is offline.");
+      setCoachFeedback(null);
     } finally {
       setCoachLoading(false);
     }
@@ -318,10 +293,6 @@ export default function VisaSuccessCenter() {
         {/* Module Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 border-b border-gray-100 pb-6">
           <div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase mb-3">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>AI Success Center</span>
-            </span>
             <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight">AI Student Visa Coach</h1>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">Pre-flight checks, financial audits, and visa interview practice panels.</p>
           </div>

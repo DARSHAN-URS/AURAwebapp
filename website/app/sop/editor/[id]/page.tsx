@@ -88,31 +88,9 @@ export default function SOPEditorWorkspace() {
         setEditorContent(data.content);
         updateCounts(data.content);
       } catch (err: any) {
-        console.warn("Backend offline. Loading local simulated document for preview.");
-        // Simulated local fallback document
-        const localDoc: SOPDocumentDetails = {
-          id: docId,
-          title: "SOP - MS in Computer Science at Stanford University",
-          target_country: "USA",
-          target_university: "Stanford University",
-          target_course: "MS in Computer Science",
-          content: `<h2>Introduction</h2>
-<p>My decision to pursue the MS in Computer Science at the prestigious Stanford University in USA stems from my core ambition to integrate my existing foundations with advanced artificial intelligence frameworks.</p>
-<h2>Academic Background</h2>
-<p>During my previous studies at Vellore Institute of Technology, where I earned my Bachelor of Technology, I was exposed to the fundamental structures of my discipline. Throughout my academic tenure, I maintained a robust track record, graduating with a CGPA of 9.0/10.</p>
-<h2>Career Aspirations and Goals</h2>
-<p>Immediately upon graduation, my short-term plan is to join a leading tech firm as an AI research analyst. In the long term, I aspire to become a director of an engineering lab.</p>`,
-          version: 2,
-          updated_at: new Date().toISOString(),
-          versions: [
-            { id: "v1", version_number: 1, content: "<p>Initial Draft Content</p>", changes: "Initial AI Draft Generation", created_at: new Date(Date.now() - 86400000).toISOString() },
-            { id: "v2", version_number: 2, content: "<h2>Introduction</h2><p>Revised Intro</p>", changes: "Improved vocabulary draft", created_at: new Date().toISOString() }
-          ]
-        };
-        setDocument(localDoc);
-        setTitle(localDoc.title);
-        setEditorContent(localDoc.content);
-        updateCounts(localDoc.content);
+        console.error("Failed to load SOP document:", err);
+        setError("Failed to load Statement of Purpose document. Server is offline.");
+        setDocument(null);
       } finally {
         setLoading(false);
       }
@@ -146,8 +124,8 @@ export default function SOPEditorWorkspace() {
         if (!res.ok) throw new Error();
         setSavingStatus("Saved");
       } catch (err) {
-        // Fallback save in memory status
-        setSavingStatus("Saved");
+        console.error("Autosave failed:", err);
+        setSavingStatus("Error");
       }
     }, 2000);
   };
@@ -214,24 +192,9 @@ export default function SOPEditorWorkspace() {
       setSelectedText("");
       setSavingStatus("Saved");
     } catch (err: any) {
-      console.warn("AI endpoint failed. Simulating locally.");
-      // Simulated local rewrite actions if backend is offline
-      let mockRewrite = selectedText || editorContent;
-      if (instruction === "shorten") {
-        mockRewrite = mockRewrite.substring(0, Math.floor(mockRewrite.length * 0.7)) + "...";
-      } else if (instruction === "expand") {
-        mockRewrite += " Furthermore, these academic projects have nurtured my core systems thinking approach, which is vital for research.";
-      } else if (instruction === "improve_grammar") {
-        mockRewrite = mockRewrite.replace(/cgpa/gi, "CGPA scores");
-      }
-      
-      const newHtml = selectedText ? editorContent.replace(selectedText, mockRewrite) : mockRewrite;
-      setEditorContent(newHtml);
-      if (editorRef.current) {
-        editorRef.current.innerHTML = newHtml;
-      }
-      updateCounts(newHtml);
-      setSelectedText("");
+      console.error("AI rewrite failed:", err);
+      setAiError(err.message || "Failed to edit document with AI.");
+      alert("Failed to edit document with AI. Server is offline.");
     } finally {
       setAiWorking(false);
     }

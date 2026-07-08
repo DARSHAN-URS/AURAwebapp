@@ -132,10 +132,8 @@ export default function VisaCheckWizard() {
       // 3. Move to upload step
       setStep(2);
     } catch (err: any) {
-      console.warn("Backend offline. Simulating start checklist.");
-      setCheckId(`check_sim_${Math.random().toString(36).substr(2, 9)}`);
-      setSlots(getDocumentSlotsForCountry(country));
-      setStep(2);
+      console.error("Backend offline. Could not start visa check session:", err);
+      setError("Failed to initialize visa check session. Server is offline.");
     } finally {
       setLoading(false);
     }
@@ -180,14 +178,14 @@ export default function VisaCheckWizard() {
         return copy;
       });
     } catch (err) {
-      console.warn("Upload endpoint failed. Simulating local save.");
-      // Fallback local mockup validation update
+      console.error("Upload endpoint failed:", err);
+      setError(`Failed to upload ${file.name}. Please try again.`);
       setSlots((prev) => {
         const copy = [...prev];
-        copy[slotIdx].uploaded = true;
-        copy[slotIdx].filename = file.name;
-        copy[slotIdx].fileId = `doc_sim_${Math.random().toString(36).substr(2, 9)}`;
-        copy[slotIdx].progress = 100;
+        copy[slotIdx].uploaded = false;
+        copy[slotIdx].filename = undefined;
+        copy[slotIdx].fileId = undefined;
+        copy[slotIdx].progress = 0;
         return copy;
       });
     }
@@ -263,9 +261,6 @@ export default function VisaCheckWizard() {
 
         {/* Header Title */}
         <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 uppercase tracking-wide mb-4">
-            Visa Rules Engine
-          </span>
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
             Immigration Document Verification
           </h1>
