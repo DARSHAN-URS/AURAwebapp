@@ -164,7 +164,7 @@ export default function KnowledgeHub() {
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="inline-flex items-center gap-1.5 bg-primary/10 border border-primary/20 rounded-full px-3.5 py-1 text-xs font-bold text-primary mb-4">
               <Sparkles className="w-3.5 h-3.5" />
-              AURA ROUTES INTEL HUB
+              AURA ROUTES AI INTEL HUB
             </span>
           </motion.div>
           

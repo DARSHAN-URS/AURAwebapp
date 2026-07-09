@@ -240,7 +240,7 @@ export default function ArticleDetail({ params }: { params: Promise<{ slug: stri
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Aura Routes",
+      "name": "Aura Routes AI",
       "logo": {
         "@type": "ImageObject",
         "url": "https://auraroutes.com/images/logo.jpeg"

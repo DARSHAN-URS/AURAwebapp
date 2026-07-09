@@ -31,11 +31,11 @@ export default function Footer() {
                 />
               </div>
               <span className="font-extrabold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">
-                Aura <span className="text-blue-600">Routes</span>
+                Aura Routes <span className="text-blue-600">AI</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-gray-500 mt-2">
-              India's AI-powered study abroad platform for Indian students and NRI families. From university selection to global careers — one intelligent platform, end to end.
+              Aura Routes AI | AI-Powered Global Career Partner | <a href="https://auraroutes.com" className="hover:text-blue-600 transition-colors">auraroutes.com</a>
             </p>
             <div className="flex items-center gap-4 mt-3">
               <a href="#" className="p-2 rounded-full bg-white border border-gray-100 text-gray-400 hover:text-blue-600 hover:border-blue-100 shadow-sm transition-all duration-200" aria-label="Facebook">
@@ -124,7 +124,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200/50 pt-8 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-          <p>© {currentYear} Aura Routes Platform. All rights reserved.</p>
+          <p>© {currentYear} Aura Routes AI. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-blue-600 hover:underline transition-all">
               Privacy Policy

@@ -204,13 +204,13 @@ export default function Navbar() {
               className="flex items-center gap-2.5 shrink-0 group"
             >
               <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-border shadow-xs bg-card flex items-center justify-center">
-                <Image src="/images/logo.jpeg" alt="Aura Routes" width={32} height={32} priority className="object-contain" />
+                <Image src="/images/logo.jpeg" alt="Aura Routes AI" width={32} height={32} priority className="object-contain" />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="text-sm font-black tracking-tight text-foreground group-hover:text-primary transition-colors" style={{ fontFamily: "var(--font-heading)" }}>
-                  Aura <span className="text-primary">Routes</span>
+                  Aura Routes <span className="text-primary">AI</span>
                 </span>
-                <span className="text-[9px] text-muted-foreground font-medium tracking-wider uppercase">AI Study Abroad</span>
+                <span className="text-[9px] text-muted-foreground font-medium tracking-wider uppercase">Intelligent Routes to Global Careers</span>
               </div>
             </Link>
 

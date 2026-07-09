@@ -40,7 +40,7 @@ const WHY = [
   {
     icon: CheckCircle2,
     title: "Full Life-Cycle Support",
-    description: "We don't stop at admissions. Aura Routes manages your education loans, verified housing near campus, and post-study settlement assistance.",
+    description: "We don't stop at admissions. Aura Routes AI manages your education loans, verified housing near campus, and post-study settlement assistance.",
     color: "bg-purple-50 text-purple-600 border-purple-100/50",
   },
 ];
@@ -55,12 +55,12 @@ export default function WhyAura() {
           {/* Left: Sticky text column */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-5xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-              Why Students Choose Aura Routes
+              Why Students Choose Aura Routes AI
             </h2>
             <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium mb-8">
               Traditional study abroad agencies operate on commissions, leading them to recommend partner colleges that may not match your profile.
               <br /><br />
-              Aura Routes was built to be different — transparent, AI-driven, and student-first from day one.
+              Aura Routes AI was built to be different — transparent, AI-driven, and student-first from day one.
             </p>
 
             {/* Highlight proof point */}

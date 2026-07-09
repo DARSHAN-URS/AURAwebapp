@@ -820,9 +820,9 @@ function StudentDashboardContent() {
           {/* Logo brand */}
           <div className="flex items-center gap-2.5 mb-8 px-2">
             <div className="relative w-7 h-7 overflow-hidden rounded-lg border border-gray-100 shadow-xs bg-white flex items-center justify-center shrink-0">
-              <Image src="/images/logo.jpeg" alt="Aura Routes" width={28} height={28} priority className="object-contain" />
+              <Image src="/images/logo.jpeg" alt="Aura Routes AI" width={28} height={28} priority className="object-contain" />
             </div>
-            <span className="font-extrabold text-gray-950 text-sm tracking-tight">Aura Routes</span>
+            <span className="font-extrabold text-gray-950 text-sm tracking-tight">Aura Routes AI</span>
           </div>
 
           {/* Nav log menu links */}
@@ -883,9 +883,9 @@ function StudentDashboardContent() {
       <header className="md:hidden bg-white border-b border-gray-100 p-4 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <div className="relative w-6 h-6 overflow-hidden rounded-md border border-gray-100 shadow-xs bg-white flex items-center justify-center shrink-0">
-            <Image src="/images/logo.jpeg" alt="Aura Routes" width={24} height={24} priority className="object-contain" />
+            <Image src="/images/logo.jpeg" alt="Aura Routes AI" width={24} height={24} priority className="object-contain" />
           </div>
-          <span className="font-extrabold text-gray-950 text-xs">Aura Routes</span>
+          <span className="font-extrabold text-gray-950 text-xs">Aura Routes AI</span>
         </div>
         
         <div className="flex items-center gap-3">

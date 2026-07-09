@@ -89,7 +89,7 @@ export default function Services() {
             </span>
           </h2>
           <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium">
-            From your first university search to your arrival abroad — Aura Routes guides you through every step of your global journey.
+            From your first university search to your arrival abroad — Aura Routes AI guides you through every step of your global journey.
           </p>
         </div>
 

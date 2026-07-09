@@ -15,7 +15,7 @@ export default function TermsPage() {
 
         <div className="prose prose-blue max-w-none text-sm sm:text-base text-gray-600 flex flex-col gap-6 leading-relaxed">
           <p>
-            Welcome to Aura Routes. By accessing our website, using our AI tools, or booking free/premium consultations, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully.
+            Welcome to Aura Routes AI. By accessing our website, using our AI tools, or booking free/premium consultations, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">1. Use of AI Tools & Matchers</h2>
@@ -30,12 +30,12 @@ export default function TermsPage() {
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">2. Accuracy of Submitted Information</h2>
           <p>
-            You certify that all profiles, transcripts, test scores, work histories, and financial documents uploaded to the platform are 100% genuine and accurate. Aura Routes reserves the right to suspend accounts or terminate service if any details are flagged as forged, edited, or intentionally misleading.
+            You certify that all profiles, transcripts, test scores, work histories, and financial documents uploaded to the platform are 100% genuine and accurate. Aura Routes AI reserves the right to suspend accounts or terminate service if any details are flagged as forged, edited, or intentionally misleading.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">3. Limitation of Liability</h2>
           <p>
-            Aura Routes serves as a direct matching and filing coordinator. Under no circumstances shall Aura Routes or its parent entity be liable for any direct, indirect, incidental, or consequential damages resulting from university rejections, visa declines, loan denials, or housing lease contract disputes.
+            Aura Routes AI serves as a direct matching and filing coordinator. Under no circumstances shall Aura Routes AI or its parent entity be liable for any direct, indirect, incidental, or consequential damages resulting from university rejections, visa declines, loan denials, or housing lease contract disputes.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">4. Third-Party Links & Partner Platforms</h2>

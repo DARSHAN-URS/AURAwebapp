@@ -110,11 +110,10 @@ export default function Hero() {
               className="text-4xl sm:text-5xl lg:text-[3.8rem] font-black text-foreground tracking-tight leading-[1.07] mb-6"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              Your Clear Route to{" "}
+              Intelligent Routes to{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-violet-500">
-                Studying Abroad
-              </span>{" "}
-              Starts Here
+                Global Careers
+              </span>
             </motion.h1>
 
             <motion.p
@@ -123,7 +122,8 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg mb-8 font-medium"
             >
-              Aura Routes brings university selection, admissions, accommodation, education loans, and global career opportunities together in one intelligent platform — built for Indian students and NRI families.
+              <span className="text-foreground block font-bold mb-2">AI-Powered Global Career Partner</span>
+              Aura Routes AI brings university selection, admissions, accommodation, education loans, and global career opportunities together in one intelligent platform — built for Indian students and NRI families.
             </motion.p>
 
             <motion.div

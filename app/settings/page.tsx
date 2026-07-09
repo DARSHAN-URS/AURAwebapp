@@ -1275,7 +1275,7 @@ export default function SettingsPage() {
                         <ShieldAlert className="h-4 w-4 text-rose-400" />
                         Account Deletion
                       </h3>
-                      <p className="text-[11px] text-zinc-500 mb-4">Completely remove all profile metadata and documents files from Aura Routes servers. This process is irreversible.</p>
+                      <p className="text-[11px] text-zinc-500 mb-4">Completely remove all profile metadata and documents files from Aura Routes AI servers. This process is irreversible.</p>
                       <button
                         onClick={handleAccountDeletion}
                         className="px-4 py-2 bg-rose-900/20 hover:bg-rose-900/40 text-xs font-semibold rounded-lg text-rose-400 border border-rose-900/50"
@@ -1376,7 +1376,7 @@ export default function SettingsPage() {
               {activeTab === "appearance" && settings && (
                 <div>
                   <h2 className="text-xl font-bold text-white mb-2">Appearance Settings</h2>
-                  <p className="text-xs text-zinc-400 mb-6">Choose how Aura Routes looks on your screen.</p>
+                  <p className="text-xs text-zinc-400 mb-6">Choose how Aura Routes AI looks on your screen.</p>
 
                   <div className="space-y-6">
                     <div>

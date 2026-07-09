@@ -10,7 +10,7 @@ const TESTIMONIALS = [
     name: "Sneha Patel",
     university: "University of Toronto, Canada",
     course: "M.S. in Computer Science",
-    quote: "Aura Routes' University Matcher saved me weeks of manual research. The AI identified my profile was strong enough for U of T and predicted a 90% match score. I got in with a partial scholarship!",
+    quote: "Aura Routes AI's University Matcher saved me weeks of manual research. The AI identified my profile was strong enough for U of T and predicted a 90% match score. I got in with a partial scholarship!",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
     country: "🇮🇳 India → 🇨🇦 Canada",
@@ -37,7 +37,7 @@ const TESTIMONIALS = [
     name: "Vikram Malhotra",
     university: "LMU Munich, Germany",
     course: "M.Sc. in Data Science",
-    quote: "Securing tuition-free education in Germany seemed complex, but Aura Routes laid out every step clearly. The AI timeline tracker kept my documents synchronized — visa approved in record time!",
+    quote: "Securing tuition-free education in Germany seemed complex, but Aura Routes AI laid out every step clearly. The AI timeline tracker kept my documents synchronized — visa approved in record time!",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120",
     country: "🇮🇳 India → 🇩🇪 Germany",
@@ -58,7 +58,7 @@ export default function Testimonials() {
             </span>
           </h2>
           <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium">
-            Join thousands of Indian students and NRI families who have secured admissions at top global universities with Aura Routes.
+            Join thousands of Indian students and NRI families who have secured admissions at top global universities with Aura Routes AI.
           </p>
         </div>
 

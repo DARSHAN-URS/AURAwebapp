@@ -48,7 +48,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="text-lg text-gray-500 leading-relaxed"
           >
-            Aura Routes was founded by a team of international alumni and software engineers who experienced the friction, opacity, and exorbitant costs of traditional study abroad agencies. We set out to build a platform that gives every student unbiased, immediate, and complete support.
+            Aura Routes AI was founded by a team of international alumni and software engineers who experienced the friction, opacity, and exorbitant costs of traditional study abroad agencies. We set out to build a platform that gives every student unbiased, immediate, and complete support.
           </motion.p>
         </div>
 

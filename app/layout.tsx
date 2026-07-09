@@ -17,8 +17,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Aura Routes | AI-Powered Study Abroad & Immigration Platform",
-  description: "Aura Routes uses advanced AI profile evaluation, university matching, SOP drafting, and direct visa processing to secure admissions at 1500+ top global universities.",
+  title: "Aura Routes AI | Intelligent Routes to Global Careers",
+  description: "Aura Routes AI is your AI-Powered Global Career Partner. We use advanced AI profile evaluation, university matching, SOP drafting, and direct visa processing to secure admissions at 1500+ top global universities.",
   keywords: [
     "Study Abroad AI",
     "University Matcher",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "Student Visa Eligibility Checker",
     "Education Loans",
     "Student Accommodation",
-    "Aura Routes Platform"
+    "Aura Routes AI Platform"
   ],
   icons: {
     icon: "/images/logo.jpeg",
@@ -35,16 +35,16 @@ export const metadata: Metadata = {
     apple: "/images/logo.jpeg",
   },
   openGraph: {
-    title: "Aura Routes | AI-Powered Study Abroad & Immigration Platform",
-    description: "Get matched with 1,500+ global universities, draft SOPs, and check visa success rates instantly with our proprietary student AI suite.",
+    title: "Aura Routes AI | Intelligent Routes to Global Careers",
+    description: "Get matched with 1,500+ global universities, draft SOPs, and check visa success rates instantly with Aura Routes AI, your AI-Powered Global Career Partner.",
     url: "https://auraroutes.com",
-    siteName: "Aura Routes",
+    siteName: "Aura Routes AI",
     images: [
       {
         url: "/images/logo.jpeg",
         width: 800,
         height: 600,
-        alt: "Aura Routes - AI-Powered Study Abroad",
+        alt: "Aura Routes AI | Intelligent Routes to Global Careers",
       },
     ],
     locale: "en_US",
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aura Routes | AI-Powered Study Abroad & Immigration Platform",
-    description: "AI-driven profile builder, zero-commission matching, and end-to-end relocation services for international students.",
+    title: "Aura Routes AI | Intelligent Routes to Global Careers",
+    description: "Aura Routes AI is your AI-Powered Global Career Partner. AI-driven profile builder, zero-commission matching, and end-to-end relocation services for international students.",
     images: ["/images/logo.jpeg"],
     creator: "@AuraRoutes",
   },
@@ -78,10 +78,10 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    "name": "Aura Routes",
+    "name": "Aura Routes AI",
     "url": "https://auraroutes.com",
     "logo": "https://auraroutes.com/images/logo.jpeg",
-    "description": "AI-Powered Study Abroad & Immigration Platform for international students.",
+    "description": "AI-Powered Global Career Partner for international students.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "WZ-69, 1st Floor, Om Vihar Phase-1, Main Kabaddi Road",

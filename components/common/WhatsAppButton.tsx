@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
   // Remove spaces, dashes, or plus signs from number for WhatsApp wa.me API
   const formattedNumber = rawNumber.replace(/[+\s-]/g, "");
   const message = encodeURIComponent(
-    "Hi Aura Routes, I am looking to study abroad and would love to check my eligibility."
+    "Hi Aura Routes AI, I am looking to study abroad and would love to check my eligibility."
   );
   
   const whatsappUrl = `https://wa.me/${formattedNumber}?text=${message}`;

@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
 
         <div className="prose prose-blue max-w-none text-sm sm:text-base text-gray-600 flex flex-col gap-6 leading-relaxed">
           <p>
-            Welcome to Aura Routes. We value your privacy and are committed to protecting the personal data you share with us. This Privacy Policy details how we collect, process, secure, and utilize your profiling, contact, and academic credentials when using our AI tools and consultation services.
+            Welcome to Aura Routes AI. We value your privacy and are committed to protecting the personal data you share with us. This Privacy Policy details how we collect, process, secure, and utilize your profiling, contact, and academic credentials when using our AI tools and consultation services.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">1. Information We Collect</h2>
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">3. Third-Party Sharing</h2>
           <p>
-            Aura Routes does not sell, rent, or trade your personal credentials to third-party marketing entities. Your data is shared strictly with:
+            Aura Routes AI does not sell, rent, or trade your personal credentials to third-party marketing entities. Your data is shared strictly with:
           </p>
           <ul className="list-disc pl-5 flex flex-col gap-2">
             <li>Your selected target universities during direct applications submission.</li>

@@ -263,7 +263,7 @@ export default function CategoryArchive({ params }: { params: Promise<{ slug: st
               <GraduationCap className="w-8 h-8 text-indigo-500 mx-auto mb-3" />
               <h3 className="font-bold text-sm mb-1">Tailored Admissions Support</h3>
               <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                Let Aura Routes matching AI analyze your grades to find the best universities for you.
+                Let Aura Routes AI analyze your grades to find the best universities for you.
               </p>
               <Link href="/universities">
                 <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl h-9 text-xs">

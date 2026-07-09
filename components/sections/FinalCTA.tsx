@@ -55,7 +55,7 @@ export default function FinalCTA() {
                 </h2>
 
                 <p className="text-blue-100/80 text-sm sm:text-base leading-relaxed mb-8 max-w-md font-medium">
-                  Join 25,000+ Indian students and NRI families who chose Aura Routes to navigate their path to the world's best universities — transparently and intelligently.
+                  Join 25,000+ Indian students and NRI families who chose Aura Routes AI to navigate their path to the world's best universities — transparently and intelligently.
                 </p>
 
                 {/* CTAs */}

@@ -205,7 +205,7 @@ function CheckoutContent() {
           key: rzpKeyId,
           amount: Math.round(orderData.amount * 100),
           currency: orderData.currency,
-          name: "Aura Routes Platform",
+          name: "Aura Routes AI",
           description: service?.title,
           order_id: orderData.razorpay_order_id,
           handler: async function (response: any) {
