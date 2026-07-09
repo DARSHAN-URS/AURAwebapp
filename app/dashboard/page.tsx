@@ -169,10 +169,21 @@ function StudentDashboardContent() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
+
+      const handleResponse = async (res: Response) => {
+        if (res.status === 401) {
+          router.push("/login");
+          throw new Error("Unauthorized");
+        }
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      };
       
       // Fetch overview stats
       const statsRes = await fetch(`${apiBaseUrl}/api/dashboard`);
-      const statsData = await statsRes.json();
+      const statsData = await handleResponse(statsRes);
       setStats(statsData);
 
       // Force to Profile tab if completeness < 50%
@@ -183,38 +194,42 @@ function StudentDashboardContent() {
 
       // Fetch student profile details
       const profileRes = await fetch(`${apiBaseUrl}/api/dashboard/profile`);
-      const profileData = await profileRes.json();
+      const profileData = await handleResponse(profileRes);
       setProfile(profileData);
 
       // Fetch notification alerts logs
       const notificationsRes = await fetch(`${apiBaseUrl}/api/notifications`);
-      const notificationsData = await notificationsRes.json();
+      const notificationsData = await handleResponse(notificationsRes);
       setNotifications(notificationsData);
 
       // Fetch scheduled consultation slots
       const apptRes = await fetch(`${apiBaseUrl}/api/appointments`);
-      const apptData = await apptRes.json();
+      const apptData = await handleResponse(apptRes);
       setAppointments(apptData);
 
       // Fetch files from Vault
       const vaultRes = await fetch(`${apiBaseUrl}/api/documents`);
-      const vaultData = await vaultRes.json();
+      const vaultData = await handleResponse(vaultRes);
       setVaultFiles(vaultData);
 
       // Fetch billing transactions log
       const billRes = await fetch(`${apiBaseUrl}/api/payments`);
-      const billData = await billRes.json();
+      const billData = await handleResponse(billRes);
       setInvoices(billData);
 
       // Fetch AI workspace reports
       const reportsRes = await fetch(`${apiBaseUrl}/api/reports`);
-      const reportsData = await reportsRes.json();
+      const reportsData = await handleResponse(reportsRes);
       setAiSops(reportsData.sops || []);
       setAiVisas(reportsData.visa_reports || []);
 
       // Fetch WhatsApp preferences & logs
       try {
         const wpRes = await fetch(`${apiBaseUrl}/api/notifications/preferences`);
+        if (wpRes.status === 401) {
+          router.push("/login");
+          return;
+        }
         if (wpRes.ok) {
           const wpData = await wpRes.json();
           setWhatsappEnabled(wpData.enable_whatsapp);
@@ -222,6 +237,10 @@ function StudentDashboardContent() {
         }
         
         const whRes = await fetch(`${apiBaseUrl}/api/notifications/history`);
+        if (whRes.status === 401) {
+          router.push("/login");
+          return;
+        }
         if (whRes.ok) {
           const whData = await whRes.json();
           setWhatsappHistory(whData || []);
