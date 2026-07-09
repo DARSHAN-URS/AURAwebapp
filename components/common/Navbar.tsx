@@ -153,27 +153,32 @@ export default function Navbar() {
   const { user, signOut } = useAuth();
 
   // Hide navbar entirely on dashboard & settings pages (they have their own sidebar)
-  if (pathname && (pathname.startsWith("/dashboard") || pathname.startsWith("/settings"))) {
-    return null;
-  }
+  const shouldHide = pathname && (pathname.startsWith("/dashboard") || pathname.startsWith("/settings"));
 
   // Redirect logged-in users away from the landing page to dashboard
   useEffect(() => {
+    if (shouldHide) return;
     if (user && pathname === "/") {
       router.replace("/dashboard");
     }
   }, [user, pathname, router]);
 
   useEffect(() => {
+    if (shouldHide) return;
     const handler = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
   useEffect(() => {
+    if (shouldHide) return;
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  if (shouldHide) {
+    return null;
+  }
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
