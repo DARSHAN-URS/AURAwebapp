@@ -23,7 +23,7 @@ const FLOATING_CARDS = [
     icon: Building2,
     title: "1,500+ Universities",
     sub: "Matched to your profile",
-    iconBg: "bg-blue-500/15 text-blue-400",
+    iconBg: "bg-primary/15 text-blue-400",
     pos: "absolute top-6 right-2 sm:right-6",
     delay: 0,
   },

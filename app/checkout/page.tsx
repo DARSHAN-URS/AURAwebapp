@@ -260,8 +260,8 @@ function CheckoutContent() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
-        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-        <p className="text-sm font-semibold text-gray-500">Preparing transaction summary...</p>
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <p className="text-sm font-semibold text-muted-foreground">Preparing transaction summary...</p>
       </div>
     );
   }
@@ -276,13 +276,13 @@ function CheckoutContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-5xl mx-auto">
         {/* Left Column: Form Info */}
-        <div className="lg:col-span-7 bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-lg">
+        <div className="lg:col-span-7 bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-lg">
           <div className="border-b border-gray-50 pb-4 mb-6">
-            <h2 className="text-xl font-bold text-gray-950 flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-blue-600" />
+            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-primary" />
               <span>Secure Billing Details</span>
             </h2>
-            <p className="text-xs text-gray-400 mt-1">Provide your name and email to receive the invoice receipt.</p>
+            <p className="text-xs text-muted-text mt-1">Provide your name and email to receive the invoice receipt.</p>
           </div>
 
           {formError && (
@@ -294,31 +294,31 @@ function CheckoutContent() {
 
           <form onSubmit={handleCheckoutSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-gray-400 uppercase">Billing Name</label>
+              <label className="text-xs font-bold text-muted-text uppercase">Billing Name</label>
               <input
                 type="text"
                 value={billingName}
                 onChange={(e) => setBillingName(e.target.value)}
                 placeholder="e.g. Aman Sharma"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
+                className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
                 required
               />
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-gray-400 uppercase">Email Address (for Receipt)</label>
+              <label className="text-xs font-bold text-muted-text uppercase">Email Address (for Receipt)</label>
               <input
                 type="email"
                 value={billingEmail}
                 onChange={(e) => setBillingEmail(e.target.value)}
                 placeholder="e.g. aman@gmail.com"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
+                className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
                 required
               />
             </div>
 
-            <div className="p-4 bg-blue-50/50 border border-blue-100/50 rounded-2xl flex items-start gap-2.5 text-xs text-blue-800 leading-relaxed mt-4">
-              <ShieldAlert className="w-4.5 h-4.5 text-blue-600 shrink-0 mt-0.5" />
+            <div className="p-4 bg-primary/10/50 border border-primary/20/50 rounded-2xl flex items-start gap-2.5 text-xs text-blue-800 leading-relaxed mt-4">
+              <ShieldAlert className="w-4.5 h-4.5 text-primary shrink-0 mt-0.5" />
               <span>
                 Payments are securely verified and cryptographically checked on our backend servers. Double charges are automatically audited and refunded.
               </span>
@@ -327,7 +327,7 @@ function CheckoutContent() {
             <Button
               type="submit"
               disabled={checkingOut}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-full shadow-lg flex items-center justify-center gap-2 cursor-pointer mt-6"
+              className="bg-primary hover:bg-primary text-white font-bold py-4 rounded-full shadow-lg flex items-center justify-center gap-2 cursor-pointer mt-6"
             >
               {checkingOut ? (
                 <>
@@ -345,36 +345,36 @@ function CheckoutContent() {
         </div>
 
         {/* Right Column: Order Summary */}
-        <div className="lg:col-span-5 bg-gray-50 border border-gray-100 rounded-3xl p-6 sm:p-8 shadow-sm">
-          <h3 className="font-extrabold text-gray-950 text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-blue-600" />
+        <div className="lg:col-span-5 bg-background border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+          <h3 className="font-extrabold text-foreground text-sm uppercase tracking-wider mb-6 flex items-center gap-2">
+            <ShoppingBag className="w-4 h-4 text-primary" />
             <span>Order Summary</span>
           </h3>
 
-          <div className="flex flex-col gap-4 border-b border-gray-200 pb-6 mb-6">
+          <div className="flex flex-col gap-4 border-b border-border pb-6 mb-6">
             <div>
-              <h4 className="font-bold text-gray-900 text-sm">{service?.title}</h4>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">{service?.short_description}</p>
+              <h4 className="font-bold text-foreground text-sm">{service?.title}</h4>
+              <p className="text-xs text-muted-text mt-1 leading-relaxed">{service?.short_description}</p>
             </div>
             
-            <div className="flex justify-between items-center text-sm font-semibold text-gray-800 pt-2">
+            <div className="flex justify-between items-center text-sm font-semibold text-foreground/90 pt-2">
               <span>Item Total</span>
               <span>₹{service?.price}</span>
             </div>
-            <div className="flex justify-between items-center text-xs text-gray-400 font-medium">
+            <div className="flex justify-between items-center text-xs text-muted-text font-medium">
               <span>GST & Processing Fees</span>
               <span className="text-emerald-600">₹0.00 (Waived)</span>
             </div>
           </div>
 
-          <div className="flex justify-between items-center text-base font-extrabold text-gray-950 mb-6">
+          <div className="flex justify-between items-center text-base font-extrabold text-foreground mb-6">
             <span>Total Payable</span>
             <span>₹{service?.price}</span>
           </div>
 
           <button
             onClick={() => router.push("/services")}
-            className="flex items-center gap-1 text-xs font-bold text-blue-600 hover:gap-2 transition-all w-fit cursor-pointer"
+            className="flex items-center gap-1 text-xs font-bold text-primary hover:gap-2 transition-all w-fit cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Change Package</span>
@@ -387,12 +387,12 @@ function CheckoutContent() {
 
 export default function CheckoutPage() {
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+    <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <Suspense fallback={
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-            <p className="text-sm font-semibold text-gray-500">Loading checkout forms...</p>
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Loading checkout forms...</p>
           </div>
         }>
           <CheckoutContent />

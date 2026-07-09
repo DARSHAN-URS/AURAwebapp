@@ -132,32 +132,32 @@ ${sopData.name}`);
   };
 
   return (
-    <div className="bg-white pt-32 pb-20">
+    <div className="bg-card pt-32 pb-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-4">
             Interactive AI Sandbox
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 leading-relaxed max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
             Test-drive our proprietary AI algorithms. Provide details below to experience instant matched, verified, and drafted student profiles.
           </p>
         </div>
 
         {/* Workspace Card */}
-        <div className="max-w-5xl mx-auto bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[500px]">
+        <div className="max-w-5xl mx-auto bg-card rounded-3xl border border-border shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[500px]">
           
           {/* Left Navigation bar */}
-          <div className="lg:col-span-4 bg-gray-50/60 border-r border-gray-100 p-6 flex flex-col gap-2">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-3">Available Tools</h3>
+          <div className="lg:col-span-4 bg-background/60 border-r border-border p-6 flex flex-col gap-2">
+            <h3 className="text-xs font-semibold text-muted-text uppercase tracking-wider mb-4 px-3">Available Tools</h3>
             
             <button
               onClick={() => handleTabChange("eligibility")}
               className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left ${
                 activeTab === "eligibility"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-primary text-white shadow-md shadow-blue-600/10"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <UserCheck className="w-5 h-5" />
@@ -168,8 +168,8 @@ ${sopData.name}`);
               onClick={() => handleTabChange("matcher")}
               className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left ${
                 activeTab === "matcher"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-primary text-white shadow-md shadow-blue-600/10"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <Search className="w-5 h-5" />
@@ -180,8 +180,8 @@ ${sopData.name}`);
               onClick={() => handleTabChange("sop")}
               className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left ${
                 activeTab === "sop"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-primary text-white shadow-md shadow-blue-600/10"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <FileText className="w-5 h-5" />
@@ -192,8 +192,8 @@ ${sopData.name}`);
               onClick={() => handleTabChange("doc-checker")}
               className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left ${
                 activeTab === "doc-checker"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-primary text-white shadow-md shadow-blue-600/10"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <SearchCode className="w-5 h-5" />
@@ -216,14 +216,14 @@ ${sopData.name}`);
                 {/* 1. ELIGIBILITY TAB */}
                 {activeTab === "eligibility" && (
                   <form onSubmit={runEligibilityChecker} className="flex flex-col gap-6">
-                    <div className="flex items-center gap-2 text-blue-600 font-bold text-lg mb-2">
+                    <div className="flex items-center gap-2 text-primary font-bold text-lg mb-2">
                       <UserCheck className="w-5 h-5" />
                       <span>Academic Eligibility Profile</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Degree GPA / CGPA</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Degree GPA / CGPA</label>
                         <input
                           type="number"
                           step="0.1"
@@ -231,12 +231,12 @@ ${sopData.name}`);
                           max="10"
                           value={eligibilityData.gpa}
                           onChange={(e) => setEligibilityData({ ...eligibilityData, gpa: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Language Exam Score (IELTS equivalent)</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Language Exam Score (IELTS equivalent)</label>
                         <input
                           type="number"
                           step="0.5"
@@ -244,16 +244,16 @@ ${sopData.name}`);
                           max="9"
                           value={eligibilityData.ielts}
                           onChange={(e) => setEligibilityData({ ...eligibilityData, ielts: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Target Country</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Target Country</label>
                         <select
                           value={eligibilityData.country}
                           onChange={(e) => setEligibilityData({ ...eligibilityData, country: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                         >
                           <option>Canada</option>
                           <option>United Kingdom</option>
@@ -263,13 +263,13 @@ ${sopData.name}`);
                         </select>
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Academic Backlogs</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Academic Backlogs</label>
                         <input
                           type="number"
                           min="0"
                           value={eligibilityData.backlogs}
                           onChange={(e) => setEligibilityData({ ...eligibilityData, backlogs: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           required
                         />
                       </div>
@@ -278,7 +278,7 @@ ${sopData.name}`);
                     <Button
                       type="submit"
                       disabled={loading}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
+                      className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
                     >
                       {loading ? (
                         <>
@@ -298,29 +298,29 @@ ${sopData.name}`);
                 {/* 2. MATCHER TAB */}
                 {activeTab === "matcher" && (
                   <form onSubmit={runUniversityMatcher} className="flex flex-col gap-6">
-                    <div className="flex items-center gap-2 text-blue-600 font-bold text-lg mb-2">
+                    <div className="flex items-center gap-2 text-primary font-bold text-lg mb-2">
                       <Search className="w-5 h-5" />
                       <span>Smart University Matcher</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Desired Major</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Desired Major</label>
                         <input
                           type="text"
                           value={matcherData.major}
                           onChange={(e) => setMatcherData({ ...matcherData, major: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           placeholder="e.g. Computer Science"
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Annual Budget</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Annual Budget</label>
                         <select
                           value={matcherData.budget}
                           onChange={(e) => setMatcherData({ ...matcherData, budget: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                         >
                           <option>$10,000 - $25,000</option>
                           <option>$25,000 - $45,000</option>
@@ -328,11 +328,11 @@ ${sopData.name}`);
                         </select>
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Location</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Location</label>
                         <select
                           value={matcherData.country}
                           onChange={(e) => setMatcherData({ ...matcherData, country: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                         >
                           <option>All</option>
                           <option>Canada</option>
@@ -345,7 +345,7 @@ ${sopData.name}`);
                     <Button
                       type="submit"
                       disabled={loading}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
+                      className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
                     >
                       {loading ? (
                         <>
@@ -365,29 +365,29 @@ ${sopData.name}`);
                 {/* 3. SOP TAB */}
                 {activeTab === "sop" && (
                   <form onSubmit={runSOPGenerator} className="flex flex-col gap-5">
-                    <div className="flex items-center gap-2 text-blue-600 font-bold text-lg mb-2">
+                    <div className="flex items-center gap-2 text-primary font-bold text-lg mb-2">
                       <FileText className="w-5 h-5" />
                       <span>Contextual SOP Generator</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Your Name</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Your Name</label>
                         <input
                           type="text"
                           value={sopData.name}
                           onChange={(e) => setSopData({ ...sopData, name: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           placeholder="e.g. John Doe"
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Degree Type</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Degree Type</label>
                         <select
                           value={sopData.degree}
                           onChange={(e) => setSopData({ ...sopData, degree: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                         >
                           <option>Bachelor of Science</option>
                           <option>Master of Science</option>
@@ -396,23 +396,23 @@ ${sopData.name}`);
                         </select>
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Field of Study</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Field of Study</label>
                         <input
                           type="text"
                           value={sopData.subject}
                           onChange={(e) => setSopData({ ...sopData, subject: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           placeholder="e.g. Data Analytics"
                           required
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-gray-400 uppercase">Primary Internship/Job Role</label>
+                        <label className="text-xs font-bold text-muted-text uppercase">Primary Internship/Job Role</label>
                         <input
                           type="text"
                           value={sopData.experience}
                           onChange={(e) => setSopData({ ...sopData, experience: e.target.value })}
-                          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                           placeholder="e.g. Software Engineer Intern at Google"
                           required
                         />
@@ -422,7 +422,7 @@ ${sopData.name}`);
                     <Button
                       type="submit"
                       disabled={loading}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
+                      className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-xl shadow-md w-full sm:w-fit cursor-pointer flex items-center gap-2 mt-4"
                     >
                       {loading ? (
                         <>
@@ -442,30 +442,30 @@ ${sopData.name}`);
                 {/* 4. DOCUMENT CHECKER TAB */}
                 {activeTab === "doc-checker" && (
                   <div className="flex flex-col gap-6">
-                    <div className="flex items-center gap-2 text-blue-600 font-bold text-lg mb-2">
+                    <div className="flex items-center gap-2 text-primary font-bold text-lg mb-2">
                       <SearchCode className="w-5 h-5" />
                       <span>Document Scan Auditor</span>
                     </div>
                     
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Upload your transcript, SOP, or passport scan to perform a simulated authenticity and compliance check.
                     </p>
 
-                    <div className="border-2 border-dashed border-gray-200 rounded-2xl p-10 flex flex-col items-center justify-center text-center hover:border-blue-300 transition-all duration-300 bg-gray-50/50">
-                      <SearchCode className="w-12 h-12 text-gray-400 mb-4 animate-pulse" />
-                      <h4 className="font-bold text-sm text-gray-900 mb-1">Click to select files</h4>
-                      <p className="text-xs text-gray-400 mb-6">PDF, PNG, JPG up to 10MB</p>
+                    <div className="border-2 border-dashed border-border rounded-2xl p-10 flex flex-col items-center justify-center text-center hover:border-blue-300 transition-all duration-300 bg-background/50">
+                      <SearchCode className="w-12 h-12 text-muted-text mb-4 animate-pulse" />
+                      <h4 className="font-bold text-sm text-foreground mb-1">Click to select files</h4>
+                      <p className="text-xs text-muted-text mb-6">PDF, PNG, JPG up to 10MB</p>
                       
                       <div className="flex gap-4">
                         <Button 
                           onClick={() => runDocumentChecker("Academic_Transcript_CA.pdf")}
-                          className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs px-4 py-2.5 rounded-lg cursor-pointer"
+                          className="bg-card border border-border hover:bg-background text-foreground/80 text-xs px-4 py-2.5 rounded-lg cursor-pointer"
                         >
                           Simulate Transcript.pdf
                         </Button>
                         <Button 
                           onClick={() => runDocumentChecker("Passport_Copy_Global.pdf")}
-                          className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs px-4 py-2.5 rounded-lg cursor-pointer"
+                          className="bg-card border border-border hover:bg-background text-foreground/80 text-xs px-4 py-2.5 rounded-lg cursor-pointer"
                         >
                           Simulate Passport.pdf
                         </Button>
@@ -477,8 +477,8 @@ ${sopData.name}`);
                 {/* Loader overlay inside workspace console */}
                 {loading && (
                   <div className="flex flex-col items-center justify-center py-20">
-                    <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
-                    <p className="text-sm font-semibold text-gray-500">Processing input queries...</p>
+                    <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
+                    <p className="text-sm font-semibold text-muted-foreground">Processing input queries...</p>
                   </div>
                 )}
 
@@ -487,33 +487,33 @@ ${sopData.name}`);
                   <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="border-t border-gray-100 pt-8 mt-8"
+                    className="border-t border-border pt-8 mt-8"
                   >
                     {/* Eligibility Report */}
                     {activeTab === "eligibility" && (
-                      <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6">
+                      <div className="bg-primary/10/50 border border-primary/20 rounded-2xl p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="font-bold text-gray-900 text-sm">Eligibility Score Report</h4>
+                          <h4 className="font-bold text-foreground text-sm">Eligibility Score Report</h4>
                           <span className={`px-3 py-1 rounded-full text-xs font-bold ${result.score > 80 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
                             {result.status} ({result.score}%)
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600 leading-relaxed">{result.details}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{result.details}</p>
                       </div>
                     )}
 
                     {/* Matcher Report */}
                     {activeTab === "matcher" && (
                       <div className="flex flex-col gap-4">
-                        <h4 className="font-bold text-gray-950 text-sm">Perfect Matches Found ({result.length})</h4>
+                        <h4 className="font-bold text-foreground text-sm">Perfect Matches Found ({result.length})</h4>
                         <div className="flex flex-col gap-3">
                           {result.map((univ: any, idx: number) => (
-                            <div key={idx} className="bg-white border border-gray-100 p-4 rounded-xl shadow-sm flex items-center justify-between">
+                            <div key={idx} className="bg-card border border-border p-4 rounded-xl shadow-sm flex items-center justify-between">
                               <div>
-                                <h5 className="font-bold text-gray-900 text-sm">{univ.name}</h5>
-                                <p className="text-xs text-gray-400 mt-0.5">{univ.location} • Approximate Fee: {univ.fee}</p>
+                                <h5 className="font-bold text-foreground text-sm">{univ.name}</h5>
+                                <p className="text-xs text-muted-text mt-0.5">{univ.location} • Approximate Fee: {univ.fee}</p>
                               </div>
-                              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
+                              <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
                                 {univ.score} Match
                               </span>
                             </div>
@@ -526,16 +526,16 @@ ${sopData.name}`);
                     {activeTab === "sop" && (
                       <div className="flex flex-col gap-4">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-bold text-gray-950 text-sm">Generated SOP Outline</h4>
+                          <h4 className="font-bold text-foreground text-sm">Generated SOP Outline</h4>
                           <Button
                             onClick={handleCopySop}
-                            className="bg-gray-50 border border-gray-200 hover:bg-gray-100 text-gray-700 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 cursor-pointer"
+                            className="bg-background border border-border hover:bg-muted text-foreground/80 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 cursor-pointer"
                           >
                             <Copy className="w-3.5 h-3.5" />
                             <span>{copied ? "Copied!" : "Copy SOP"}</span>
                           </Button>
                         </div>
-                        <pre className="bg-gray-50 border border-gray-100 p-6 rounded-xl text-xs text-gray-600 overflow-x-auto font-mono whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto">
+                        <pre className="bg-background border border-border p-6 rounded-xl text-xs text-muted-foreground overflow-x-auto font-mono whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto">
                           {result}
                         </pre>
                       </div>
@@ -550,7 +550,7 @@ ${sopData.name}`);
                         </div>
                         <ul className="flex flex-col gap-2.5">
                           {result.checks.map((check: any, idx: number) => (
-                            <li key={idx} className="flex items-center gap-2 text-xs font-medium text-gray-600">
+                            <li key={idx} className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                               <span>{check.label}</span>
                             </li>

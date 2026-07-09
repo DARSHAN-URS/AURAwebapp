@@ -69,12 +69,12 @@ export default function ChatSidebar({
   };
 
   return (
-    <div className="w-full md:w-64 bg-gray-50 border-r border-gray-150 flex flex-col h-full shrink-0">
+    <div className="w-full md:w-64 bg-background border-r border-border flex flex-col h-full shrink-0">
       {/* Action Header */}
-      <div className="p-4 border-b border-gray-100 flex flex-col gap-3">
+      <div className="p-4 border-b border-border flex flex-col gap-3">
         <Button
           onClick={onCreateSession}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm"
+          className="w-full bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>New Consultation Chat</span>
@@ -82,13 +82,13 @@ export default function ChatSidebar({
 
         {/* Search */}
         <div className="relative">
-          <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-muted-text absolute left-3 top-1/2 transform -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search conversations..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-lg pl-9 pr-3 py-1.5 text-[11px] focus:outline-none focus:border-blue-600 font-medium"
+            className="w-full bg-card border border-border rounded-lg pl-9 pr-3 py-1.5 text-[11px] focus:outline-none focus:border-blue-600 font-medium"
           />
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function ChatSidebar({
         {filteredSessions.length === 0 ? (
           <div className="text-center py-8 px-4">
             <MessageSquare className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-[11px] text-gray-400 font-semibold">No discussions found.</p>
+            <p className="text-[11px] text-muted-text font-semibold">No discussions found.</p>
           </div>
         ) : (
           filteredSessions.map((session) => {
@@ -110,8 +110,8 @@ export default function ChatSidebar({
                 key={session.id}
                 className={`group flex items-center justify-between px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
                   isActive 
-                    ? "bg-blue-50/70 border border-blue-100 text-blue-700 shadow-xs" 
-                    : "text-gray-600 hover:bg-gray-100 border border-transparent"
+                    ? "bg-primary/10/70 border border-primary/20 text-primary shadow-sm" 
+                    : "text-muted-foreground hover:bg-muted border border-transparent"
                 }`}
               >
                 {isEditing ? (
@@ -121,7 +121,7 @@ export default function ChatSidebar({
                     onChange={(e) => setRenameValue(e.target.value)}
                     onBlur={() => saveRename(session.id)}
                     onKeyDown={(e) => handleKeyPress(e, session.id)}
-                    className="w-full bg-white border border-blue-500 rounded px-1.5 py-0.5 text-xs text-gray-800 focus:outline-none"
+                    className="w-full bg-card border border-blue-500 rounded px-1.5 py-0.5 text-xs text-foreground/90 focus:outline-none"
                     autoFocus
                   />
                 ) : (
@@ -129,10 +129,10 @@ export default function ChatSidebar({
                     onClick={() => onSelectSession(session.id)}
                     className="flex items-center gap-2.5 min-w-0 flex-1"
                   >
-                    <MessageSquare className={`w-4 h-4 shrink-0 ${isActive ? "text-blue-600" : "text-gray-400"}`} />
+                    <MessageSquare className={`w-4 h-4 shrink-0 ${isActive ? "text-primary" : "text-muted-text"}`} />
                     <span className="text-xs font-bold truncate leading-none">{session.title}</span>
                     {session.is_pinned && (
-                      <Pin className="w-3 h-3 text-blue-500 shrink-0 transform rotate-45" />
+                      <Pin className="w-3 h-3 text-primary shrink-0 transform rotate-45" />
                     )}
                   </div>
                 )}
@@ -145,7 +145,7 @@ export default function ChatSidebar({
                         e.stopPropagation();
                         onTogglePinSession(session.id);
                       }}
-                      className="p-1 rounded text-gray-400 hover:text-blue-600 hover:bg-white"
+                      className="p-1 rounded text-muted-text hover:text-primary hover:bg-card"
                       title={session.is_pinned ? "Unpin Chat" : "Pin Chat"}
                     >
                       {session.is_pinned ? (
@@ -159,7 +159,7 @@ export default function ChatSidebar({
                         e.stopPropagation();
                         startRename(session);
                       }}
-                      className="p-1 rounded text-gray-400 hover:text-blue-600 hover:bg-white"
+                      className="p-1 rounded text-muted-text hover:text-primary hover:bg-card"
                       title="Rename Chat"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export default function ChatSidebar({
                         e.stopPropagation();
                         onDeleteSession(session.id);
                       }}
-                      className="p-1 rounded text-gray-400 hover:text-rose-600 hover:bg-white"
+                      className="p-1 rounded text-muted-text hover:text-rose-600 hover:bg-card"
                       title="Delete Chat"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

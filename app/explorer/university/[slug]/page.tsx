@@ -140,7 +140,7 @@ export default function UniversityDetailPage({ params }: { params: Promise<{ slu
 
         <div className="relative z-10 container mx-auto px-4 h-full flex items-end pb-6">
           <div className="flex items-end gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-xl">
+            <div className="w-16 h-16 rounded-2xl bg-card/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-xl">
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -254,7 +254,7 @@ export default function UniversityDetailPage({ params }: { params: Promise<{ slu
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   {[
-                    { label: "Acceptance Rate", value: data.acceptance_rate ? `${data.acceptance_rate}%` : "N/A", icon: Users, color: "text-blue-500" },
+                    { label: "Acceptance Rate", value: data.acceptance_rate ? `${data.acceptance_rate}%` : "N/A", icon: Users, color: "text-primary" },
                     { label: "Employment Rate", value: data.employment_rate ? `${data.employment_rate}%` : "N/A", icon: Briefcase, color: "text-emerald-500" },
                     { label: "Total Programs", value: data.total_programs ? `${data.total_programs}+` : "N/A", icon: BookOpen, color: "text-violet-500" },
                     { label: "Student Population", value: data.student_population ? `${(data.student_population / 1000).toFixed(0)}K+` : "N/A", icon: GraduationCap, color: "text-amber-500" },
@@ -478,7 +478,7 @@ export default function UniversityDetailPage({ params }: { params: Promise<{ slu
               <div className="space-y-3">
                 {[
                   { icon: DollarSign, label: "Tuition", value: data.tuition_display, color: "text-primary" },
-                  { icon: Globe2, label: "Living Cost", value: data.living_cost_display, color: "text-blue-500" },
+                  { icon: Globe2, label: "Living Cost", value: data.living_cost_display, color: "text-primary" },
                   { icon: Shield, label: "Visa Difficulty", value: data.visa_difficulty, color: "text-amber-500" },
                   { icon: Star, label: "QS Ranking", value: data.qs_ranking ? `#${data.qs_ranking}` : "N/A", color: "text-yellow-500" },
                   { icon: TrendingUp, label: "THE Ranking", value: data.the_ranking ? `#${data.the_ranking}` : "N/A", color: "text-violet-500" },

@@ -137,20 +137,20 @@ export default function EligibilityFormPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+    <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
         
         {/* Loading overlay during AI Evaluation */}
         {loading && (
-          <div className="fixed inset-0 bg-white/95 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-card/95 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="flex flex-col items-center gap-6 max-w-sm text-center px-6">
               <div className="relative flex items-center justify-center">
-                <Loader2 className="w-16 h-16 animate-spin text-blue-600" />
+                <Loader2 className="w-16 h-16 animate-spin text-primary" />
                 <Sparkles className="w-6 h-6 text-indigo-500 absolute animate-pulse" />
               </div>
               <div>
-                <h3 className="font-extrabold text-xl text-gray-900 mb-2">Analyzing Your Profile</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <h3 className="font-extrabold text-xl text-foreground mb-2">Analyzing Your Profile</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   Aura Routes AI is reviewing your transcripts, English scores, and study choices against global criteria...
                 </p>
               </div>
@@ -162,10 +162,10 @@ export default function EligibilityFormPage() {
         <Stepper currentStep={currentStep} totalSteps={totalSteps} />
 
         {/* Form Console Container */}
-        <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden mt-6">
+        <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden mt-6">
           
           {/* Subtle gradient light decoration inside card */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50/40 rounded-full filter blur-xl -z-10" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10/40 rounded-full filter blur-xl -z-10" />
 
           {/* API submission errors */}
           {apiError && (
@@ -175,7 +175,7 @@ export default function EligibilityFormPage() {
                 <p>{apiError}</p>
                 <button 
                   onClick={() => handleFormSubmit(form.getValues())}
-                  className="mt-2 text-xs text-blue-600 underline font-bold hover:text-blue-700"
+                  className="mt-2 text-xs text-primary underline font-bold hover:text-primary"
                 >
                   Retry Submission
                 </button>
@@ -212,13 +212,13 @@ export default function EligibilityFormPage() {
             </AnimatePresence>
 
             {/* Stepper Actions footer */}
-            <div className="flex items-center justify-between border-t border-gray-100 pt-8 mt-10">
+            <div className="flex items-center justify-between border-t border-border pt-8 mt-10">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={handleBack}
                 disabled={currentStep === 1}
-                className="rounded-full px-6 text-gray-500 disabled:opacity-30 flex items-center gap-1.5 cursor-pointer text-sm font-semibold"
+                className="rounded-full px-6 text-muted-foreground disabled:opacity-30 flex items-center gap-1.5 cursor-pointer text-sm font-semibold"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -228,7 +228,7 @@ export default function EligibilityFormPage() {
                 <Button
                   type="button"
                   onClick={handleNext}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-7 py-3 rounded-full shadow-md transition-all flex items-center gap-2 cursor-pointer text-sm"
+                  className="bg-primary hover:bg-primary text-white font-bold px-7 py-3 rounded-full shadow-md transition-all flex items-center gap-2 cursor-pointer text-sm"
                 >
                   <span>Next Step</span>
                   <ArrowRight className="w-4 h-4" />
@@ -236,7 +236,7 @@ export default function EligibilityFormPage() {
               ) : (
                 <Button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 cursor-pointer text-sm"
+                  className="bg-primary hover:bg-primary text-white font-bold px-8 py-3 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 cursor-pointer text-sm"
                 >
                   <Sparkles className="w-4 h-4 fill-white/10" />
                   <span>Submit Profile for Audit</span>

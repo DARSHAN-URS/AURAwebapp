@@ -46,18 +46,18 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 sm:py-32 bg-white border-t border-gray-100" id="testimonials">
+    <section className="py-24 sm:py-32 bg-card border-t border-border" id="testimonials">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
         <div className="max-w-2xl mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black text-gray-950 tracking-tight leading-[1.1] mb-4">
+          <h2 className="text-3xl sm:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-4">
             Real Students,{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
               Real Results
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-medium">
             Join thousands of Indian students and NRI families who have secured admissions at top global universities with Aura Routes AI.
           </p>
         </div>
@@ -71,11 +71,11 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group bg-white border border-gray-100 rounded-3xl p-7 sm:p-8 shadow-xs hover:shadow-lg hover:border-blue-100/60 transition-all duration-300"
+              className="group bg-card border border-border rounded-3xl p-7 sm:p-8 shadow-sm hover:shadow-lg hover:border-primary/20/60 transition-all duration-300"
             >
               {/* Top: Quote icon + stars */}
               <div className="flex items-start justify-between mb-5">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100/50 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary border border-primary/20/50 flex items-center justify-center">
                   <Quote className="w-4.5 h-4.5" />
                 </div>
                 <div className="flex items-center gap-1">
@@ -86,13 +86,13 @@ export default function Testimonials() {
               </div>
 
               {/* Quote text */}
-              <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-medium mb-7 italic">
+              <p className="text-foreground/80 text-sm sm:text-base leading-relaxed font-medium mb-7 italic">
                 "{t.quote}"
               </p>
 
               {/* Author */}
               <div className="flex items-center gap-4 pt-5 border-t border-gray-50">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-100 shrink-0">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
                   <Image
                     src={t.avatar}
                     alt={t.name}
@@ -102,10 +102,10 @@ export default function Testimonials() {
                   />
                 </div>
                 <div>
-                  <h4 className="font-black text-gray-950 text-sm">{t.name}</h4>
-                  <p className="text-[11px] text-blue-600 font-bold tracking-tight">{t.course}</p>
-                  <p className="text-[10px] text-gray-400 font-bold mt-0.5">{t.university}</p>
-                  <span className="text-[9px] text-gray-400 font-medium">{t.country}</span>
+                  <h4 className="font-black text-foreground text-sm">{t.name}</h4>
+                  <p className="text-[11px] text-primary font-bold tracking-tight">{t.course}</p>
+                  <p className="text-[10px] text-muted-text font-bold mt-0.5">{t.university}</p>
+                  <span className="text-[9px] text-muted-text font-medium">{t.country}</span>
                 </div>
               </div>
             </motion.div>
@@ -118,11 +118,11 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100/50 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6"
+          className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 border border-primary/20/50 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6"
         >
           <div>
-            <p className="text-2xl font-black text-gray-950 mb-1">4.9 ★ Average Rating</p>
-            <p className="text-sm text-gray-500 font-medium">Based on 2,000+ verified student reviews</p>
+            <p className="text-2xl font-black text-foreground mb-1">4.9 ★ Average Rating</p>
+            <p className="text-sm text-muted-foreground font-medium">Based on 2,000+ verified student reviews</p>
           </div>
           <div className="flex -space-x-3">
             {[
@@ -136,7 +136,7 @@ export default function Testimonials() {
                 <Image src={src} alt="Student" fill className="object-cover" sizes="40px" />
               </div>
             ))}
-            <div className="w-10 h-10 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-primary border-2 border-white flex items-center justify-center shadow-sm">
               <span className="text-[9px] font-black text-white">25K+</span>
             </div>
           </div>

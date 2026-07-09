@@ -17,7 +17,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 // Define categories with custom metadata mapping
 const CATEGORY_META: Record<string, { icon: any; gradient: string; text: string }> = {
-  "countries": { icon: Globe2, gradient: "from-blue-600 to-cyan-500", text: "text-blue-500" },
+  "countries": { icon: Globe2, gradient: "from-blue-600 to-cyan-500", text: "text-primary" },
   "visa-guides": { icon: Shield, gradient: "from-indigo-600 to-purple-500", text: "text-indigo-500" },
   "scholarships": { icon: Award, gradient: "from-amber-600 to-orange-500", text: "text-amber-500" },
   "universities": { icon: GraduationCap, gradient: "from-violet-600 to-fuchsia-500", text: "text-violet-500" },
@@ -429,7 +429,7 @@ export default function KnowledgeHub() {
               { name: "Germany", slug: "german-student-visa-guide-2025", emoji: "🇩🇪" },
             ].map((c) => (
               <Link key={c.name} href={`/learn/${c.slug}`} className="block group">
-                <div className="bg-card border border-border hover:border-primary/45 rounded-2xl p-5 text-center transition-all cursor-pointer shadow-xs">
+                <div className="bg-card border border-border hover:border-primary/45 rounded-2xl p-5 text-center transition-all cursor-pointer shadow-sm">
                   <div className="text-4xl mb-2 group-hover:scale-108 transition-transform">{c.emoji}</div>
                   <div className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">{c.name}</div>
                   <div className="text-[10px] text-muted-foreground mt-1 flex items-center justify-center gap-0.5">
@@ -518,7 +518,7 @@ export default function KnowledgeHub() {
                   Confused about visa guidelines or financial statements? Aura AI is trained on every article to assist you instantly.
                 </p>
                 <Link href="/ai-tools">
-                  <Button size="sm" className="w-full bg-white text-indigo-600 font-bold hover:bg-indigo-50 rounded-xl">
+                  <Button size="sm" className="w-full bg-card text-indigo-600 font-bold hover:bg-indigo-50 rounded-xl">
                     Open Aura AI Panel
                   </Button>
                 </Link>

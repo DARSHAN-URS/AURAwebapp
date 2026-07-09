@@ -58,23 +58,23 @@ export default function JourneyTasks({
   const getPriorityColor = (priority: string) => {
     if (priority === "High") return "text-rose-600 bg-rose-50 border-rose-100";
     if (priority === "Medium") return "text-amber-600 bg-amber-50 border-amber-100";
-    return "text-blue-600 bg-blue-50 border-blue-100";
+    return "text-primary bg-primary/10 border-primary/20";
   };
 
   return (
-    <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col gap-6 w-full">
+    <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col gap-6 w-full">
       {/* Header controls */}
-      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-gray-100 pb-4 no-print">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-border pb-4 no-print">
         <div>
-          <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider flex items-center gap-2">
-            <ListTodo className="w-4.5 h-4.5 text-blue-600" />
+          <h3 className="text-xs font-black uppercase text-muted-text tracking-wider flex items-center gap-2">
+            <ListTodo className="w-4.5 h-4.5 text-primary" />
             Automatic Task Manager
           </h3>
-          <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">Check off completed steps to automatically update timeline percentages.</p>
+          <p className="text-[11px] text-muted-text mt-0.5 leading-snug">Check off completed steps to automatically update timeline percentages.</p>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-1 p-1 bg-gray-50 border border-gray-150 rounded-xl w-fit select-none">
+        <div className="flex gap-1 p-1 bg-background border border-border rounded-xl w-fit select-none">
           {["All", "Active Stage", "Pending", "Completed"].map(tabName => (
             <button
               key={tabName}
@@ -84,8 +84,8 @@ export default function JourneyTasks({
                 (filter === "Active Stage" && tabName === "Active Stage") ||
                 (filter === "Pending" && tabName === "Pending") ||
                 (filter === "Completed" && tabName === "Completed")
-                  ? "bg-white text-gray-900 shadow-xs"
-                  : "text-gray-400 hover:text-gray-600"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-text hover:text-muted-foreground"
               }`}
             >
               {tabName}
@@ -97,7 +97,7 @@ export default function JourneyTasks({
       {/* Task list container */}
       <div className="flex-1 overflow-y-auto max-h-[420px] pr-2 scrollbar-thin select-text space-y-3">
         {filteredTasks.length === 0 ? (
-          <div className="text-center py-10 text-gray-400 font-bold text-xs select-none">
+          <div className="text-center py-10 text-muted-text font-bold text-xs select-none">
             No tasks listed under this filter.
           </div>
         ) : (
@@ -109,26 +109,26 @@ export default function JourneyTasks({
                 key={task.id}
                 className={`flex gap-3.5 items-start p-3.5 border rounded-2xl transition-all ${
                   task.completed 
-                    ? "bg-gray-50/50 border-gray-100 opacity-60" 
+                    ? "bg-background/50 border-border opacity-60" 
                     : isStageActive 
-                    ? "bg-blue-50/10 border-blue-150 shadow-xs" 
-                    : "bg-white border-gray-150 hover:bg-gray-50/30"
+                    ? "bg-primary/10/10 border-blue-150 shadow-sm" 
+                    : "bg-card border-border hover:bg-background/30"
                 }`}
               >
                 {/* Checkbox controller */}
                 {task.is_premium && !isPremiumUnlocked ? (
-                  <div className="p-0.5 text-gray-400 shrink-0 cursor-not-allowed" title="Premium Action: Locked">
-                    <Lock className="w-4 h-4 text-gray-400" />
+                  <div className="p-0.5 text-muted-text shrink-0 cursor-not-allowed" title="Premium Action: Locked">
+                    <Lock className="w-4 h-4 text-muted-text" />
                   </div>
                 ) : (
                   <button
                     onClick={() => onToggleTask(task.id, !task.completed)}
-                    className="p-0.5 text-gray-400 hover:text-blue-600 shrink-0 cursor-pointer"
+                    className="p-0.5 text-muted-text hover:text-primary shrink-0 cursor-pointer"
                   >
                     {task.completed ? (
-                      <CheckSquare className="w-4.5 h-4.5 text-blue-600" />
+                      <CheckSquare className="w-4.5 h-4.5 text-primary" />
                     ) : (
-                      <Square className="w-4.5 h-4.5 text-gray-400" />
+                      <Square className="w-4.5 h-4.5 text-muted-text" />
                     )}
                   </button>
                 )}
@@ -136,7 +136,7 @@ export default function JourneyTasks({
                 {/* Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className={`text-xs font-bold leading-tight select-text ${task.completed ? "line-through text-gray-400" : "text-gray-800"}`}>
+                    <span className={`text-xs font-bold leading-tight select-text ${task.completed ? "line-through text-muted-text" : "text-foreground/90"}`}>
                       {task.title}
                     </span>
                     {task.is_premium && (
@@ -147,8 +147,8 @@ export default function JourneyTasks({
                   </div>
 
                   {/* Metadata flags */}
-                  <div className="flex flex-wrap gap-2.5 items-center mt-2 text-[9px] font-extrabold text-gray-400 select-none">
-                    <span className="bg-gray-100 text-gray-500 px-2 py-0.5 rounded uppercase tracking-wide">
+                  <div className="flex flex-wrap gap-2.5 items-center mt-2 text-[9px] font-extrabold text-muted-text select-none">
+                    <span className="bg-muted text-muted-foreground px-2 py-0.5 rounded uppercase tracking-wide">
                       {task.stage_name}
                     </span>
 

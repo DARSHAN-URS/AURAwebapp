@@ -238,20 +238,20 @@ export default function VisaCheckWizard() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+    <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
         
         {/* Full screen loader during AI evaluation */}
         {loading && step === 2 && (
-          <div className="fixed inset-0 bg-white/95 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-card/95 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="flex flex-col items-center gap-6 max-w-sm text-center px-6">
               <div className="relative flex items-center justify-center">
-                <Loader2 className="w-16 h-16 animate-spin text-blue-600" />
+                <Loader2 className="w-16 h-16 animate-spin text-primary" />
                 <Sparkles className="w-6 h-6 text-indigo-500 absolute animate-pulse" />
               </div>
               <div>
-                <h3 className="font-extrabold text-xl text-gray-900 mb-2">Analyzing Visa Documents</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <h3 className="font-extrabold text-xl text-foreground mb-2">Analyzing Visa Documents</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   Aura Visa Rules Engine is auditing your transcripts, passport page metadata, bank statements holds, and insurance dates...
                 </p>
               </div>
@@ -261,30 +261,30 @@ export default function VisaCheckWizard() {
 
         {/* Header Title */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight leading-tight">
             Immigration Document Verification
           </h1>
         </div>
 
         {/* STEP 1: Country & Visa Selector */}
         {step === 1 && (
-          <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-2xl">
+          <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-2xl">
             <form onSubmit={handleStartCheck} className="flex flex-col gap-6">
               <div className="border-b border-gray-50 pb-4">
-                <h2 className="text-lg font-bold text-gray-950 flex items-center gap-1.5">
-                  <MapPin className="w-5 h-5 text-blue-600" />
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-1.5">
+                  <MapPin className="w-5 h-5 text-primary" />
                   <span>Choose Destination & Visa Category</span>
                 </h2>
-                <p className="text-xs text-gray-400 mt-1">Select targets to dynamically pull country JSON visa rules.</p>
+                <p className="text-xs text-muted-text mt-1">Select targets to dynamically pull country JSON visa rules.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-gray-400 uppercase">Target Country</label>
+                  <label className="text-xs font-bold text-muted-text uppercase">Target Country</label>
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="Canada">Canada</option>
                     <option value="UK">UK</option>
@@ -297,11 +297,11 @@ export default function VisaCheckWizard() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-gray-400 uppercase">Visa Type</label>
+                  <label className="text-xs font-bold text-muted-text uppercase">Visa Type</label>
                   <select
                     value={visaType}
                     onChange={(e) => setVisaType(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="Student Visa">Student Visa</option>
                     <option value="Work Visa">Work Visa</option>
@@ -313,7 +313,7 @@ export default function VisaCheckWizard() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4"
+                className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer mt-4"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -339,14 +339,14 @@ export default function VisaCheckWizard() {
               </div>
             )}
 
-            <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-2xl">
               <div className="border-b border-gray-50 pb-4 mb-6">
-                <h2 className="text-lg font-bold text-gray-950 flex items-center gap-1.5">
-                  <UploadCloud className="w-5 h-5 text-blue-600" />
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-1.5">
+                  <UploadCloud className="w-5 h-5 text-primary" />
                   <span>Upload Travel & Financial Documents</span>
                 </h2>
-                <p className="text-xs text-gray-400 mt-1">
-                  Target: <strong className="text-gray-950">{country} ({visaType})</strong>. Drag and drop file into matching slot.
+                <p className="text-xs text-muted-text mt-1">
+                  Target: <strong className="text-foreground">{country} ({visaType})</strong>. Drag and drop file into matching slot.
                 </p>
               </div>
 
@@ -361,18 +361,18 @@ export default function VisaCheckWizard() {
                       slot.uploaded 
                         ? "bg-emerald-50/20 border-emerald-200" 
                         : slot.progress > 0 
-                          ? "bg-blue-50/10 border-blue-200" 
-                          : "bg-gray-50/30 border-gray-200 hover:border-blue-400"
+                          ? "bg-primary/10/10 border-primary/40" 
+                          : "bg-background/30 border-border hover:border-blue-400"
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                        slot.uploaded ? "bg-emerald-100 text-emerald-600" : "bg-gray-100 text-gray-400"
+                        slot.uploaded ? "bg-emerald-100 text-emerald-600" : "bg-muted text-muted-text"
                       }`}>
                         {slot.uploaded ? <FileCheck className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
                       </div>
                       <div>
-                        <h4 className="text-xs sm:text-sm font-extrabold text-gray-950 flex items-center gap-1.5">
+                        <h4 className="text-xs sm:text-sm font-extrabold text-foreground flex items-center gap-1.5">
                           <span>{slot.type}</span>
                           {slot.required && (
                             <span className="text-[9px] font-bold text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded-full uppercase">
@@ -380,7 +380,7 @@ export default function VisaCheckWizard() {
                             </span>
                           )}
                         </h4>
-                        <p className="text-[11px] text-gray-400 mt-0.5 font-medium">
+                        <p className="text-[11px] text-muted-text mt-0.5 font-medium">
                           {slot.uploaded ? `Uploaded: ${slot.filename}` : "Upload PDF, JPG or PNG file (Max 5MB)"}
                         </p>
                       </div>
@@ -389,8 +389,8 @@ export default function VisaCheckWizard() {
                     <div className="flex items-center gap-3">
                       {/* Upload loader progress bar */}
                       {slot.progress > 0 && slot.progress < 100 && (
-                        <div className="w-20 bg-gray-200 rounded-full h-1.5 overflow-hidden">
-                          <div className="bg-blue-600 h-full transition-all duration-300" style={{ width: `${slot.progress}%` }} />
+                        <div className="w-20 bg-muted/60 rounded-full h-1.5 overflow-hidden">
+                          <div className="bg-primary h-full transition-all duration-300" style={{ width: `${slot.progress}%` }} />
                         </div>
                       )}
 
@@ -400,7 +400,7 @@ export default function VisaCheckWizard() {
                           <span>Uploaded</span>
                         </span>
                       ) : (
-                        <label className="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer shadow-xs inline-flex items-center gap-1">
+                        <label className="bg-card border border-border hover:bg-background text-foreground/80 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer shadow-sm inline-flex items-center gap-1">
                           <span>Browse</span>
                           <input
                             type="file"
@@ -420,7 +420,7 @@ export default function VisaCheckWizard() {
                 <Button
                   variant="ghost"
                   onClick={() => setStep(1)}
-                  className="rounded-full px-6 text-gray-500 flex items-center gap-1.5 cursor-pointer text-sm font-semibold"
+                  className="rounded-full px-6 text-muted-foreground flex items-center gap-1.5 cursor-pointer text-sm font-semibold"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Choose Country</span>
@@ -428,7 +428,7 @@ export default function VisaCheckWizard() {
 
                 <Button
                   onClick={triggerAuditAnalysis}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 cursor-pointer text-sm"
+                  className="bg-primary hover:bg-primary text-white font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 cursor-pointer text-sm"
                 >
                   <Sparkles className="w-4 h-4 fill-white/10" />
                   <span>Run AI Verification</span>

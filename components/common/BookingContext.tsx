@@ -31,7 +31,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       {children}
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden bg-white border border-gray-100 rounded-2xl shadow-2xl">
+        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 overflow-hidden bg-card border border-border rounded-2xl shadow-2xl">
           <div className="sr-only">
             <DialogTitle>Book a Free Consultation</DialogTitle>
             <DialogDescription>
@@ -40,10 +40,10 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
           </div>
           <div className="relative w-full h-full flex flex-col">
             {loading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+              <div className="absolute inset-0 flex items-center justify-center bg-card z-10">
                 <div className="flex flex-col items-center gap-3">
-                  <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-                  <p className="text-sm font-medium text-gray-500">Loading scheduler...</p>
+                  <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                  <p className="text-sm font-medium text-muted-foreground">Loading scheduler...</p>
                 </div>
               </div>
             )}

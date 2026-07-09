@@ -78,14 +78,14 @@ export default function CourseDetailPage({ params }: { params: Promise<{ slug: s
           </nav>
 
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-card/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shrink-0">
               <BookOpen className="w-7 h-7 text-white" />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="bg-violet-500/80 text-white text-xs font-bold px-3 py-0.5 rounded-full">{data.degree}</span>
-                <span className="bg-white/10 text-white text-xs px-3 py-0.5 rounded-full">{data.field}</span>
-                {data.mode && <span className="bg-white/10 text-white text-xs px-3 py-0.5 rounded-full">{data.mode}</span>}
+                <span className="bg-card/10 text-white text-xs px-3 py-0.5 rounded-full">{data.field}</span>
+                {data.mode && <span className="bg-card/10 text-white text-xs px-3 py-0.5 rounded-full">{data.mode}</span>}
                 {data.scholarship_available && <span className="bg-emerald-500/80 text-white text-xs font-bold px-3 py-0.5 rounded-full">Scholarship Available</span>}
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-white mb-1">{data.name}</h1>

@@ -152,15 +152,15 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="bg-white pt-32 pb-24">
+    <div className="bg-card pt-32 pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-4">
             Transparent Pricing Plans
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 leading-relaxed max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
             Choose a custom service package to accelerate your admissions. Pay once with secure Razorpay checkouts. No subscriptions.
           </p>
         </div>
@@ -175,8 +175,8 @@ export default function PricingPage() {
         {/* Loader */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-            <p className="text-sm font-semibold text-gray-500">Loading catalog offerings...</p>
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Loading catalog offerings...</p>
           </div>
         )}
 
@@ -194,20 +194,20 @@ export default function PricingPage() {
                   transition={{ duration: 0.5, delay: i * 0.05 }}
                   className="group relative"
                 >
-                  <div className="bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.02)] hover:shadow-[0_15px_40px_-6px_rgba(37,99,235,0.08)] hover:border-blue-100/80 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[420px] relative overflow-hidden">
+                  <div className="bg-card p-6 sm:p-8 rounded-3xl border border-border shadow-[0_4px_25px_-5px_rgba(0,0,0,0.02)] hover:shadow-[0_15px_40px_-6px_rgba(37,99,235,0.08)] hover:border-primary/20/80 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[420px] relative overflow-hidden">
                     {/* Top border accent line on hover */}
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
 
                     <div>
                       {/* Header row */}
                       <div className="flex items-center justify-between mb-6">
-                        <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-100/50 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary border border-primary/20/50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
                           <Icon className="w-5.5 h-5.5" />
                         </div>
                         {service.badge && (
                           <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase ${
                             service.badge === "Popular" 
-                              ? "bg-blue-50 text-blue-600 border border-blue-100" 
+                              ? "bg-primary/10 text-primary border border-primary/20" 
                               : "bg-emerald-50 text-emerald-600 border border-emerald-100"
                           }`}>
                             {service.badge}
@@ -216,23 +216,23 @@ export default function PricingPage() {
                       </div>
 
                       {/* Info */}
-                      <h3 className="text-xl font-bold text-gray-950 mb-2">{service.title}</h3>
-                      <p className="text-xs text-gray-400 font-medium mb-6 leading-relaxed">
+                      <h3 className="text-xl font-bold text-foreground mb-2">{service.title}</h3>
+                      <p className="text-xs text-muted-text font-medium mb-6 leading-relaxed">
                         {service.short_description}
                       </p>
 
                       {/* Pricing */}
                       <div className="flex items-baseline gap-1 mb-8">
-                        <span className="text-3xl font-black text-gray-950">₹{service.price}</span>
-                        <span className="text-xs text-gray-400 font-semibold">one-time</span>
+                        <span className="text-3xl font-black text-foreground">₹{service.price}</span>
+                        <span className="text-xs text-muted-text font-semibold">one-time</span>
                       </div>
 
                       {/* Features */}
                       <ul className="flex flex-col gap-3.5 mb-8 border-t border-gray-50 pt-6">
                         {service.features.map((feat, idx) => (
                           <li key={idx} className="flex items-start gap-2.5">
-                            <CheckCircle className="w-4.5 h-4.5 text-blue-600 shrink-0 mt-0.5" />
-                            <span className="text-xs sm:text-sm text-gray-600 leading-tight font-medium">
+                            <CheckCircle className="w-4.5 h-4.5 text-primary shrink-0 mt-0.5" />
+                            <span className="text-xs sm:text-sm text-muted-foreground leading-tight font-medium">
                               {feat}
                             </span>
                           </li>
@@ -243,7 +243,7 @@ export default function PricingPage() {
                     {/* Purchase CTA */}
                     <Button
                       onClick={() => handlePurchase(service.id)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer group/btn"
+                      className="w-full bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer group/btn"
                     >
                       <span>Purchase Package</span>
                       <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />

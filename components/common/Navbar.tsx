@@ -208,7 +208,7 @@ export default function Navbar() {
               href={user ? "/dashboard" : "/"}
               className="flex items-center gap-2.5 shrink-0 group"
             >
-              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-border shadow-xs bg-card flex items-center justify-center">
+              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-border shadow-sm bg-card flex items-center justify-center">
                 <Image src="/images/logo.jpeg" alt="Aura Routes AI" width={32} height={32} priority className="object-contain" />
               </div>
               <div className="flex flex-col leading-none">

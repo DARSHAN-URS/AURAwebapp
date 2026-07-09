@@ -336,7 +336,7 @@ export default function CommunicationCenter() {
                       <span>{tab.label}</span>
                     </div>
                     {tab.badge != null && tab.badge > 0 && (
-                      <span className={`px-2 py-0.5 text-[10px] font-black rounded-full shrink-0 ${active ? "bg-white text-primary" : "bg-primary/10 text-primary"}`}>
+                      <span className={`px-2 py-0.5 text-[10px] font-black rounded-full shrink-0 ${active ? "bg-card text-primary" : "bg-primary/10 text-primary"}`}>
                         {tab.badge}
                       </span>
                     )}
@@ -513,7 +513,7 @@ export default function CommunicationCenter() {
                           <div key={ap.id} className="bg-card border border-border rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div className="min-w-0 flex-grow">
                               <div className="flex items-center gap-2.5">
-                                <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${ap.status === "upcoming" ? "bg-blue-500/10 text-blue-500 border border-blue-500/20" : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"}`}>
+                                <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${ap.status === "upcoming" ? "bg-primary/10 text-primary border border-blue-500/20" : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"}`}>
                                   {ap.status}
                                 </span>
                                 <h4 className="font-bold text-sm text-foreground">{ap.consultant_name}</h4>
@@ -678,7 +678,7 @@ export default function CommunicationCenter() {
                           <div key={an.id} className="bg-card border border-border rounded-2xl p-5 space-y-3">
                             <div className="flex items-center justify-between gap-3">
                               <div className="flex items-center gap-2">
-                                <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${an.priority === "Critical" ? "bg-red-500/10 text-red-500 border border-red-500/20" : an.priority === "Important" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : "bg-blue-500/10 text-blue-500 border border-blue-500/20"}`}>
+                                <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${an.priority === "Critical" ? "bg-red-500/10 text-red-500 border border-red-500/20" : an.priority === "Important" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : "bg-primary/10 text-primary border border-blue-500/20"}`}>
                                   {an.priority}
                                 </span>
                                 <span className="text-[10px] bg-slate-800 border border-slate-700 text-slate-400 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">{an.category}</span>
@@ -776,7 +776,7 @@ export default function CommunicationCenter() {
                       href={file.url} 
                       target="_blank" 
                       rel="noreferrer"
-                      className="flex items-center gap-1.5 text-xs bg-card border border-border px-3 py-1.5 rounded-xl text-muted-foreground hover:text-primary transition-all shadow-xs"
+                      className="flex items-center gap-1.5 text-xs bg-card border border-border px-3 py-1.5 rounded-xl text-muted-foreground hover:text-primary transition-all shadow-sm"
                     >
                       <Paperclip className="w-3.5 h-3.5" />
                       <span>{file.name} ({file.size})</span>

@@ -15,7 +15,7 @@ import { useAuth } from "@/components/common/AuthContext";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const CATEGORY_META: Record<string, { icon: any; gradient: string; text: string }> = {
-  "countries": { icon: Globe2, gradient: "from-blue-900 via-blue-950 to-slate-950", text: "text-blue-500" },
+  "countries": { icon: Globe2, gradient: "from-blue-900 via-blue-950 to-slate-950", text: "text-primary" },
   "visa-guides": { icon: Shield, gradient: "from-indigo-900 via-indigo-950 to-slate-950", text: "text-indigo-500" },
   "scholarships": { icon: Award, gradient: "from-amber-900 via-amber-950 to-slate-950", text: "text-amber-500" },
   "universities": { icon: GraduationCap, gradient: "from-violet-900 via-violet-950 to-slate-950", text: "text-violet-500" },
@@ -118,7 +118,7 @@ export default function CategoryArchive({ params }: { params: Promise<{ slug: st
           </button>
 
           <div className="flex items-start gap-4">
-            <div className={`w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shrink-0 ${meta.text}`}>
+            <div className={`w-14 h-14 rounded-2xl bg-card/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shrink-0 ${meta.text}`}>
               <Icon className="w-7 h-7" />
             </div>
             <div>

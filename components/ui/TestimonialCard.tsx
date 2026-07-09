@@ -32,7 +32,7 @@ export default function TestimonialCard({
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
       className="h-full"
     >
-      <div className="bg-white h-full p-6 sm:p-8 rounded-3xl border border-gray-150 shadow-xs hover:shadow-lg hover:border-blue-100/50 transition-all duration-300 flex flex-col justify-between select-none">
+      <div className="bg-card h-full p-6 sm:p-8 rounded-3xl border border-border shadow-sm hover:shadow-lg hover:border-primary/20/50 transition-all duration-300 flex flex-col justify-between select-none">
         <div>
           {/* Rating Stars Grid */}
           <div className="flex items-center gap-1 mb-6">
@@ -42,14 +42,14 @@ export default function TestimonialCard({
           </div>
 
           {/* Testimonial Quote */}
-          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-semibold italic mb-8">
+          <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed font-semibold italic mb-8">
             "{quote}"
           </p>
         </div>
 
         {/* Profile Card Header */}
         <div className="flex items-center gap-3.5 pt-6 border-t border-gray-50 mt-auto">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-150 shadow-xs shrink-0 bg-gray-50">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-border shadow-sm shrink-0 bg-background">
             <Image
               src={avatar}
               alt={name}
@@ -59,11 +59,11 @@ export default function TestimonialCard({
             />
           </div>
           <div>
-            <h4 className="font-extrabold text-gray-950 text-xs">{name}</h4>
-            <p className="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">
+            <h4 className="font-extrabold text-foreground text-xs">{name}</h4>
+            <p className="text-[10px] text-muted-text font-bold leading-tight mt-0.5">
               {course}
             </p>
-            <p className="text-[9px] text-blue-600 font-black tracking-wide uppercase mt-0.5">
+            <p className="text-[9px] text-primary font-black tracking-wide uppercase mt-0.5">
               {university}
             </p>
           </div>

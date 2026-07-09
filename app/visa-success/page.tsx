@@ -277,7 +277,7 @@ export default function VisaSuccessCenter() {
   const currentReadiness = dashboardData?.readiness?.overall_score || 70;
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24" id="print-area">
+    <div className="bg-card min-h-screen pt-32 pb-24" id="print-area">
       {/* Global CSS for print */}
       <style jsx global>{`
         @media print {
@@ -291,17 +291,17 @@ export default function VisaSuccessCenter() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         
         {/* Module Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 border-b border-gray-100 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12 border-b border-border pb-6">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight">AI Student Visa Coach</h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">Pre-flight checks, financial audits, and visa interview practice panels.</p>
+            <h1 className="text-3xl font-extrabold text-foreground tracking-tight">AI Student Visa Coach</h1>
+            <p className="text-xs sm:text-sm text-muted-text mt-1">Pre-flight checks, financial audits, and visa interview practice panels.</p>
           </div>
 
           <div className="flex items-center gap-3 no-print">
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="bg-gray-50 border border-gray-250 rounded-xl px-4 py-2.5 text-xs font-bold focus:outline-none"
+              className="bg-background border border-border rounded-xl px-4 py-2.5 text-xs font-bold focus:outline-none"
             >
               {countriesList.map((c) => (
                 <option key={c} value={c}>
@@ -312,7 +312,7 @@ export default function VisaSuccessCenter() {
 
             <Button
               onClick={handlePrint}
-              className="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1 shadow-xs cursor-pointer h-10"
+              className="bg-background hover:bg-muted border border-border text-foreground/80 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1 shadow-sm cursor-pointer h-10"
             >
               <Printer className="w-4 h-4" />
               <span>Export Readiness Plan</span>
@@ -323,19 +323,19 @@ export default function VisaSuccessCenter() {
         {/* Global Loading state */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
-            <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
-            <p className="text-sm font-semibold text-gray-500">Loading {selectedCountry} checklist data...</p>
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Loading {selectedCountry} checklist data...</p>
           </div>
         ) : (
           <div>
             
             {/* View Tabs Selector */}
-            <div className="flex flex-wrap items-center gap-2 bg-gray-50/50 border border-gray-150 rounded-2xl p-2.5 mb-8 no-print">
+            <div className="flex flex-wrap items-center gap-2 bg-background/50 border border-border rounded-2xl p-2.5 mb-8 no-print">
               <Button
                 variant="ghost"
                 onClick={() => setActiveTab("dashboard")}
                 className={`h-9 px-4 rounded-xl text-xs font-bold cursor-pointer ${
-                  activeTab === "dashboard" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                  activeTab === "dashboard" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
                 }`}
               >
                 Dashboard
@@ -344,7 +344,7 @@ export default function VisaSuccessCenter() {
                 variant="ghost"
                 onClick={() => setActiveTab("checklist")}
                 className={`h-9 px-4 rounded-xl text-xs font-bold cursor-pointer ${
-                  activeTab === "checklist" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                  activeTab === "checklist" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
                 }`}
               >
                 Visa Checklist
@@ -353,7 +353,7 @@ export default function VisaSuccessCenter() {
                 variant="ghost"
                 onClick={() => setActiveTab("financial")}
                 className={`h-9 px-4 rounded-xl text-xs font-bold cursor-pointer ${
-                  activeTab === "financial" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                  activeTab === "financial" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
                 }`}
               >
                 Financial Planner
@@ -362,7 +362,7 @@ export default function VisaSuccessCenter() {
                 variant="ghost"
                 onClick={() => setActiveTab("coach")}
                 className={`h-9 px-4 rounded-xl text-xs font-bold cursor-pointer ${
-                  activeTab === "coach" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                  activeTab === "coach" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
                 }`}
               >
                 Interview Coach
@@ -371,7 +371,7 @@ export default function VisaSuccessCenter() {
                 variant="ghost"
                 onClick={() => setActiveTab("timeline")}
                 className={`h-9 px-4 rounded-xl text-xs font-bold cursor-pointer ${
-                  activeTab === "timeline" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                  activeTab === "timeline" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
                 }`}
               >
                 Timeline Planner
@@ -387,8 +387,8 @@ export default function VisaSuccessCenter() {
                   
                   {/* Left Column: Readiness Score gauge & assessment trigger */}
                   <div className="flex flex-col gap-6 lg:col-span-2">
-                    <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-center gap-8 relative overflow-hidden">
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-600" />
+                    <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center gap-8 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
                       
                       {/* Circular Gauge */}
                       <div className="relative w-36 h-36 flex items-center justify-center shrink-0">
@@ -402,25 +402,25 @@ export default function VisaSuccessCenter() {
                           />
                         </svg>
                         <div className="absolute flex flex-col items-center">
-                          <span className="text-3xl font-black text-gray-900">{currentReadiness}%</span>
-                          <span className="text-[9px] font-bold text-gray-400 uppercase mt-0.5">Readiness</span>
+                          <span className="text-3xl font-black text-foreground">{currentReadiness}%</span>
+                          <span className="text-[9px] font-bold text-muted-text uppercase mt-0.5">Readiness</span>
                         </div>
                       </div>
 
                       {/* Score stats explanations */}
                       <div className="flex-1">
-                        <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase">
+                        <span className="text-[9px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded uppercase">
                           AI Assessment report
                         </span>
-                        <h3 className="font-extrabold text-gray-950 text-lg mt-2">Visa Approval Likelihood</h3>
-                        <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                        <h3 className="font-extrabold text-foreground text-lg mt-2">Visa Approval Likelihood</h3>
+                        <p className="text-xs text-muted-text mt-1 leading-relaxed">
                           Your overall score is compiled across academic history, blocks finance proof, check verification files, and interview practices.
                         </p>
 
                         <div className="flex flex-wrap gap-3 mt-4">
                           <Button
                             onClick={() => setShowAssessment(true)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-xs cursor-pointer shadow-xs"
+                            className="bg-primary hover:bg-primary text-white font-bold py-2 px-5 rounded-full text-xs cursor-pointer shadow-sm"
                           >
                             <span>Run AI Readiness Audit</span>
                           </Button>
@@ -429,8 +429,8 @@ export default function VisaSuccessCenter() {
                     </div>
 
                     {/* Critical Issues & Suggestions panels */}
-                    <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs">
-                      <h3 className="font-extrabold text-gray-950 text-sm mb-4 flex items-center gap-1.5">
+                    <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+                      <h3 className="font-extrabold text-foreground text-sm mb-4 flex items-center gap-1.5">
                         <AlertCircle className="w-4 h-4 text-rose-500" />
                         <span>Critical Approval Risks & Improvements</span>
                       </h3>
@@ -462,29 +462,29 @@ export default function VisaSuccessCenter() {
                   {/* Right Column: recommendations feeds & stage info */}
                   <div className="flex flex-col gap-6">
                     {/* Stage status card */}
-                    <div className="bg-gray-50 border border-gray-150 rounded-3xl p-6">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">Immigration Target</span>
-                      <h4 className="font-black text-gray-900 text-lg mt-1">{selectedCountry} Student Visa</h4>
+                    <div className="bg-background border border-border rounded-3xl p-6">
+                      <span className="text-[10px] font-bold text-muted-text uppercase">Immigration Target</span>
+                      <h4 className="font-black text-foreground text-lg mt-1">{selectedCountry} Student Visa</h4>
                       
-                      <div className="flex items-center gap-2 mt-3 text-xs font-semibold text-gray-600">
-                        <MapPin className="w-4 h-4 text-blue-600" />
+                      <div className="flex items-center gap-2 mt-3 text-xs font-semibold text-muted-foreground">
+                        <MapPin className="w-4 h-4 text-primary" />
                         <span>Stage: {dashboardData?.profile?.current_stage} stage</span>
                       </div>
                     </div>
 
                     {/* AI Recommendation feeds cards */}
-                    <div className="bg-white border border-gray-150 rounded-3xl p-6 flex flex-col gap-4 shadow-xs">
-                      <h4 className="font-extrabold text-gray-950 text-xs uppercase tracking-wider mb-2 flex items-center gap-1">
+                    <div className="bg-card border border-border rounded-3xl p-6 flex flex-col gap-4 shadow-sm">
+                      <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-2 flex items-center gap-1">
                         <Sparkles className="w-4 h-4 text-indigo-500 fill-indigo-500/10" />
                         <span>Actionable AI Checklist Notes</span>
                       </h4>
 
                       {dashboardData?.recommendations?.map((r: any) => (
-                        <div key={r.id} className="border border-gray-100 p-4 rounded-2xl flex gap-3 items-start shadow-xs">
-                          <Check className="w-4.5 h-4.5 text-blue-600 shrink-0 mt-0.5" />
+                        <div key={r.id} className="border border-border p-4 rounded-2xl flex gap-3 items-start shadow-sm">
+                          <Check className="w-4.5 h-4.5 text-primary shrink-0 mt-0.5" />
                           <div>
-                            <h5 className="text-xs font-bold text-gray-900">{r.title}</h5>
-                            <p className="text-[10px] text-gray-400 leading-normal mt-0.5">{r.message}</p>
+                            <h5 className="text-xs font-bold text-foreground">{r.title}</h5>
+                            <p className="text-[10px] text-muted-text leading-normal mt-0.5">{r.message}</p>
                           </div>
                         </div>
                       ))}
@@ -496,21 +496,21 @@ export default function VisaSuccessCenter() {
 
               {/* TAB 2: DOCUMENT CHECKLISTS */}
               {activeTab === "checklist" && (
-                <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs">
+                <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
                   <div className="border-b border-gray-50 pb-3 mb-6">
-                    <h3 className="font-extrabold text-gray-950 text-sm flex items-center gap-1.5">
-                      <FileCheck className="w-5 h-5 text-blue-600" />
+                    <h3 className="font-extrabold text-foreground text-sm flex items-center gap-1.5">
+                      <FileCheck className="w-5 h-5 text-primary" />
                       <span>Required Document Checklist</span>
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1">Audit status checks for mandatory visa file slots.</p>
+                    <p className="text-xs text-muted-text mt-1">Audit status checks for mandatory visa file slots.</p>
                   </div>
 
                   <div className="flex flex-col gap-4">
                     {dashboardData?.checklist?.map((item: any) => (
-                      <div key={item.id} className="bg-gray-50/50 border border-gray-150 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div key={item.id} className="bg-background/50 border border-border rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                          <h4 className="font-extrabold text-gray-900 text-sm">{item.item_name}</h4>
-                          <p className="text-[10px] text-gray-400 mt-0.5">Checked status parameters logic.</p>
+                          <h4 className="font-extrabold text-foreground text-sm">{item.item_name}</h4>
+                          <p className="text-[10px] text-muted-text mt-0.5">Checked status parameters logic.</p>
                         </div>
 
                         <div className="flex items-center gap-3">
@@ -519,7 +519,7 @@ export default function VisaSuccessCenter() {
                               ? "bg-emerald-50 text-emerald-700 border-emerald-100" 
                               : item.status === "Needs Review" 
                                 ? "bg-amber-50 text-amber-700 border-amber-100" 
-                                : "bg-gray-100 text-gray-700 border-gray-200"
+                                : "bg-muted text-foreground/80 border-border"
                           }`}>
                             {item.status}
                           </span>
@@ -535,35 +535,35 @@ export default function VisaSuccessCenter() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   
                   {/* Left Column: Form parameters entry */}
-                  <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs lg:col-span-2">
+                  <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm lg:col-span-2">
                     <form onSubmit={handleCalculateFinancials} className="flex flex-col gap-5">
                       <div className="border-b border-gray-50 pb-3">
-                        <h3 className="font-extrabold text-gray-950 text-sm flex items-center gap-1.5">
-                          <Calculator className="w-5 h-5 text-blue-600" />
+                        <h3 className="font-extrabold text-foreground text-sm flex items-center gap-1.5">
+                          <Calculator className="w-5 h-5 text-primary" />
                           <span>Financial Readiness Calculator</span>
                         </h3>
-                        <p className="text-xs text-gray-400 mt-1">Verify sponsor coverage buffers and blocks deposits targets.</p>
+                        <p className="text-xs text-muted-text mt-1">Verify sponsor coverage buffers and blocks deposits targets.</p>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase">Estimated Tuition Fee (INR / Year)</label>
+                          <label className="text-[10px] font-bold text-muted-text uppercase">Estimated Tuition Fee (INR / Year)</label>
                           <input
                             type="number"
                             value={tuitionFee}
                             onChange={(e) => setTuitionFee(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                             required
                           />
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase">Estimated Living Expenses (INR / Year)</label>
+                          <label className="text-[10px] font-bold text-muted-text uppercase">Estimated Living Expenses (INR / Year)</label>
                           <input
                             type="number"
                             value={livingExpenses}
                             onChange={(e) => setLivingExpenses(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                             required
                           />
                         </div>
@@ -571,39 +571,39 @@ export default function VisaSuccessCenter() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase">Scholarships (INR)</label>
+                          <label className="text-[10px] font-bold text-muted-text uppercase">Scholarships (INR)</label>
                           <input
                             type="number"
                             value={scholarship}
                             onChange={(e) => setScholarship(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                           />
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase">Education Loan (INR)</label>
+                          <label className="text-[10px] font-bold text-muted-text uppercase">Education Loan (INR)</label>
                           <input
                             type="number"
                             value={loan}
                             onChange={(e) => setLoan(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                           />
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-400 uppercase">Savings / Blocks (INR)</label>
+                          <label className="text-[10px] font-bold text-muted-text uppercase">Savings / Blocks (INR)</label>
                           <input
                             type="number"
                             value={savings}
                             onChange={(e) => setSavings(e.target.value)}
-                            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                           />
                         </div>
                       </div>
 
                       <Button
                         type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-2 cursor-pointer shadow-xs text-xs"
+                        className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-2 cursor-pointer shadow-sm text-xs"
                       >
                         {finLoading ? <Loader2 className="w-4 animate-spin" /> : <Calculator className="w-4 h-4" />}
                         <span>Calculate Funding Readiness</span>
@@ -612,38 +612,38 @@ export default function VisaSuccessCenter() {
                   </div>
 
                   {/* Right Column: calculations results display matrix */}
-                  <div className="bg-gray-50 border border-gray-150 rounded-3xl p-6 flex flex-col justify-between">
+                  <div className="bg-background border border-border rounded-3xl p-6 flex flex-col justify-between">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-4">Funding Summary Result</h4>
+                      <h4 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-4">Funding Summary Result</h4>
                       
                       {financialResult ? (
                         <div className="flex flex-col gap-4">
                           <div>
-                            <span className="text-[10px] text-gray-400 font-bold uppercase">Required Funds Target:</span>
-                            <p className="text-lg font-black text-gray-900">₹{(financialResult.required_funds / 100000).toFixed(2)} Lakhs</p>
+                            <span className="text-[10px] text-muted-text font-bold uppercase">Required Funds Target:</span>
+                            <p className="text-lg font-black text-foreground">₹{(financialResult.required_funds / 100000).toFixed(2)} Lakhs</p>
                           </div>
                           <div>
-                            <span className="text-[10px] text-gray-400 font-bold uppercase">Available Funds:</span>
-                            <p className="text-lg font-black text-gray-900">₹{(financialResult.available_funds / 100000).toFixed(2)} Lakhs</p>
+                            <span className="text-[10px] text-muted-text font-bold uppercase">Available Funds:</span>
+                            <p className="text-lg font-black text-foreground">₹{(financialResult.available_funds / 100000).toFixed(2)} Lakhs</p>
                           </div>
                           
-                          <div className="border-t border-gray-200 pt-3">
-                            <span className="text-[10px] text-gray-400 font-bold uppercase">Funding Gap / Deficit:</span>
+                          <div className="border-t border-border pt-3">
+                            <span className="text-[10px] text-muted-text font-bold uppercase">Funding Gap / Deficit:</span>
                             <p className={`text-xl font-black ${financialResult.funding_gap > 0 ? "text-rose-600" : "text-emerald-600"}`}>
                               ₹{(financialResult.funding_gap / 100000).toFixed(2)} Lakhs
                             </p>
                           </div>
 
-                          <div className="bg-white border border-gray-150 p-4 rounded-xl mt-4">
-                            <span className="text-[10px] text-gray-400 font-bold uppercase block mb-1">Financial Safety Score:</span>
+                          <div className="bg-card border border-border p-4 rounded-xl mt-4">
+                            <span className="text-[10px] text-muted-text font-bold uppercase block mb-1">Financial Safety Score:</span>
                             <div className="flex items-center gap-2">
-                              <span className="text-2xl font-black text-blue-600">{financialResult.readiness_score}/100</span>
+                              <span className="text-2xl font-black text-primary">{financialResult.readiness_score}/100</span>
                               <span className="text-[10px] font-bold text-gray-450">Preparedness</span>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <p className="text-xs text-gray-400 leading-normal">Submit tuition fee and savings balances to calculate funding ratios.</p>
+                        <p className="text-xs text-muted-text leading-normal">Submit tuition fee and savings balances to calculate funding ratios.</p>
                       )}
                     </div>
                   </div>
@@ -656,18 +656,18 @@ export default function VisaSuccessCenter() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   
                   {/* Left Column: Question practice console */}
-                  <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs lg:col-span-2">
+                  <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm lg:col-span-2">
                     <form onSubmit={handleCoachAnswerSubmit} className="flex flex-col gap-5">
                       <div className="border-b border-gray-50 pb-3">
-                        <h3 className="font-extrabold text-gray-950 text-sm flex items-center gap-1.5">
-                          <HelpCircle className="w-5 h-5 text-blue-600" />
+                        <h3 className="font-extrabold text-foreground text-sm flex items-center gap-1.5">
+                          <HelpCircle className="w-5 h-5 text-primary" />
                           <span>AI Interview Coach Simulator</span>
                         </h3>
-                        <p className="text-xs text-gray-400 mt-1">Submit responses to common officer queries to review rating score.</p>
+                        <p className="text-xs text-muted-text mt-1">Submit responses to common officer queries to review rating score.</p>
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase">Select Practice Question</label>
+                        <label className="text-[10px] font-bold text-muted-text uppercase">Select Practice Question</label>
                         <select
                           value={selectedQuestion}
                           onChange={(e) => {
@@ -675,7 +675,7 @@ export default function VisaSuccessCenter() {
                             setCoachFeedback(null);
                             setStudentAnswer("");
                           }}
-                          className="bg-gray-50 border border-gray-250 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                         >
                           {visaQuestions.map((q, idx) => (
                             <option key={idx} value={q}>{q}</option>
@@ -684,12 +684,12 @@ export default function VisaSuccessCenter() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase">Type your answer response</label>
+                        <label className="text-[10px] font-bold text-muted-text uppercase">Type your answer response</label>
                         <textarea
                           rows={4}
                           value={studentAnswer}
                           onChange={(e) => setStudentAnswer(e.target.value)}
-                          className="bg-gray-50 border border-gray-250 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                          className="bg-background border border-border rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                           placeholder="Provide a detailed, professional reply..."
                           required
                         />
@@ -697,7 +697,7 @@ export default function VisaSuccessCenter() {
 
                       <Button
                         type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-2 cursor-pointer shadow-xs text-xs"
+                        className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-2 cursor-pointer shadow-sm text-xs"
                       >
                         {coachLoading ? <Loader2 className="w-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                         <span>Evaluate Interview Answer</span>
@@ -706,28 +706,28 @@ export default function VisaSuccessCenter() {
                   </div>
 
                   {/* Right Column: AI critique grading display report cards */}
-                  <div className="bg-gray-50 border border-gray-150 rounded-3xl p-6 flex flex-col justify-between">
+                  <div className="bg-background border border-border rounded-3xl p-6 flex flex-col justify-between">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-4">Coach Evaluation Report</h4>
+                      <h4 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-4">Coach Evaluation Report</h4>
 
                       {coachFeedback ? (
                         <div className="flex flex-col gap-4">
                           
                           <div>
-                            <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase">
+                            <span className="text-[9px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded uppercase">
                               Critique Summary
                             </span>
-                            <p className="text-xs text-gray-700 font-semibold leading-relaxed mt-2">{coachFeedback.feedback}</p>
+                            <p className="text-xs text-foreground/80 font-semibold leading-relaxed mt-2">{coachFeedback.feedback}</p>
                           </div>
 
-                          <div className="border-t border-gray-200 pt-3">
+                          <div className="border-t border-border pt-3">
                             <span className="text-[10px] text-gray-450 font-bold uppercase">Wording Suggestions:</span>
-                            <p className="text-xs text-gray-600 leading-normal mt-1 italic">"{coachFeedback.suggestions}"</p>
+                            <p className="text-xs text-muted-foreground leading-normal mt-1 italic">"{coachFeedback.suggestions}"</p>
                           </div>
 
-                          <div className="bg-white border border-gray-150 p-4 rounded-xl mt-4 flex items-center justify-between">
+                          <div className="bg-card border border-border p-4 rounded-xl mt-4 flex items-center justify-between">
                             <div>
-                              <span className="text-[9px] text-gray-400 font-bold uppercase">Answer Score:</span>
+                              <span className="text-[9px] text-muted-text font-bold uppercase">Answer Score:</span>
                               <p className="text-xl font-black text-blue-650">{coachFeedback.score}/100</p>
                             </div>
                             <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold ${
@@ -739,7 +739,7 @@ export default function VisaSuccessCenter() {
 
                         </div>
                       ) : (
-                        <p className="text-xs text-gray-400 leading-normal">Submit your practice answer to evaluate grammar, structural strength, and immigration safety factors.</p>
+                        <p className="text-xs text-muted-text leading-normal">Submit your practice answer to evaluate grammar, structural strength, and immigration safety factors.</p>
                       )}
                     </div>
                   </div>
@@ -749,27 +749,27 @@ export default function VisaSuccessCenter() {
 
               {/* TAB 5: TIMELINE PLANNER SCHEDULES */}
               {activeTab === "timeline" && (
-                <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs">
+                <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
                   <div className="border-b border-gray-50 pb-3 mb-6">
-                    <h3 className="font-extrabold text-gray-950 text-sm flex items-center gap-1.5">
-                      <Calendar className="w-5 h-5 text-blue-600" />
+                    <h3 className="font-extrabold text-foreground text-sm flex items-center gap-1.5">
+                      <Calendar className="w-5 h-5 text-primary" />
                       <span>AI Visa Roadmap Timeline</span>
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1">Immigration roadmap milestones and scheduling checks.</p>
+                    <p className="text-xs text-muted-text mt-1">Immigration roadmap milestones and scheduling checks.</p>
                   </div>
 
-                  <div className="relative pl-6 border-l border-gray-150 flex flex-col gap-6 ml-2 mt-4">
+                  <div className="relative pl-6 border-l border-border flex flex-col gap-6 ml-2 mt-4">
                     {dashboardData?.timeline?.map((event: any) => (
                       <div key={event.id} className="relative">
-                        <div className="w-3.5 h-3.5 rounded-full bg-blue-600 absolute -left-[33px] top-1 border border-white" />
+                        <div className="w-3.5 h-3.5 rounded-full bg-primary absolute -left-[33px] top-1 border border-white" />
                         
-                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+                        <div className="bg-background border border-border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
                           <div>
-                            <h4 className="font-extrabold text-gray-950 text-xs sm:text-sm">{event.event_title}</h4>
-                            <span className="text-[10px] text-gray-400 font-bold mt-0.5">Scheduling Target checkpoint log.</span>
+                            <h4 className="font-extrabold text-foreground text-xs sm:text-sm">{event.event_title}</h4>
+                            <span className="text-[10px] text-muted-text font-bold mt-0.5">Scheduling Target checkpoint log.</span>
                           </div>
                           
-                          <span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full shrink-0">
+                          <span className="text-[10px] font-black text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full shrink-0">
                             Date: {event.event_date}
                           </span>
                         </div>
@@ -799,21 +799,21 @@ export default function VisaSuccessCenter() {
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0.95 }}
-                className="bg-white rounded-3xl w-full max-w-lg p-6 sm:p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]"
+                className="bg-card rounded-3xl w-full max-w-lg p-6 sm:p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]"
               >
                 <button 
                   onClick={() => setShowAssessment(false)}
-                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-background hover:text-foreground cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="border-b border-gray-50 pb-4 mb-6">
-                  <h3 className="text-lg font-black text-gray-950 flex items-center gap-1.5">
-                    <Sparkles className="w-5 h-5 text-blue-600" />
+                  <h3 className="text-lg font-black text-foreground flex items-center gap-1.5">
+                    <Sparkles className="w-5 h-5 text-primary" />
                     <span>Run AI Readiness Audit</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1">Select self-evaluation readiness scores to grade approval confidence.</p>
+                  <p className="text-xs text-muted-text mt-1">Select self-evaluation readiness scores to grade approval confidence.</p>
                 </div>
 
                 <form onSubmit={handleStartReadinessAssessment} className="flex flex-col gap-4">

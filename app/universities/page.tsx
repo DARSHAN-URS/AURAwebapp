@@ -203,7 +203,7 @@ export default function UniversityMatcher() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+    <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
       {/* Dynamic printer rules */}
       <style jsx global>{`
         @media print {
@@ -218,14 +218,14 @@ export default function UniversityMatcher() {
         
         {/* Full-screen AI Matching Loader */}
         {loading && (
-          <div className="fixed inset-0 bg-white/95 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-card/95 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="flex flex-col items-center gap-6 max-w-sm text-center px-6">
               <div className="relative flex items-center justify-center">
-                <Loader2 className="w-16 h-16 animate-spin text-blue-600" />
+                <Loader2 className="w-16 h-16 animate-spin text-primary" />
                 <Sparkles className="w-6 h-6 text-indigo-500 absolute animate-pulse" />
               </div>
               <div>
-                <h3 className="font-extrabold text-xl text-gray-900 mb-2">Analyzing Suitabilities</h3>
+                <h3 className="font-extrabold text-xl text-foreground mb-2">Analyzing Suitabilities</h3>
                 <p className="text-xs text-gray-450 leading-relaxed">
                   Aura Matching Engine is comparing your GPA, tuition parameters, visa history limits, and study goals against global universities...
                 </p>
@@ -236,7 +236,7 @@ export default function UniversityMatcher() {
 
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight leading-tight">
+          <h1 className="text-3xl font-extrabold text-foreground tracking-tight leading-tight">
             AI University Matcher
           </h1>
           <p className="text-xs text-gray-450 mt-1 leading-snug">
@@ -246,35 +246,35 @@ export default function UniversityMatcher() {
 
         {/* STEP 1: Personal & Academic profile details */}
         {step === 1 && (
-          <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-2xl">
+          <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-2xl">
             <form onSubmit={() => setStep(2)} className="flex flex-col gap-6">
               <div className="border-b border-gray-50 pb-4">
-                <h2 className="text-lg font-bold text-gray-950 flex items-center gap-1.5">
-                  <GraduationCap className="w-5 h-5 text-blue-600" />
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-1.5">
+                  <GraduationCap className="w-5 h-5 text-primary" />
                   <span>Academic Scoping Profile</span>
                 </h2>
-                <p className="text-xs text-gray-400 mt-0.5">Please provide your grades and language targets.</p>
+                <p className="text-xs text-muted-text mt-0.5">Please provide your grades and language targets.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Nationality</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Nationality</label>
                   <input
                     type="text"
                     value={nationality}
                     onChange={(e) => setNationality(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Country Residence</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Country Residence</label>
                   <input
                     type="text"
                     value={currentCountry}
                     onChange={(e) => setCurrentCountry(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
@@ -282,34 +282,34 @@ export default function UniversityMatcher() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Highest Qualification</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Highest Qualification</label>
                   <input
                     type="text"
                     value={qualification}
                     onChange={(e) => setQualification(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">GPA / Percentage</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">GPA / Percentage</label>
                   <input
                     type="number"
                     value={gpa}
                     onChange={(e) => setGpa(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Graduation Year</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Graduation Year</label>
                   <input
                     type="number"
                     value={gradYear}
                     onChange={(e) => setGradYear(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
@@ -317,11 +317,11 @@ export default function UniversityMatcher() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">English Test Type</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">English Test Type</label>
                   <select
                     value={englishExam}
                     onChange={(e) => setEnglishExam(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="IELTS">IELTS</option>
                     <option value="TOEFL">TOEFL</option>
@@ -331,22 +331,22 @@ export default function UniversityMatcher() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">English Score</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">English Score</label>
                   <input
                     type="text"
                     value={englishScore}
                     onChange={(e) => setEnglishScore(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">NEET Score (Medical only)</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">NEET Score (Medical only)</label>
                   <input
                     type="number"
                     value={neetScore}
                     onChange={(e) => setNeetScore(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     placeholder="Optional"
                   />
                 </div>
@@ -354,7 +354,7 @@ export default function UniversityMatcher() {
 
               <Button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-4 cursor-pointer"
+                className="bg-primary hover:bg-primary text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-1.5 mt-4 cursor-pointer"
               >
                 <span>Preferences Setup</span>
                 <ArrowRight className="w-4.5 h-4.5" />
@@ -365,18 +365,18 @@ export default function UniversityMatcher() {
 
         {/* STEP 2: Preferred country checklist, degree, and budget */}
         {step === 2 && (
-          <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-2xl">
+          <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-2xl">
             <form onSubmit={handleStartMatching} className="flex flex-col gap-6">
               <div className="border-b border-gray-50 pb-4">
-                <h2 className="text-lg font-bold text-gray-950 flex items-center gap-1.5">
-                  <MapPin className="w-5 h-5 text-blue-600" />
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-1.5">
+                  <MapPin className="w-5 h-5 text-primary" />
                   <span>Choose Study Preferences</span>
                 </h2>
-                <p className="text-xs text-gray-400 mt-0.5">Specify targeted locations and maximum fees bounds.</p>
+                <p className="text-xs text-muted-text mt-0.5">Specify targeted locations and maximum fees bounds.</p>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-bold text-gray-400 uppercase">Target Countries</label>
+                <label className="text-[10px] font-bold text-muted-text uppercase">Target Countries</label>
                 <div className="flex flex-wrap gap-2.5">
                   {countriesList.map((c) => {
                     const selected = preferredCountries.includes(c);
@@ -387,8 +387,8 @@ export default function UniversityMatcher() {
                         onClick={() => handleCountryToggle(c)}
                         className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                           selected 
-                            ? "bg-blue-50 text-blue-600 border-blue-200" 
-                            : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                            ? "bg-primary/10 text-primary border-primary/40" 
+                            : "bg-background text-muted-foreground border-border hover:bg-muted"
                         }`}
                       >
                         {c}
@@ -400,11 +400,11 @@ export default function UniversityMatcher() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Target Degree Level</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Target Degree Level</label>
                   <select
                     value={degreeLevel}
                     onChange={(e) => setDegreeLevel(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="Bachelor's">Bachelor's Degree</option>
                     <option value="Master's">Master's Degree</option>
@@ -413,12 +413,12 @@ export default function UniversityMatcher() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Target Course / Major</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Target Course / Major</label>
                   <input
                     type="text"
                     value={courseInterest}
                     onChange={(e) => setCourseInterest(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                     required
                   />
                 </div>
@@ -426,11 +426,11 @@ export default function UniversityMatcher() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Target Budget Range</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Target Budget Range</label>
                   <select
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="10 - 20 Lakhs">10 - 20 Lakhs INR / Year</option>
                     <option value="20 - 30 Lakhs">20 - 30 Lakhs INR / Year</option>
@@ -440,11 +440,11 @@ export default function UniversityMatcher() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase">Preferred Intake</label>
+                  <label className="text-[10px] font-bold text-muted-text uppercase">Preferred Intake</label>
                   <select
                     value={intake}
                     onChange={(e) => setIntake(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                    className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="Fall 2026">Fall 2026</option>
                     <option value="Spring 2027">Spring 2027</option>
@@ -453,7 +453,7 @@ export default function UniversityMatcher() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+              <div className="flex items-center gap-3 bg-background p-4 rounded-2xl border border-border">
                 <input
                   type="checkbox"
                   checked={scholarshipRequired}
@@ -461,7 +461,7 @@ export default function UniversityMatcher() {
                   className="w-4.5 h-4.5 accent-blue-600 cursor-pointer"
                   id="scholarship"
                 />
-                <label htmlFor="scholarship" className="text-xs font-bold text-gray-700 cursor-pointer">
+                <label htmlFor="scholarship" className="text-xs font-bold text-foreground/80 cursor-pointer">
                   I require scholarship / financial aid options
                 </label>
               </div>
@@ -470,7 +470,7 @@ export default function UniversityMatcher() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-gray-500 hover:text-gray-900 font-bold text-xs flex items-center gap-1 cursor-pointer"
+                  className="text-muted-foreground hover:text-foreground font-bold text-xs flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back to Academic</span>
@@ -478,7 +478,7 @@ export default function UniversityMatcher() {
 
                 <Button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 cursor-pointer text-xs"
+                  className="bg-primary hover:bg-primary text-white font-bold px-8 py-3.5 rounded-full shadow-lg flex items-center gap-2 cursor-pointer text-xs"
                 >
                   <Sparkles className="w-4 h-4 fill-white/10" />
                   <span>Match Universities</span>
@@ -494,26 +494,26 @@ export default function UniversityMatcher() {
           <div className="flex flex-col gap-6">
             
             {/* Filter Top Nav panel bar */}
-            <div className="bg-white border border-gray-150 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 no-print">
+            <div className="bg-card border border-border rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 no-print">
               
               <div className="relative w-full md:w-60">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                <Search className="w-4 h-4 text-muted-text absolute left-3 top-1/2 transform -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search university..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:border-blue-600 w-full font-medium"
+                  className="bg-background border border-border rounded-xl pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:border-blue-600 w-full font-medium"
                 />
               </div>
 
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="flex items-center gap-2 w-full md:w-auto">
-                  <Filter className="w-4 h-4 text-gray-400" />
+                  <Filter className="w-4 h-4 text-muted-text" />
                   <select
                     value={countryFilter}
                     onChange={(e) => setCountryFilter(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-blue-600 font-bold"
+                    className="bg-background border border-border rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-blue-600 font-bold"
                   >
                     <option value="All">All Countries</option>
                     {countriesList.map(c => <option key={c} value={c}>{c}</option>)}
@@ -521,11 +521,11 @@ export default function UniversityMatcher() {
                 </div>
 
                 <div className="flex items-center gap-2 w-full md:w-auto">
-                  <span className="text-[10px] text-gray-400 font-bold uppercase whitespace-nowrap">Sort:</span>
+                  <span className="text-[10px] text-muted-text font-bold uppercase whitespace-nowrap">Sort:</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-blue-600 font-bold"
+                    className="bg-background border border-border rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-blue-600 font-bold"
                   >
                     <option value="match">Match %</option>
                     <option value="fee">Tuition Fee</option>
@@ -538,10 +538,10 @@ export default function UniversityMatcher() {
             {/* Recommendations log cards grid */}
             <div className="flex flex-col gap-8">
               {filteredRecs.length === 0 ? (
-                <div className="bg-gray-50 border border-gray-100 rounded-3xl p-12 text-center">
-                  <AlertCircle className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-                  <h3 className="font-bold text-gray-950 text-sm">No Matches Match Filters</h3>
-                  <p className="text-xs text-gray-400">Try modifying search tags or location filters.</p>
+                <div className="bg-background border border-border rounded-3xl p-12 text-center">
+                  <AlertCircle className="w-10 h-10 text-muted-text mx-auto mb-3" />
+                  <h3 className="font-bold text-foreground text-sm">No Matches Match Filters</h3>
+                  <p className="text-xs text-muted-text">Try modifying search tags or location filters.</p>
                 </div>
               ) : (
                 filteredRecs.map((uni, idx) => {
@@ -550,27 +550,27 @@ export default function UniversityMatcher() {
                   return (
                     <div 
                       key={uni.university_name} 
-                      className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden"
+                      className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden"
                     >
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-600" />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
 
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-gray-50 pb-4 mb-6">
                         <div>
-                          <span className="text-[9px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                          <span className="text-[9px] font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
                             Rank #{idx + 1} Recommendation
                           </span>
-                          <h3 className="font-black text-gray-950 text-xl mt-2 leading-snug">
+                          <h3 className="font-black text-foreground text-xl mt-2 leading-snug">
                             {uni.university_name}
                           </h3>
-                          <p className="text-xs text-gray-400 font-bold mt-1 leading-snug">
+                          <p className="text-xs text-muted-text font-bold mt-1 leading-snug">
                             {uni.country} • {uni.course}
                           </p>
                         </div>
 
                         {/* Radial match percentage badge */}
-                        <div className="flex items-center gap-2 bg-blue-50/30 border border-blue-100 px-3 py-1.5 rounded-full shrink-0">
-                          <Percent className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-black text-blue-600">{uni.match_percentage}% Fit</span>
+                        <div className="flex items-center gap-2 bg-primary/10/30 border border-primary/20 px-3 py-1.5 rounded-full shrink-0">
+                          <Percent className="w-4 h-4 text-primary" />
+                          <span className="text-sm font-black text-primary">{uni.match_percentage}% Fit</span>
                         </div>
                       </div>
 
@@ -579,26 +579,26 @@ export default function UniversityMatcher() {
                         
                         <div className="flex flex-col gap-4">
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Estimated Tuition Fee:</span>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5">{uni.tuition_fee}</p>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Estimated Tuition Fee:</span>
+                            <p className="text-xs sm:text-sm font-semibold text-foreground/80 mt-0.5">{uni.tuition_fee}</p>
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Estimated Living Cost:</span>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5">{uni.living_cost}</p>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Estimated Living Cost:</span>
+                            <p className="text-xs sm:text-sm font-semibold text-foreground/80 mt-0.5">{uni.living_cost}</p>
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Scholarships Info:</span>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5">{uni.scholarship_opportunities}</p>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Scholarships Info:</span>
+                            <p className="text-xs sm:text-sm font-semibold text-foreground/80 mt-0.5">{uni.scholarship_opportunities}</p>
                           </div>
                         </div>
 
                         <div className="flex flex-col gap-4">
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Admission Thresholds:</span>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5">{uni.admission_requirements}</p>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Admission Thresholds:</span>
+                            <p className="text-xs sm:text-sm font-semibold text-foreground/80 mt-0.5">{uni.admission_requirements}</p>
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Visa Difficulty & Processing:</span>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Visa Difficulty & Processing:</span>
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border mt-1 ${
                               uni.visa_difficulty === "Low" 
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-100" 
@@ -608,17 +608,17 @@ export default function UniversityMatcher() {
                             </span>
                           </div>
                           <div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">Post-Study Placements:</span>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5">{uni.employment_opportunities}</p>
+                            <span className="text-[10px] font-bold text-muted-text uppercase">Post-Study Placements:</span>
+                            <p className="text-xs sm:text-sm font-semibold text-foreground/80 mt-0.5">{uni.employment_opportunities}</p>
                           </div>
                         </div>
 
                       </div>
 
                       {/* AI Summary card reasoning */}
-                      <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 mb-6">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase block mb-1">AI Match Reasoning:</span>
-                        <p className="text-xs text-gray-600 leading-relaxed font-semibold">{uni.ai_recommendation_summary}</p>
+                      <div className="bg-background border border-border rounded-2xl p-4 mb-6">
+                        <span className="text-[10px] font-bold text-muted-text uppercase block mb-1">AI Match Reasoning:</span>
+                        <p className="text-xs text-muted-foreground leading-relaxed font-semibold">{uni.ai_recommendation_summary}</p>
                       </div>
 
                       {/* Card Actions bar */}
@@ -632,7 +632,7 @@ export default function UniversityMatcher() {
                             className={`h-9 px-4 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer ${
                               saved 
                                 ? "text-emerald-600 bg-emerald-50" 
-                                : "text-gray-500 hover:text-gray-900 border border-gray-200"
+                                : "text-muted-foreground hover:text-foreground border border-border"
                             }`}
                           >
                             {saved ? <Check className="w-4 h-4" /> : <Heart className="w-4 h-4" />}
@@ -644,8 +644,8 @@ export default function UniversityMatcher() {
                             onClick={() => handleCompareToggle(uni)}
                             className={`h-9 px-4 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer border ${
                               compared 
-                                ? "text-blue-600 bg-blue-50 border-blue-200" 
-                                : "text-gray-500 hover:text-gray-900 border-gray-200"
+                                ? "text-primary bg-primary/10 border-primary/40" 
+                                : "text-muted-foreground hover:text-foreground border-border"
                             }`}
                           >
                             <Plus className="w-4 h-4" />
@@ -656,7 +656,7 @@ export default function UniversityMatcher() {
 
                         <Button
                           onClick={() => router.push(`/dashboard?tab=overview`)}
-                          className="h-9 px-4 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-xs flex items-center gap-1 shadow-xs cursor-pointer"
+                          className="h-9 px-4 rounded-xl bg-background hover:bg-muted text-foreground/80 font-bold text-xs flex items-center gap-1 shadow-sm cursor-pointer"
                         >
                           <span>Apply Course</span>
                           <ChevronRight className="w-4 h-4" />
@@ -670,11 +670,11 @@ export default function UniversityMatcher() {
             </div>
 
             {/* Bottom print log options */}
-            <div className="flex items-center justify-between border-t border-gray-150 pt-8 no-print">
+            <div className="flex items-center justify-between border-t border-border pt-8 no-print">
               <Button
                 variant="ghost"
                 onClick={() => setStep(2)}
-                className="rounded-full px-6 text-gray-500 flex items-center gap-1.5 cursor-pointer text-xs font-bold"
+                className="rounded-full px-6 text-muted-foreground flex items-center gap-1.5 cursor-pointer text-xs font-bold"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Adjust Preferences</span>
@@ -697,10 +697,10 @@ export default function UniversityMatcher() {
           <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-950 text-white px-6 py-4 rounded-full shadow-2xl z-40 flex items-center gap-6 no-print max-w-md w-full border border-gray-800">
             <div className="flex-1">
               <h4 className="text-xs font-extrabold flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 text-blue-500" />
+                <TrendingUp className="w-4 h-4 text-primary" />
                 <span>Comparing Universities</span>
               </h4>
-              <p className="text-[10px] text-gray-400 mt-0.5">
+              <p className="text-[10px] text-muted-text mt-0.5">
                 {compareList.length} of 3 selected.
               </p>
             </div>
@@ -708,14 +708,14 @@ export default function UniversityMatcher() {
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setCompareList([])}
-                className="text-[10px] text-gray-400 hover:text-white font-bold mr-1"
+                className="text-[10px] text-muted-text hover:text-white font-bold mr-1"
               >
                 Clear
               </button>
               
               <Button
                 onClick={() => setShowCompareModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-black text-[10px] py-1.5 px-4 rounded-full shadow-md cursor-pointer h-7"
+                className="bg-primary hover:bg-primary text-white font-black text-[10px] py-1.5 px-4 rounded-full shadow-md cursor-pointer h-7"
               >
                 Compare Now
               </Button>
@@ -736,89 +736,89 @@ export default function UniversityMatcher() {
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0.95 }}
-                className="bg-white rounded-3xl w-full max-w-4xl max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl"
+                className="bg-card rounded-3xl w-full max-w-4xl max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl"
               >
                 <button 
                   onClick={() => setShowCompareModal(false)}
-                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-background hover:text-foreground cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="border-b border-gray-50 pb-4 mb-6">
-                  <h3 className="text-lg font-black text-gray-950 flex items-center gap-1.5">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
+                  <h3 className="text-lg font-black text-foreground flex items-center gap-1.5">
+                    <TrendingUp className="w-5 h-5 text-primary" />
                     <span>University Matrix Comparison</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1">Side-by-side analysis of targeted course selections.</p>
+                  <p className="text-xs text-muted-text mt-1">Side-by-side analysis of targeted course selections.</p>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
-                      <tr className="border-b border-gray-150">
-                        <th className="py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest w-40">Features</th>
+                      <tr className="border-b border-border">
+                        <th className="py-3 text-[10px] font-bold text-muted-text uppercase tracking-widest w-40">Features</th>
                         {compareList.map(uni => (
-                          <th key={uni.university_name} className="py-3 px-4 font-black text-gray-950 text-xs sm:text-sm">
+                          <th key={uni.university_name} className="py-3 px-4 font-black text-foreground text-xs sm:text-sm">
                             {uni.university_name}
                           </th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Match likelihood</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Match likelihood</td>
                         {compareList.map(uni => (
-                          <td key={uni.university_name} className="py-3 px-4 font-black text-blue-600">
+                          <td key={uni.university_name} className="py-3 px-4 font-black text-primary">
                             {uni.match_percentage}% Fit
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Target Country</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Target Country</td>
                         {compareList.map(uni => (
                           <td key={uni.university_name} className="py-3 px-4 font-semibold">
                             {uni.country}
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Matched Course</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Matched Course</td>
                         {compareList.map(uni => (
                           <td key={uni.university_name} className="py-3 px-4 font-semibold">
                             {uni.course}
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Tuition Fees</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Tuition Fees</td>
                         {compareList.map(uni => (
                           <td key={uni.university_name} className="py-3 px-4 font-semibold">
                             {uni.tuition_fee}
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Living Expenses</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Living Expenses</td>
                         {compareList.map(uni => (
                           <td key={uni.university_name} className="py-3 px-4 font-semibold">
                             {uni.living_cost}
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Admissions Criteria</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Admissions Criteria</td>
                         {compareList.map(uni => (
-                          <td key={uni.university_name} className="py-3 px-4 font-semibold text-gray-600 leading-normal">
+                          <td key={uni.university_name} className="py-3 px-4 font-semibold text-muted-foreground leading-normal">
                             {uni.admission_requirements}
                           </td>
                         ))}
                       </tr>
-                      <tr className="border-b border-gray-50 text-xs text-gray-700">
-                        <td className="py-3 font-bold text-gray-400">Visa processing risk</td>
+                      <tr className="border-b border-gray-50 text-xs text-foreground/80">
+                        <td className="py-3 font-bold text-muted-text">Visa processing risk</td>
                         {compareList.map(uni => (
                           <td key={uni.university_name} className="py-3 px-4">
-                            <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            <span className="bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full text-[10px] font-bold">
                               {uni.visa_difficulty} Risk
                             </span>
                           </td>
@@ -831,7 +831,7 @@ export default function UniversityMatcher() {
                 <div className="flex justify-end mt-8 border-t border-gray-50 pt-4">
                   <Button
                     onClick={() => setShowCompareModal(false)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-full text-xs cursor-pointer shadow-md"
+                    className="bg-primary hover:bg-primary text-white font-bold py-2.5 px-6 rounded-full text-xs cursor-pointer shadow-md"
                   >
                     Close Comparison
                   </Button>

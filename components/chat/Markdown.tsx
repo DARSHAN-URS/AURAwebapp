@@ -22,7 +22,7 @@ export default function Markdown({ content }: MarkdownProps) {
         return (
           <div key={index} className="my-4 bg-gray-950 text-gray-100 rounded-xl overflow-hidden shadow-md text-left font-mono text-xs border border-gray-800">
             {header && (
-              <div className="bg-gray-900 px-4 py-1.5 text-[10px] text-gray-400 font-bold border-b border-gray-800 uppercase flex justify-between items-center">
+              <div className="bg-gray-900 px-4 py-1.5 text-[10px] text-muted-text font-bold border-b border-gray-800 uppercase flex justify-between items-center">
                 <span>{header}</span>
                 <button
                   onClick={() => navigator.clipboard.writeText(codeContent)}
@@ -66,12 +66,12 @@ export default function Markdown({ content }: MarkdownProps) {
           const actualRows = hasSeparator ? [tableRows[0], ...tableRows.slice(2)] : tableRows;
 
           elements.push(
-            <div key={key} className="overflow-x-auto my-3 border border-gray-200 rounded-xl shadow-xs">
+            <div key={key} className="overflow-x-auto my-3 border border-border rounded-xl shadow-sm">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-150">
+                  <tr className="bg-background border-b border-border">
                     {actualRows[0].map((cell, idx) => (
-                      <th key={idx} className="p-2.5 font-black text-gray-800">
+                      <th key={idx} className="p-2.5 font-black text-foreground/90">
                         {renderInline(cell)}
                       </th>
                     ))}
@@ -79,9 +79,9 @@ export default function Markdown({ content }: MarkdownProps) {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {actualRows.slice(1).map((row, rowIdx) => (
-                    <tr key={rowIdx} className="hover:bg-gray-50/50">
+                    <tr key={rowIdx} className="hover:bg-background/50">
                       {row.map((cell, cellIdx) => (
-                        <td key={cellIdx} className="p-2.5 text-gray-600 font-medium">
+                        <td key={cellIdx} className="p-2.5 text-muted-foreground font-medium">
                           {renderInline(cell)}
                         </td>
                       ))}
@@ -106,7 +106,7 @@ export default function Markdown({ content }: MarkdownProps) {
           const pieces = p.split(/(\*\*.*?\*\*)/g);
           return pieces.map((piece, i) => {
             if (piece.startsWith("**") && piece.endsWith("**")) {
-              return <strong key={i} className="font-extrabold text-gray-950">{piece.slice(2, -2)}</strong>;
+              return <strong key={i} className="font-extrabold text-foreground">{piece.slice(2, -2)}</strong>;
             }
             return piece;
           });
@@ -119,7 +119,7 @@ export default function Markdown({ content }: MarkdownProps) {
           const pieces = p.split(/(`.*?`)/g);
           return pieces.map((piece, i) => {
             if (piece.startsWith("`") && piece.endsWith("`")) {
-              return <code key={i} className="bg-gray-100 border border-gray-200 text-rose-600 rounded px-1 py-0.5 font-mono text-[11px]">{piece.slice(1, -1)}</code>;
+              return <code key={i} className="bg-muted border border-border text-rose-600 rounded px-1 py-0.5 font-mono text-[11px]">{piece.slice(1, -1)}</code>;
             }
             return piece;
           });
@@ -151,7 +151,7 @@ export default function Markdown({ content }: MarkdownProps) {
             flushList(`list-switch-${index}-${i}`);
             listType = "bullet";
           }
-          currentList.push(<li key={`li-${index}-${i}`} className="text-gray-600 font-medium leading-relaxed">{renderInline(content)}</li>);
+          currentList.push(<li key={`li-${index}-${i}`} className="text-muted-foreground font-medium leading-relaxed">{renderInline(content)}</li>);
           continue;
         } else if (trimmed.match(/^\d+\.\s/)) {
           const content = line.substring(line.indexOf(". ") + 2);
@@ -159,7 +159,7 @@ export default function Markdown({ content }: MarkdownProps) {
             flushList(`list-switch-${index}-${i}`);
             listType = "ordered";
           }
-          currentList.push(<li key={`li-${index}-${i}`} className="text-gray-600 font-medium leading-relaxed">{renderInline(content)}</li>);
+          currentList.push(<li key={`li-${index}-${i}`} className="text-muted-foreground font-medium leading-relaxed">{renderInline(content)}</li>);
           continue;
         } else {
           flushList(`list-end-${index}-${i}`);
@@ -167,16 +167,16 @@ export default function Markdown({ content }: MarkdownProps) {
 
         // 3. Check for headers
         if (trimmed.startsWith("### ")) {
-          elements.push(<h4 key={`h3-${index}-${i}`} className="text-sm font-black text-gray-950 mt-4 mb-2">{renderInline(trimmed.substring(4))}</h4>);
+          elements.push(<h4 key={`h3-${index}-${i}`} className="text-sm font-black text-foreground mt-4 mb-2">{renderInline(trimmed.substring(4))}</h4>);
         } else if (trimmed.startsWith("## ")) {
-          elements.push(<h3 key={`h2-${index}-${i}`} className="text-base font-black text-gray-950 mt-5 mb-2 border-b border-gray-50 pb-1">{renderInline(trimmed.substring(3))}</h3>);
+          elements.push(<h3 key={`h2-${index}-${i}`} className="text-base font-black text-foreground mt-5 mb-2 border-b border-gray-50 pb-1">{renderInline(trimmed.substring(3))}</h3>);
         } else if (trimmed.startsWith("# ")) {
-          elements.push(<h2 key={`h1-${index}-${i}`} className="text-lg font-black text-gray-950 mt-6 mb-3">{renderInline(trimmed.substring(2))}</h2>);
+          elements.push(<h2 key={`h1-${index}-${i}`} className="text-lg font-black text-foreground mt-6 mb-3">{renderInline(trimmed.substring(2))}</h2>);
         } 
         // 4. Check for quotes
         else if (trimmed.startsWith("> ")) {
           elements.push(
-            <blockquote key={`quote-${index}-${i}`} className="border-l-4 border-blue-500 bg-blue-50/20 px-4 py-2.5 rounded-r-xl my-3 text-xs text-gray-600 font-medium leading-relaxed italic">
+            <blockquote key={`quote-${index}-${i}`} className="border-l-4 border-blue-500 bg-primary/10/20 px-4 py-2.5 rounded-r-xl my-3 text-xs text-muted-foreground font-medium leading-relaxed italic">
               {renderInline(trimmed.substring(2))}
             </blockquote>
           );
@@ -185,7 +185,7 @@ export default function Markdown({ content }: MarkdownProps) {
         else if (trimmed === "") {
           elements.push(<div key={`spacer-${index}-${i}`} className="h-2" />);
         } else {
-          elements.push(<p key={`p-${index}-${i}`} className="text-gray-600 font-medium text-xs sm:text-xs leading-relaxed my-2">{renderInline(line)}</p>);
+          elements.push(<p key={`p-${index}-${i}`} className="text-muted-foreground font-medium text-xs sm:text-xs leading-relaxed my-2">{renderInline(line)}</p>);
         }
       }
 

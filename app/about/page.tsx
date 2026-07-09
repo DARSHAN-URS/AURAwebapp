@@ -29,7 +29,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="bg-white pt-32 pb-20">
+    <div className="bg-card pt-32 pb-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Intro Hero Section */}
@@ -38,15 +38,15 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6"
+            className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-6"
           >
-            Redefining Study Abroad with <span className="text-blue-600">Integrity & AI</span>
+            Redefining Study Abroad with <span className="text-primary">Integrity & AI</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-gray-500 leading-relaxed"
+            className="text-lg text-muted-foreground leading-relaxed"
           >
             Aura Routes AI was founded by a team of international alumni and software engineers who experienced the friction, opacity, and exorbitant costs of traditional study abroad agencies. We set out to build a platform that gives every student unbiased, immediate, and complete support.
           </motion.p>
@@ -94,13 +94,13 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="bg-white p-8 rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] flex flex-col items-start"
+                  className="bg-card p-8 rounded-2xl border border-border shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] flex flex-col items-start"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 border border-blue-100">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 border border-primary/20">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg mb-3">{value.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-500">{value.description}</p>
+                  <h3 className="font-bold text-foreground text-lg mb-3">{value.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{value.description}</p>
                 </motion.div>
               );
             })}
@@ -108,14 +108,14 @@ export default function AboutPage() {
         </div>
 
         {/* Final CTA */}
-        <div className="max-w-3xl mx-auto text-center bg-gray-50 border border-gray-100 rounded-3xl p-8 sm:p-12 shadow-sm">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 mb-3">Speak with a Mentor Today</h2>
-          <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-md mx-auto">
+        <div className="max-w-3xl mx-auto text-center bg-background border border-border rounded-3xl p-8 sm:p-12 shadow-sm">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mb-3">Speak with a Mentor Today</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto">
             Get your academic profile evaluated by one of our senior study abroad counsellors and set up your action plan.
           </p>
           <Button
             onClick={openBooking}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
+            className="bg-primary hover:bg-primary text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
           >
             Schedule Free Call
           </Button>

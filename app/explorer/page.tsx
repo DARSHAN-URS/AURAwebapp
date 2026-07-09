@@ -150,7 +150,7 @@ export default function ExplorerHubPage() {
             <form onSubmit={handleSearchSubmit} className="relative max-w-2xl mx-auto">
               <div className="relative">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500/30 to-violet-500/30 blur-xl" />
-                <div className="relative flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-visible shadow-2xl">
+                <div className="relative flex items-center bg-card/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-visible shadow-2xl">
                   <Search className="absolute left-4 w-5 h-5 text-slate-400 z-10" />
                   <input
                     ref={searchRef}
@@ -163,7 +163,7 @@ export default function ExplorerHubPage() {
                   />
                   {searchLoading && <Loader2 className="absolute right-32 w-4 h-4 text-indigo-400 animate-spin" />}
                   {searchQuery && !searchLoading && (
-                    <button type="button" onClick={() => { setSearchQuery(""); setShowSearchResults(false); }} className="absolute right-28 p-1 rounded-full hover:bg-white/10 text-slate-400">
+                    <button type="button" onClick={() => { setSearchQuery(""); setShowSearchResults(false); }} className="absolute right-28 p-1 rounded-full hover:bg-card/10 text-slate-400">
                       <X className="w-4 h-4" />
                     </button>
                   )}
@@ -184,7 +184,7 @@ export default function ExplorerHubPage() {
                           <div className="px-4 pt-3 pb-1 text-xs font-semibold text-slate-500 uppercase tracking-wider">Universities</div>
                           {searchResults.universities.map((u) => (
                             <Link key={u.id} href={`/explorer/university/${u.slug}`} onClick={() => setShowSearchResults(false)}
-                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors">
+                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-card/5 transition-colors">
                               <GraduationCap className="w-4 h-4 text-indigo-400 shrink-0" />
                               <div className="text-left">
                                 <div className="text-sm text-white font-medium">{u.name}</div>
@@ -199,7 +199,7 @@ export default function ExplorerHubPage() {
                           <div className="px-4 pt-3 pb-1 text-xs font-semibold text-slate-500 uppercase tracking-wider">Courses</div>
                           {searchResults.courses.map((c) => (
                             <Link key={c.id} href={`/explorer/course/${c.slug}`} onClick={() => setShowSearchResults(false)}
-                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors">
+                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-card/5 transition-colors">
                               <BookOpen className="w-4 h-4 text-violet-400 shrink-0" />
                               <div className="text-left">
                                 <div className="text-sm text-white font-medium">{c.name}</div>
@@ -213,7 +213,7 @@ export default function ExplorerHubPage() {
                         <div className="border-t border-white/5">
                           {searchResults.countries.map((c) => (
                             <Link key={c.slug} href={`/explorer/country/${c.slug}`} onClick={() => setShowSearchResults(false)}
-                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors">
+                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-card/5 transition-colors">
                               <span className="text-xl">{c.flag_emoji}</span>
                               <span className="text-sm text-white font-medium">{c.name}</span>
                               <span className="text-xs text-slate-400 ml-auto">Country Guide</span>
@@ -222,7 +222,7 @@ export default function ExplorerHubPage() {
                         </div>
                       )}
                       <Link href={`/explorer/search?q=${encodeURIComponent(searchQuery)}`} onClick={() => setShowSearchResults(false)}
-                        className="flex items-center justify-center gap-2 px-4 py-3 border-t border-white/5 text-sm text-indigo-400 hover:text-indigo-300 font-semibold hover:bg-white/5 transition-colors">
+                        className="flex items-center justify-center gap-2 px-4 py-3 border-t border-white/5 text-sm text-indigo-400 hover:text-indigo-300 font-semibold hover:bg-card/5 transition-colors">
                         <Search className="w-4 h-4" />
                         View all results for "{searchQuery}"
                       </Link>
@@ -236,7 +236,7 @@ export default function ExplorerHubPage() {
             <div className="flex flex-wrap justify-center gap-2 mt-6">
               {["Computer Science", "MBA", "Engineering", "Medicine", "Data Science", "Law"].map((tag) => (
                 <button key={tag} onClick={() => router.push(`/explorer/search?q=${encodeURIComponent(tag)}`)}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-xs text-slate-300 hover:text-white transition-all">
+                  className="px-3 py-1.5 bg-card/5 hover:bg-card/10 border border-white/10 rounded-full text-xs text-slate-300 hover:text-white transition-all">
                   {tag}
                 </button>
               ))}
@@ -252,7 +252,7 @@ export default function ExplorerHubPage() {
               { icon: Globe2, label: "Countries", value: "10+" },
               { icon: Users, label: "Students Placed", value: "5,000+" },
             ].map((s) => (
-              <div key={s.label} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
+              <div key={s.label} className="bg-card/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center">
                 <s.icon className="w-5 h-5 text-indigo-400 mx-auto mb-2" />
                 <div className="text-xl font-black text-white">{s.value}</div>
                 <div className="text-xs text-slate-400">{s.label}</div>
@@ -330,7 +330,7 @@ export default function ExplorerHubPage() {
                     <div className="relative h-36 bg-gradient-to-br from-indigo-900 to-violet-900 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-violet-600/30" />
                       <div className="absolute bottom-3 left-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-card/20 backdrop-blur-sm border border-white/20 flex items-center justify-center">
                           <GraduationCap className="w-5 h-5 text-white" />
                         </div>
                       </div>
@@ -440,13 +440,13 @@ export default function ExplorerHubPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/universities">
-              <Button className="bg-white text-indigo-700 font-bold hover:bg-white/90 rounded-full px-8 h-12">
+              <Button className="bg-card text-indigo-700 font-bold hover:bg-card/90 rounded-full px-8 h-12">
                 <Sparkles className="w-4 h-4 mr-2" />
                 Use AI Matcher
               </Button>
             </Link>
             <Link href="/explorer/search">
-              <Button variant="outline" className="border-white/30 text-white font-bold hover:bg-white/10 rounded-full px-8 h-12">
+              <Button variant="outline" className="border-white/30 text-white font-bold hover:bg-card/10 rounded-full px-8 h-12">
                 <Search className="w-4 h-4 mr-2" />
                 Browse Explorer
               </Button>

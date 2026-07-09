@@ -119,10 +119,10 @@ export default function VisaCheckResultPage() {
 
   if (loading) {
     return (
-      <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+      <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-          <p className="text-sm font-semibold text-gray-500">Loading visa readiness report...</p>
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="text-sm font-semibold text-muted-foreground">Loading visa readiness report...</p>
         </div>
       </div>
     );
@@ -130,14 +130,14 @@ export default function VisaCheckResultPage() {
 
   if (error || !data) {
     return (
-      <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+      <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
         <div className="max-w-md w-full px-6 text-center">
           <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 border border-red-100 flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Readiness Report Missing</h2>
-          <p className="text-sm text-gray-500 mb-8">{error || "Data is currently unavailable."}</p>
-          <Button onClick={() => router.push("/visa-check")} className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full px-6">
+          <h2 className="text-xl font-bold text-foreground mb-2">Readiness Report Missing</h2>
+          <p className="text-sm text-muted-foreground mb-8">{error || "Data is currently unavailable."}</p>
+          <Button onClick={() => router.push("/visa-check")} className="bg-primary hover:bg-primary text-white font-bold rounded-full px-6">
             Go to Dashboard
           </Button>
         </div>
@@ -149,7 +149,7 @@ export default function VisaCheckResultPage() {
   const score = report.readiness_score;
 
   return (
-    <div className="bg-white pt-32 pb-24">
+    <div className="bg-card pt-32 pb-24">
       {/* Hide controls during PDF print */}
       <style jsx global>{`
         @media print {
@@ -163,10 +163,10 @@ export default function VisaCheckResultPage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl" id="print-area">
         
         {/* Editor Top Bar Nav */}
-        <div className="flex justify-between items-center mb-12 border-b border-gray-100 pb-4 no-print">
+        <div className="flex justify-between items-center mb-12 border-b border-border pb-4 no-print">
           <button
             onClick={() => router.push("/visa-check")}
-            className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-gray-900 cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-bold text-muted-text hover:text-foreground cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
@@ -174,7 +174,7 @@ export default function VisaCheckResultPage() {
           
           <Button
             onClick={handlePrint}
-            className="h-9 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold cursor-pointer text-xs flex items-center gap-1 shadow-sm"
+            className="h-9 px-4 rounded-xl bg-primary hover:bg-primary text-white font-bold cursor-pointer text-xs flex items-center gap-1 shadow-sm"
           >
             <Printer className="w-4 h-4" />
             <span>Print Report</span>
@@ -183,11 +183,11 @@ export default function VisaCheckResultPage() {
 
         {/* Dashboard Header */}
         <div className="text-center mb-16">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
             Visa Readiness Report
           </h1>
-          <p className="text-sm text-gray-400 mt-2 font-medium">
-            Destination: <strong className="text-gray-950">{data.country} ({data.visa_type})</strong> • Audit ID: {data.id.slice(0, 8)}
+          <p className="text-sm text-muted-text mt-2 font-medium">
+            Destination: <strong className="text-foreground">{data.country} ({data.visa_type})</strong> • Audit ID: {data.id.slice(0, 8)}
           </p>
         </div>
 
@@ -195,9 +195,9 @@ export default function VisaCheckResultPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-12">
           
           {/* Radial score card */}
-          <div className="md:col-span-4 bg-white border border-gray-100 rounded-3xl p-8 shadow-lg flex flex-col items-center text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-blue-600" />
-            <h3 className="font-extrabold text-gray-900 text-xs uppercase tracking-wider mb-6">Approval likelihood</h3>
+          <div className="md:col-span-4 bg-card border border-border rounded-3xl p-8 shadow-lg flex flex-col items-center text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-primary" />
+            <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-6">Approval likelihood</h3>
 
             {/* SVG Circle Progress */}
             <div className="relative w-36 h-36 flex items-center justify-center mb-6">
@@ -217,8 +217,8 @@ export default function VisaCheckResultPage() {
                 />
               </svg>
               <div className="absolute flex flex-col items-center">
-                <span className="text-3xl font-black text-gray-900">{score}%</span>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Readiness</span>
+                <span className="text-3xl font-black text-foreground">{score}%</span>
+                <span className="text-[10px] font-bold text-muted-text uppercase tracking-widest mt-0.5">Readiness</span>
               </div>
             </div>
 
@@ -229,16 +229,16 @@ export default function VisaCheckResultPage() {
           </div>
 
           {/* Risk assessment overview */}
-          <div className="md:col-span-8 bg-white border border-gray-100 rounded-3xl p-8 shadow-lg min-h-[260px] flex flex-col justify-between">
+          <div className="md:col-span-8 bg-card border border-border rounded-3xl p-8 shadow-lg min-h-[260px] flex flex-col justify-between">
             <div>
-              <h3 className="font-extrabold text-gray-950 text-xs uppercase tracking-wider mb-4">Risk Profile Analysis</h3>
-              <p className="text-sm text-gray-600 leading-relaxed font-medium">
+              <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-4">Risk Profile Analysis</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                 {report.risk_assessment}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 mt-8 pt-6 border-t border-gray-50 text-[11px] text-gray-400 font-semibold no-print">
-              <Info className="w-4 h-4 text-blue-600 shrink-0" />
+            <div className="flex items-center gap-2 mt-8 pt-6 border-t border-gray-50 text-[11px] text-muted-text font-semibold no-print">
+              <Info className="w-4 h-4 text-primary shrink-0" />
               <span>Assessment is compiled based on country visa guidelines. Consul officers retain final decision authority.</span>
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function VisaCheckResultPage() {
             </h3>
             <ul className="flex flex-col gap-3.5">
               {report.passed_checks.map((rule, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-gray-700 leading-tight">
+                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-foreground/80 leading-tight">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 mt-2" />
                   <span>{rule}</span>
                 </li>
@@ -271,13 +271,13 @@ export default function VisaCheckResultPage() {
             </h3>
             <ul className="flex flex-col gap-3.5">
               {report.failed_checks.map((rule, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-gray-700 leading-tight">
+                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-foreground/80 leading-tight">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0 mt-2" />
                   <span>{rule}</span>
                 </li>
               ))}
               {report.warnings.map((rule, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-gray-700 leading-tight">
+                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-foreground/80 leading-tight">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 mt-2" />
                   <span>{rule}</span>
                 </li>
@@ -295,7 +295,7 @@ export default function VisaCheckResultPage() {
             </h3>
             <ul className="flex flex-col gap-3.5">
               {report.missing_documents.map((doc, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-gray-700 leading-tight">
+                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-foreground/80 leading-tight">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 mt-2" />
                   <span>{doc}</span>
                 </li>
@@ -306,18 +306,18 @@ export default function VisaCheckResultPage() {
 
         {/* Document-Level Analysis Cards */}
         <div className="mb-12">
-          <h3 className="font-extrabold text-gray-950 text-xs uppercase tracking-wider mb-6">
+          <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-6">
             Individual File Valuations ({data.analyses.length})
           </h3>
           <div className="flex flex-col gap-6">
             {data.analyses.map((doc) => (
               <div 
                 key={doc.id}
-                className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs flex flex-col justify-between min-h-[140px]"
+                className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[140px]"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 border-b border-gray-50 pb-3">
-                  <h4 className="font-bold text-gray-950 text-sm flex items-center gap-1.5">
-                    <FileText className="w-4.5 h-4.5 text-blue-600 shrink-0" />
+                  <h4 className="font-bold text-foreground text-sm flex items-center gap-1.5">
+                    <FileText className="w-4.5 h-4.5 text-primary shrink-0" />
                     <span>{doc.document_name}</span>
                   </h4>
 
@@ -336,10 +336,10 @@ export default function VisaCheckResultPage() {
                 <div className="flex flex-col gap-3">
                   {doc.issues.length > 0 && (
                     <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">Issues Identified:</span>
+                      <span className="text-[10px] font-bold text-muted-text uppercase">Issues Identified:</span>
                       <ul className="flex flex-col gap-1">
                         {doc.issues.map((issue, idx) => (
-                          <li key={idx} className="text-xs text-gray-600 flex items-start gap-1">
+                          <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1">
                             <ChevronRight className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
                             <span>{issue}</span>
                           </li>
@@ -350,11 +350,11 @@ export default function VisaCheckResultPage() {
 
                   {doc.suggestions.length > 0 && (
                     <div className="flex flex-col gap-1 mt-2">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">AI Recommendation:</span>
+                      <span className="text-[10px] font-bold text-muted-text uppercase">AI Recommendation:</span>
                       <ul className="flex flex-col gap-1">
                         {doc.suggestions.map((sugg, idx) => (
-                          <li key={idx} className="text-xs text-gray-600 flex items-start gap-1">
-                            <ChevronRight className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                          <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1">
+                            <ChevronRight className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                             <span>{sugg}</span>
                           </li>
                         ))}
@@ -363,7 +363,7 @@ export default function VisaCheckResultPage() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-50 text-[10px] text-gray-400 font-bold">
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-50 text-[10px] text-muted-text font-bold">
                   <span>Confidence Score: {Math.round(doc.confidence_score * 100)}%</span>
                 </div>
               </div>
@@ -372,18 +372,18 @@ export default function VisaCheckResultPage() {
         </div>
 
         {/* Suggestions & Next Steps */}
-        <div className="bg-gray-50 border border-gray-100 rounded-3xl p-8 sm:p-10 mb-12 no-print">
-          <h3 className="font-extrabold text-gray-950 text-xs uppercase tracking-wider mb-8 flex items-center gap-1.5">
-            <Sparkles className="w-4.5 h-4.5 text-blue-600 fill-blue-50" />
+        <div className="bg-background border border-border rounded-3xl p-8 sm:p-10 mb-12 no-print">
+          <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-8 flex items-center gap-1.5">
+            <Sparkles className="w-4.5 h-4.5 text-primary fill-blue-50" />
             <span>AI Suggested Actions</span>
           </h3>
           <div className="flex flex-col gap-6">
             {report.next_steps.map((step, idx) => (
               <div key={idx} className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-white border border-gray-200 text-blue-600 font-extrabold text-xs flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-8 h-8 rounded-full bg-card border border-border text-primary font-extrabold text-xs flex items-center justify-center shrink-0 shadow-sm">
                   {idx + 1}
                 </div>
-                <span className="text-xs sm:text-sm font-semibold text-gray-700 leading-relaxed mt-1">
+                <span className="text-xs sm:text-sm font-semibold text-foreground/80 leading-relaxed mt-1">
                   {step}
                 </span>
               </div>

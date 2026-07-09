@@ -114,17 +114,17 @@ export default function VisaCheckerDashboard() {
   // Access Locked Redirect State
   if (locked) {
     return (
-      <div className="bg-white min-h-screen pt-32 pb-24 flex items-center justify-center">
+      <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
         <div className="max-w-md w-full px-6 text-center">
-          <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mx-auto mb-6">
             <Lock className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900 mb-2">AI Visa Document Checker Locked</h2>
-          <p className="text-sm text-gray-500 leading-relaxed mb-8">
+          <h2 className="text-2xl font-extrabold text-foreground mb-2">AI Visa Document Checker Locked</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-8">
             Our premium rules-engine auditor scans and validates bank statements, passports, and acceptance offers. Purchase the Visa Checker package to unlock.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button onClick={() => router.push("/services")} className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full px-8 cursor-pointer">
+            <Button onClick={() => router.push("/services")} className="bg-primary hover:bg-primary text-white font-bold rounded-full px-8 cursor-pointer">
               <span>View Pricing Plans</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
@@ -135,18 +135,18 @@ export default function VisaCheckerDashboard() {
   }
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24">
+    <div className="bg-card min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12 border-b border-gray-100 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12 border-b border-border pb-6">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight">AI Visa Checker Dashboard</h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">Audit travel credentials, sponsor links, and language thresholds.</p>
+            <h1 className="text-3xl font-extrabold text-foreground tracking-tight">AI Visa Checker Dashboard</h1>
+            <p className="text-xs sm:text-sm text-muted-text mt-1">Audit travel credentials, sponsor links, and language thresholds.</p>
           </div>
           <Button
             onClick={handleCreateNew}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full shadow-md flex items-center gap-1.5 cursor-pointer w-fit"
+            className="bg-primary hover:bg-primary text-white font-bold px-6 py-3 rounded-full shadow-md flex items-center gap-1.5 cursor-pointer w-fit"
           >
             <Plus className="w-5 h-5" />
             <span>Audit New File Packet</span>
@@ -156,17 +156,17 @@ export default function VisaCheckerDashboard() {
         {/* Loading status */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-            <p className="text-sm font-semibold text-gray-500">Retrieving checker audit logs...</p>
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Retrieving checker audit logs...</p>
           </div>
         )}
 
         {/* Empty State */}
         {!loading && history.length === 0 && (
-          <div className="border border-gray-100 rounded-3xl p-12 text-center bg-gray-50/50">
-            <FileSearch className="w-10 h-10 text-gray-400 mx-auto mb-4" />
-            <h3 className="font-bold text-gray-950 text-base mb-1">No Audits Found</h3>
-            <p className="text-xs text-gray-400">Initiate a visa check package to upload and analyze your files.</p>
+          <div className="border border-border rounded-3xl p-12 text-center bg-background/50">
+            <FileSearch className="w-10 h-10 text-muted-text mx-auto mb-4" />
+            <h3 className="font-bold text-foreground text-base mb-1">No Audits Found</h3>
+            <p className="text-xs text-muted-text">Initiate a visa check package to upload and analyze your files.</p>
           </div>
         )}
 
@@ -177,13 +177,13 @@ export default function VisaCheckerDashboard() {
               <div
                 key={item.id}
                 onClick={() => handleOpenReport(item.id)}
-                className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-300 flex flex-col justify-between min-h-[200px] cursor-pointer relative overflow-hidden group"
+                className="bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-border transition-all duration-300 flex flex-col justify-between min-h-[200px] cursor-pointer relative overflow-hidden group"
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-blue-600 opacity-0 group-hover:opacity-100 transition-all" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-primary opacity-0 group-hover:opacity-100 transition-all" />
 
                 <div>
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <span className="text-[10px] text-gray-400 font-semibold flex items-center gap-1">
+                    <span className="text-[10px] text-muted-text font-semibold flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       <span>{new Date(item.updated_at).toLocaleDateString()}</span>
                     </span>
@@ -193,18 +193,18 @@ export default function VisaCheckerDashboard() {
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-gray-950 text-base leading-snug group-hover:text-blue-600 transition-colors mb-2 flex items-center gap-1.5">
-                    <MapPin className="w-4.5 h-4.5 text-blue-600 shrink-0" />
+                  <h3 className="font-extrabold text-foreground text-base leading-snug group-hover:text-primary transition-colors mb-2 flex items-center gap-1.5">
+                    <MapPin className="w-4.5 h-4.5 text-primary shrink-0" />
                     <span>{item.country} • {item.visa_type}</span>
                   </h3>
                   
-                  <p className="text-xs text-gray-400 font-semibold mt-1">
-                    Readiness Rating: <strong className="text-gray-900">{item.readiness_score}%</strong>
+                  <p className="text-xs text-muted-text font-semibold mt-1">
+                    Readiness Rating: <strong className="text-foreground">{item.readiness_score}%</strong>
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between border-t border-gray-50 pt-4 mt-6">
-                  <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full w-fit">
+                  <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full w-fit">
                     AI Scanned Pack
                   </span>
                   
@@ -212,7 +212,7 @@ export default function VisaCheckerDashboard() {
                     variant="ghost"
                     onClick={(e) => handleDelete(item.id, e)}
                     disabled={deletingId === item.id}
-                    className="h-8 w-8 p-0 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+                    className="h-8 w-8 p-0 rounded-lg text-muted-text hover:text-red-600 hover:bg-red-50 cursor-pointer"
                     title="Delete Audit Log"
                   >
                     {deletingId === item.id ? (

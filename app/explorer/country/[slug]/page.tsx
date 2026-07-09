@@ -72,12 +72,12 @@ export default function CountryDetailPage({ params }: { params: Promise<{ slug: 
               {data.visa_difficulty} Visa
             </span>
             {data.total_universities && (
-              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">
+              <span className="text-xs bg-card/10 text-white px-3 py-1 rounded-full">
                 {data.total_universities}+ Universities
               </span>
             )}
             {data.official_language && (
-              <span className="text-xs bg-white/10 text-white px-3 py-1 rounded-full">
+              <span className="text-xs bg-card/10 text-white px-3 py-1 rounded-full">
                 🗣 {data.official_language}
               </span>
             )}
@@ -164,10 +164,10 @@ export default function CountryDetailPage({ params }: { params: Promise<{ slug: 
               </h2>
               <div className="space-y-3">
                 {data.work_rights_during_study && (
-                  <div className="flex items-start gap-3 bg-blue-500/5 border border-blue-500/20 rounded-xl p-3">
-                    <Clock className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 bg-primary/5 border border-blue-500/20 rounded-xl p-3">
+                    <Clock className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-semibold text-blue-500">During Study</div>
+                      <div className="text-xs font-semibold text-primary">During Study</div>
                       <div className="text-sm">{data.work_rights_during_study}</div>
                     </div>
                   </div>

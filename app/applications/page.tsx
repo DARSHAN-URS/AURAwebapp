@@ -316,18 +316,18 @@ export default function ApplicationManager() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24">
+    <div className="bg-card min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         
         {/* Header Title */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12 border-b border-gray-100 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12 border-b border-border pb-6">
           <div>
-            <h1 className="text-3xl font-extrabold text-gray-950 tracking-tight">Applications Hub</h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1">Track deadlines, checklist milestones, and document folders.</p>
+            <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Applications Hub</h1>
+            <p className="text-xs sm:text-sm text-muted-text mt-1">Track deadlines, checklist milestones, and document folders.</p>
           </div>
           <Button
             onClick={() => setShowCreateModal(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full shadow-md flex items-center gap-1.5 cursor-pointer w-fit"
+            className="bg-primary hover:bg-primary text-white font-bold px-6 py-3 rounded-full shadow-md flex items-center gap-1.5 cursor-pointer w-fit"
           >
             <Plus className="w-5 h-5" />
             <span>Track New Course</span>
@@ -336,32 +336,32 @@ export default function ApplicationManager() {
 
         {/* Stats Grid Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white border border-gray-150 rounded-2xl p-5 shadow-xs">
-            <span className="text-[10px] font-bold text-gray-400 uppercase">Tracked Programs</span>
-            <h3 className="text-2xl font-black text-gray-900 mt-1">{statsOverview.total}</h3>
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+            <span className="text-[10px] font-bold text-muted-text uppercase">Tracked Programs</span>
+            <h3 className="text-2xl font-black text-foreground mt-1">{statsOverview.total}</h3>
           </div>
-          <div className="bg-white border border-gray-150 rounded-2xl p-5 shadow-xs">
-            <span className="text-[10px] font-bold text-gray-400 uppercase">Shortlisted list</span>
-            <h3 className="text-2xl font-black text-gray-900 mt-1">{statsOverview.shortlisted}</h3>
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+            <span className="text-[10px] font-bold text-muted-text uppercase">Shortlisted list</span>
+            <h3 className="text-2xl font-black text-foreground mt-1">{statsOverview.shortlisted}</h3>
           </div>
-          <div className="bg-white border border-gray-150 rounded-2xl p-5 shadow-xs">
-            <span className="text-[10px] font-bold text-gray-400 uppercase">Submitted Packs</span>
-            <h3 className="text-2xl font-black text-gray-900 mt-1">{statsOverview.submitted}</h3>
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+            <span className="text-[10px] font-bold text-muted-text uppercase">Submitted Packs</span>
+            <h3 className="text-2xl font-black text-foreground mt-1">{statsOverview.submitted}</h3>
           </div>
-          <div className="bg-white border border-gray-150 rounded-2xl p-5 shadow-xs">
-            <span className="text-[10px] font-bold text-gray-400 uppercase">Visa Processing</span>
-            <h3 className="text-2xl font-black text-gray-900 mt-1">{statsOverview.visa}</h3>
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+            <span className="text-[10px] font-bold text-muted-text uppercase">Visa Processing</span>
+            <h3 className="text-2xl font-black text-foreground mt-1">{statsOverview.visa}</h3>
           </div>
         </div>
 
         {/* View Toggle Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gray-50/50 border border-gray-150 rounded-2xl p-3 mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-background/50 border border-border rounded-2xl p-3 mb-8">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <Button
               variant="ghost"
               onClick={() => setViewMode("kanban")}
               className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer ${
-                viewMode === "kanban" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                viewMode === "kanban" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
               }`}
             >
               <Trello className="w-4 h-4" />
@@ -372,7 +372,7 @@ export default function ApplicationManager() {
               variant="ghost"
               onClick={() => setViewMode("list")}
               className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer ${
-                viewMode === "list" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                viewMode === "list" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
               }`}
             >
               <List className="w-4 h-4" />
@@ -383,7 +383,7 @@ export default function ApplicationManager() {
               variant="ghost"
               onClick={() => setViewMode("calendar")}
               className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer ${
-                viewMode === "calendar" ? "bg-white text-blue-600 shadow-xs border border-gray-250/20" : "text-gray-500"
+                viewMode === "calendar" ? "bg-card text-primary shadow-sm border border-border/20" : "text-muted-foreground"
               }`}
             >
               <CalendarDays className="w-4 h-4" />
@@ -394,20 +394,20 @@ export default function ApplicationManager() {
           {/* Quick Filters */}
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <div className="relative w-full sm:w-48">
-              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-muted-text absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search university..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-white border border-gray-200 rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none w-full font-medium"
+                className="bg-card border border-border rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none w-full font-medium"
               />
             </div>
 
             <select
               value={countryFilter}
               onChange={(e) => setCountryFilter(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none font-bold shrink-0"
+              className="bg-card border border-border rounded-lg px-2.5 py-1.5 text-xs focus:outline-none font-bold shrink-0"
             >
               <option value="All">All Countries</option>
               <option value="Canada">Canada</option>
@@ -420,8 +420,8 @@ export default function ApplicationManager() {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
-            <p className="text-sm font-semibold text-gray-500">Retrieving applications timeline...</p>
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Retrieving applications timeline...</p>
           </div>
         ) : (
           <div>
@@ -436,14 +436,14 @@ export default function ApplicationManager() {
                       key={stage}
                       onDragOver={(e) => e.preventDefault()}
                       onDrop={(e) => handleDrop(e, stage)}
-                      className="bg-gray-50/50 border border-gray-150 rounded-2xl p-4 min-h-[400px] flex flex-col gap-4 shrink-0 min-w-[200px]"
+                      className="bg-background/50 border border-border rounded-2xl p-4 min-h-[400px] flex flex-col gap-4 shrink-0 min-w-[200px]"
                     >
                       {/* Lane Header */}
-                      <div className="flex justify-between items-center border-b border-gray-100 pb-2 mb-1">
-                        <h4 className="text-[10px] font-black uppercase text-gray-500 tracking-wider truncate max-w-[120px]">
+                      <div className="flex justify-between items-center border-b border-border pb-2 mb-1">
+                        <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-wider truncate max-w-[120px]">
                           {stage}
                         </h4>
-                        <span className="text-[9px] font-extrabold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">
+                        <span className="text-[9px] font-extrabold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
                           {stageApps.length}
                         </span>
                       </div>
@@ -456,13 +456,13 @@ export default function ApplicationManager() {
                             draggable
                             onDragStart={(e) => handleDragStart(e, app.id)}
                             onClick={() => setSelectedApp(app)}
-                            className="bg-white border border-gray-100 hover:border-blue-400 rounded-xl p-3.5 shadow-xs cursor-pointer transition-all hover:shadow-sm"
+                            className="bg-card border border-border hover:border-blue-400 rounded-xl p-3.5 shadow-sm cursor-pointer transition-all hover:shadow-sm"
                           >
-                            <h5 className="font-extrabold text-gray-950 text-xs leading-snug">{app.university}</h5>
-                            <p className="text-[9px] text-gray-400 font-bold mt-1">{app.course}</p>
+                            <h5 className="font-extrabold text-foreground text-xs leading-snug">{app.university}</h5>
+                            <p className="text-[9px] text-muted-text font-bold mt-1">{app.course}</p>
                             
-                            <div className="flex items-center justify-between border-t border-gray-50 pt-2 mt-3 text-[9px] text-gray-400 font-semibold">
-                              <span className="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded">
+                            <div className="flex items-center justify-between border-t border-gray-50 pt-2 mt-3 text-[9px] text-muted-text font-semibold">
+                              <span className="bg-muted text-foreground/80 px-1.5 py-0.5 rounded">
                                 {app.country}
                               </span>
                               {app.deadline && (
@@ -484,11 +484,11 @@ export default function ApplicationManager() {
 
             {/* VIEW B: LIST VIEW TABLE */}
             {viewMode === "list" && (
-              <div className="bg-white border border-gray-150 rounded-2xl overflow-hidden shadow-xs">
+              <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-gray-50 border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                      <tr className="bg-background border-b border-border text-[10px] font-bold text-muted-text uppercase tracking-widest">
                         <th className="py-4 px-6">University</th>
                         <th className="py-4 px-6">Course / Degree</th>
                         <th className="py-4 px-6">Intake</th>
@@ -500,26 +500,26 @@ export default function ApplicationManager() {
                     <tbody>
                       {getFilteredApplications().length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="text-center text-xs text-gray-400 py-12">No applications match criteria.</td>
+                          <td colSpan={6} className="text-center text-xs text-muted-text py-12">No applications match criteria.</td>
                         </tr>
                       ) : (
                         getFilteredApplications().map((app) => (
                           <tr 
                             key={app.id}
                             onClick={() => setSelectedApp(app)}
-                            className="border-b border-gray-50 text-xs font-semibold text-gray-700 hover:bg-gray-50/50 cursor-pointer"
+                            className="border-b border-gray-50 text-xs font-semibold text-foreground/80 hover:bg-background/50 cursor-pointer"
                           >
-                            <td className="py-4 px-6 font-extrabold text-gray-950">{app.university}</td>
+                            <td className="py-4 px-6 font-extrabold text-foreground">{app.university}</td>
                             <td className="py-4 px-6">{app.course} ({app.degree})</td>
                             <td className="py-4 px-6">{app.intake}</td>
                             <td className="py-4 px-6">
-                              <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-[10px] font-bold">
+                              <span className="bg-primary/10 text-primary px-2.5 py-1 rounded-full text-[10px] font-bold">
                                 {app.current_status}
                               </span>
                             </td>
                             <td className="py-4 px-6 text-center">
                               <span className={`inline-flex px-2 py-0.5 rounded text-[9px] font-bold ${
-                                app.priority === "High" ? "bg-rose-50 text-rose-600" : "bg-gray-100 text-gray-600"
+                                app.priority === "High" ? "bg-rose-50 text-rose-600" : "bg-muted text-muted-foreground"
                               }`}>
                                 {app.priority}
                               </span>
@@ -527,7 +527,7 @@ export default function ApplicationManager() {
                             <td className="py-4 px-6 text-center" onClick={(e) => e.stopPropagation()}>
                               <button 
                                 onClick={() => handleDeleteApp(app.id)}
-                                className="p-1 text-gray-400 hover:text-red-650 rounded hover:bg-red-50 cursor-pointer"
+                                className="p-1 text-muted-text hover:text-red-650 rounded hover:bg-red-50 cursor-pointer"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -543,21 +543,21 @@ export default function ApplicationManager() {
 
             {/* VIEW C: CALENDAR DEADLINES VIEW */}
             {viewMode === "calendar" && (
-              <div className="bg-white border border-gray-150 rounded-3xl p-6 sm:p-8 shadow-xs">
+              <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
                 <div className="border-b border-gray-50 pb-3 mb-6">
-                  <h3 className="font-extrabold text-gray-950 text-xs uppercase tracking-wider">Scheduled Application Deadlines</h3>
+                  <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider">Scheduled Application Deadlines</h3>
                 </div>
                 <div className="flex flex-col gap-4">
                   {getFilteredApplications().filter(a => a.deadline).length === 0 ? (
-                    <p className="text-center text-xs text-gray-400 py-12">No upcoming application deadlines recorded.</p>
+                    <p className="text-center text-xs text-muted-text py-12">No upcoming application deadlines recorded.</p>
                   ) : (
                     getFilteredApplications().filter(a => a.deadline).map((app) => (
-                      <div key={app.id} className="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex items-center justify-between">
+                      <div key={app.id} className="bg-background border border-border rounded-2xl p-5 flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <Calendar className="w-8 h-8 text-blue-600" />
+                          <Calendar className="w-8 h-8 text-primary" />
                           <div>
-                            <h4 className="font-extrabold text-gray-950 text-sm">{app.university}</h4>
-                            <p className="text-[10px] text-gray-400 font-bold">{app.course}</p>
+                            <h4 className="font-extrabold text-foreground text-sm">{app.university}</h4>
+                            <p className="text-[10px] text-muted-text font-bold">{app.course}</p>
                           </div>
                         </div>
 
@@ -591,26 +591,26 @@ export default function ApplicationManager() {
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
-                className="w-full max-w-2xl bg-white h-screen overflow-y-auto p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl"
+                className="w-full max-w-2xl bg-card h-screen overflow-y-auto p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl"
               >
                 {/* Close Button */}
                 <button 
                   onClick={() => setSelectedApp(null)}
-                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-background hover:text-foreground cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div>
                   {/* Pane Header */}
-                  <div className="border-b border-gray-100 pb-4 mb-6">
-                    <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase">
+                  <div className="border-b border-border pb-4 mb-6">
+                    <span className="text-[9px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded uppercase">
                       Workspace Details
                     </span>
-                    <h3 className="font-black text-gray-950 text-xl mt-2 leading-snug">
+                    <h3 className="font-black text-foreground text-xl mt-2 leading-snug">
                       {selectedApp.university}
                     </h3>
-                    <p className="text-xs text-gray-400 font-bold mt-1">
+                    <p className="text-xs text-muted-text font-bold mt-1">
                       {selectedApp.country} • {selectedApp.course}
                     </p>
                   </div>
@@ -620,14 +620,14 @@ export default function ApplicationManager() {
                     
                     {/* Task checklist manager */}
                     <div>
-                      <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-1">
-                        <ClipboardList className="w-4 h-4 text-blue-500" />
+                      <h4 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-3 flex items-center gap-1">
+                        <ClipboardList className="w-4 h-4 text-primary" />
                         <span>Tasks Checksheet</span>
                       </h4>
 
-                      <div className="flex flex-col gap-2 bg-gray-50/50 border border-gray-150 p-4 rounded-2xl">
+                      <div className="flex flex-col gap-2 bg-background/50 border border-border p-4 rounded-2xl">
                         {selectedApp.tasks.length === 0 ? (
-                          <p className="text-[11px] text-gray-400 text-center py-2">No tasks logged.</p>
+                          <p className="text-[11px] text-muted-text text-center py-2">No tasks logged.</p>
                         ) : (
                           selectedApp.tasks.map((task) => (
                             <div key={task.id} className="flex items-center gap-3 py-1 border-b border-gray-50 last:border-0">
@@ -638,7 +638,7 @@ export default function ApplicationManager() {
                                 className="w-4 h-4 accent-blue-600 cursor-pointer rounded"
                               />
                               <span className={`text-xs font-semibold ${
-                                task.status === "completed" ? "line-through text-gray-450" : "text-gray-700"
+                                task.status === "completed" ? "line-through text-gray-450" : "text-foreground/80"
                               }`}>
                                 {task.title}
                               </span>
@@ -647,13 +647,13 @@ export default function ApplicationManager() {
                         )}
 
                         {/* Quick Task add */}
-                        <form onSubmit={handleAddQuickTask} className="flex gap-2 mt-4 pt-3 border-t border-gray-100">
+                        <form onSubmit={handleAddQuickTask} className="flex gap-2 mt-4 pt-3 border-t border-border">
                           <input
                             type="text"
                             placeholder="Add new task..."
                             value={quickTaskTitle}
                             onChange={(e) => setQuickTaskTitle(e.target.value)}
-                            className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none w-full font-medium"
+                            className="bg-card border border-border rounded-lg px-3 py-1.5 text-xs focus:outline-none w-full font-medium"
                           />
                           <Button type="submit" className="bg-blue-650 hover:bg-blue-750 text-white font-bold text-xs h-8 px-3 rounded-lg cursor-pointer">
                             Add
@@ -664,19 +664,19 @@ export default function ApplicationManager() {
 
                     {/* Document vault checklist slots mapping */}
                     <div>
-                      <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-1">
-                        <FileCheck className="w-4 h-4 text-blue-500" />
+                      <h4 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-3 flex items-center gap-1">
+                        <FileCheck className="w-4 h-4 text-primary" />
                         <span>Document Checklist</span>
                       </h4>
 
-                      <div className="flex flex-col gap-3 bg-gray-50/50 border border-gray-150 p-4 rounded-2xl">
+                      <div className="flex flex-col gap-3 bg-background/50 border border-border p-4 rounded-2xl">
                         {selectedApp.documents.map((doc) => (
                           <div key={doc.id} className="flex items-center justify-between gap-4 py-1 border-b border-gray-50 last:border-0">
-                            <span className="text-xs font-semibold text-gray-700">{doc.document_name}</span>
+                            <span className="text-xs font-semibold text-foreground/80">{doc.document_name}</span>
                             <select
                               value={doc.status}
                               onChange={(e) => handleDocStatusChange(doc.document_name, e.target.value)}
-                              className="bg-white border border-gray-200 rounded-lg px-2 py-1 text-[10px] focus:outline-none font-bold"
+                              className="bg-card border border-border rounded-lg px-2 py-1 text-[10px] focus:outline-none font-bold"
                             >
                               <option value="Pending">Pending</option>
                               <option value="Uploaded">Uploaded</option>
@@ -690,18 +690,18 @@ export default function ApplicationManager() {
 
                     {/* Timeline Logs details */}
                     <div>
-                      <h4 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3 flex items-center gap-1">
-                        <Clock className="w-4 h-4 text-blue-500" />
+                      <h4 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-3 flex items-center gap-1">
+                        <Clock className="w-4 h-4 text-primary" />
                         <span>Activity Timeline Logs</span>
                       </h4>
 
-                      <div className="flex flex-col gap-3 bg-gray-50/50 border border-gray-150 p-4 rounded-2xl max-h-48 overflow-y-auto">
+                      <div className="flex flex-col gap-3 bg-background/50 border border-border p-4 rounded-2xl max-h-48 overflow-y-auto">
                         {selectedApp.timeline.map((event) => (
                           <div key={event.id} className="flex gap-3 items-start text-xs border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                            <div className="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-1.5" />
+                            <div className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />
                             <div>
-                              <h5 className="font-extrabold text-gray-950">{event.event_title}</h5>
-                              {event.event_description && <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{event.event_description}</p>}
+                              <h5 className="font-extrabold text-foreground">{event.event_title}</h5>
+                              {event.event_description && <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">{event.event_description}</p>}
                             </div>
                           </div>
                         ))}
@@ -711,10 +711,10 @@ export default function ApplicationManager() {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-100 pt-6 mt-8">
+                <div className="border-t border-border pt-6 mt-8">
                   <Button
                     onClick={() => setSelectedApp(null)}
-                    className="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold py-3 rounded-full text-xs cursor-pointer shadow-xs"
+                    className="w-full bg-background hover:bg-muted text-foreground/80 font-bold py-3 rounded-full text-xs cursor-pointer shadow-sm"
                   >
                     Close Sidebar Workspace
                   </Button>
@@ -740,42 +740,42 @@ export default function ApplicationManager() {
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0.95 }}
-                className="bg-white rounded-3xl w-full max-w-lg p-6 sm:p-8 relative shadow-2xl"
+                className="bg-card rounded-3xl w-full max-w-lg p-6 sm:p-8 relative shadow-2xl"
               >
                 <button 
                   onClick={() => setShowCreateModal(false)}
-                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                  className="absolute right-4 top-4 p-1.5 rounded-lg text-gray-450 hover:bg-background hover:text-foreground cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="border-b border-gray-50 pb-4 mb-6">
-                  <h3 className="text-lg font-black text-gray-950 flex items-center gap-1.5">
-                    <BookOpen className="w-5 h-5 text-blue-600" />
+                  <h3 className="text-lg font-black text-foreground flex items-center gap-1.5">
+                    <BookOpen className="w-5 h-5 text-primary" />
                     <span>Track New Application</span>
                   </h3>
-                  <p className="text-xs text-gray-400 mt-1">Add university and course details to the pipeline tracker.</p>
+                  <p className="text-xs text-muted-text mt-1">Add university and course details to the pipeline tracker.</p>
                 </div>
 
                 <form onSubmit={handleCreateApplication} className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase">University Name</label>
+                    <label className="text-[10px] font-bold text-muted-text uppercase">University Name</label>
                     <input
                       type="text"
                       value={newUni}
                       onChange={(e) => setNewUni(e.target.value)}
-                      className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                      className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Country</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Country</label>
                       <select
                         value={newCountry}
                         onChange={(e) => setNewCountry(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-bold"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-bold"
                       >
                         <option value="Canada">Canada</option>
                         <option value="USA">USA</option>
@@ -785,12 +785,12 @@ export default function ApplicationManager() {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Course / Major</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Course / Major</label>
                       <input
                         type="text"
                         value={newCourse}
                         onChange={(e) => setNewCourse(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                         required
                       />
                     </div>
@@ -798,11 +798,11 @@ export default function ApplicationManager() {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Degree Level</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Degree Level</label>
                       <select
                         value={newDegree}
                         onChange={(e) => setNewDegree(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-bold"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-bold"
                       >
                         <option value="Bachelor's">Bachelor's</option>
                         <option value="Master's">Master's</option>
@@ -811,46 +811,46 @@ export default function ApplicationManager() {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Intake Term</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Intake Term</label>
                       <input
                         type="text"
                         value={newIntake}
                         onChange={(e) => setNewIntake(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                         required
                       />
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Deadline</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Deadline</label>
                       <input
                         type="date"
                         value={newDeadline}
                         onChange={(e) => setNewDeadline(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Tuition Fee / Year</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Tuition Fee / Year</label>
                       <input
                         type="text"
                         value={newTuition}
                         onChange={(e) => setNewTuition(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                         placeholder="Optional"
                       />
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-[10px] font-bold text-gray-400 uppercase">Application Fee</label>
+                      <label className="text-[10px] font-bold text-muted-text uppercase">Application Fee</label>
                       <input
                         type="text"
                         value={newAppFee}
                         onChange={(e) => setNewAppFee(e.target.value)}
-                        className="bg-gray-55 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
+                        className="bg-gray-55 border border-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-600 font-medium"
                         placeholder="Optional"
                       />
                     </div>
@@ -859,7 +859,7 @@ export default function ApplicationManager() {
                   <div className="flex flex-col gap-1 mt-2">
                     <Button
                       type="submit"
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-full text-xs shadow-md cursor-pointer"
+                      className="bg-primary hover:bg-primary text-white font-bold py-3 rounded-full text-xs shadow-md cursor-pointer"
                     >
                       Start Tracking Application
                     </Button>

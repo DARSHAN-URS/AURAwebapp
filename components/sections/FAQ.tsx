@@ -12,7 +12,7 @@ import { FAQS } from "@/constants";
 
 export default function FAQ() {
   return (
-    <section className="py-20 sm:py-28 bg-white border-b border-gray-100" id="faqs">
+    <section className="py-20 sm:py-28 bg-card border-b border-border" id="faqs">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -22,18 +22,18 @@ export default function FAQ() {
         />
 
         {/* Accordion Layout */}
-        <div className="max-w-3xl mx-auto bg-white border border-gray-100 rounded-2xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] overflow-hidden">
+        <div className="max-w-3xl mx-auto bg-card border border-border rounded-2xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] overflow-hidden">
           <Accordion className="divide-y divide-gray-100">
             {FAQS.map((faq, i) => (
               <AccordionItem 
                 key={i} 
                 value={`item-${i}`}
-                className="border-none px-6 py-2 hover:bg-gray-50/50 transition-colors"
+                className="border-none px-6 py-2 hover:bg-background/50 transition-colors"
               >
-                <AccordionTrigger className="text-left font-bold text-gray-900 text-base py-4 hover:no-underline hover:text-blue-600 transition-colors">
+                <AccordionTrigger className="text-left font-bold text-foreground text-base py-4 hover:no-underline hover:text-primary transition-colors">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-500 text-sm leading-relaxed pb-4 pt-1">
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4 pt-1">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

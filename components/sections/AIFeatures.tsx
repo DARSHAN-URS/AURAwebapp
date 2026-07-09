@@ -91,7 +91,7 @@ export default function AIFeatures() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
-                className={`group border border-border rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden bg-background shadow-xs hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 ${
+                className={`group border border-border rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden bg-background shadow-sm hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 ${
                   tool.large ? "md:col-span-2" : "md:col-span-1"
                 }`}
               >

@@ -33,15 +33,15 @@ export default function EnglishProficiency({ register, errors, watch }: StepProp
   return (
     <div className="flex flex-col gap-6">
       <div className="border-b border-gray-50 pb-4">
-        <h2 className="text-xl font-bold text-gray-950">Step 3: English Proficiency</h2>
-        <p className="text-xs text-gray-400 mt-1">Select your language certification metrics.</p>
+        <h2 className="text-xl font-bold text-foreground">Step 3: English Proficiency</h2>
+        <p className="text-xs text-muted-text mt-1">Select your language certification metrics.</p>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-bold text-gray-400 uppercase">English Language Exam</label>
+        <label className="text-xs font-bold text-muted-text uppercase">English Language Exam</label>
         <select
           {...register("englishProficiency.englishExam")}
-          className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
+          className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
         >
           <option value="">Select exam type</option>
           <option value="IELTS">IELTS</option>
@@ -57,13 +57,13 @@ export default function EnglishProficiency({ register, errors, watch }: StepProp
 
       {showScore && (
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-gray-400 uppercase">{englishExam} Overall Score</label>
+          <label className="text-xs font-bold text-muted-text uppercase">{englishExam} Overall Score</label>
           <input
             type="number"
             step="0.5"
             {...register("englishProficiency.englishScore")}
             placeholder={getScorePlaceholder()}
-            className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
+            className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium placeholder-gray-400"
           />
           {errors.englishProficiency?.englishScore && (
             <span className="text-[11px] text-red-500 font-semibold">{errors.englishProficiency.englishScore.message}</span>

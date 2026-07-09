@@ -29,11 +29,11 @@ export default function SectionTitle({
       className={`max-w-3xl mb-12 sm:mb-16 ${isCenter ? "mx-auto text-center" : "text-left"} ${className}`}
     >
       {/* Removed badge element */}
-      <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-base sm:text-lg text-gray-500 leading-relaxed">
+        <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
           {subtitle}
         </p>
       )}

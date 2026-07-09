@@ -150,7 +150,7 @@ export default function ChatWindow({
 
   return (
     <div 
-      className={`flex-1 flex flex-col bg-white h-full relative ${dragOver ? "bg-blue-50/10" : ""}`}
+      className={`flex-1 flex flex-col bg-card h-full relative ${dragOver ? "bg-primary/10/10" : ""}`}
       onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
       onDragLeave={() => setDragOver(false)}
       onDrop={handleFileDrop}
@@ -162,26 +162,26 @@ export default function ChatWindow({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-blue-600/10 backdrop-blur-xs flex flex-col items-center justify-center border-2 border-dashed border-blue-500 z-50 p-6 rounded-3xl"
+            className="absolute inset-0 bg-primary/10 backdrop-blur-xs flex flex-col items-center justify-center border-2 border-dashed border-blue-500 z-50 p-6 rounded-3xl"
           >
-            <CloudUpload className="w-12 h-12 text-blue-600 animate-bounce mb-2" />
-            <h4 className="text-sm font-black text-gray-900">Upload Reference document</h4>
-            <p className="text-[10px] text-gray-500 mt-1 font-semibold">Drop PDF, transcripts, bank logs, or resumes to inject into Aura AI</p>
+            <CloudUpload className="w-12 h-12 text-primary animate-bounce mb-2" />
+            <h4 className="text-sm font-black text-foreground">Upload Reference document</h4>
+            <p className="text-[10px] text-muted-foreground mt-1 font-semibold">Drop PDF, transcripts, bank logs, or resumes to inject into Aura AI</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Dynamic Context banner bar at top */}
-      <div className="bg-gray-50/70 border-b border-gray-100 px-6 py-2.5 flex items-center justify-between no-print select-none">
+      <div className="bg-background/70 border-b border-border px-6 py-2.5 flex items-center justify-between no-print select-none">
         <div className="flex items-center gap-2">
-          <Database className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-          <span className="text-[10px] text-gray-400 font-extrabold uppercase tracking-wider">Aura Context Engine</span>
+          <Database className="w-3.5 h-3.5 text-primary shrink-0" />
+          <span className="text-[10px] text-muted-text font-extrabold uppercase tracking-wider">Aura Context Engine</span>
           <span className="bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase">Active</span>
         </div>
-        <div className="flex items-center gap-4 text-[10px] font-bold text-gray-500">
+        <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground">
           <span className="flex items-center gap-1">📝 Profile ({profileCompleteness}%)</span>
           {files.length > 0 && (
-            <span className="bg-blue-50 text-blue-600 border border-blue-100 rounded px-1.5 py-0.5 text-[9px] font-black">
+            <span className="bg-primary/10 text-primary border border-primary/20 rounded px-1.5 py-0.5 text-[9px] font-black">
               📎 {files.length} Reference Docs
             </span>
           )}
@@ -196,11 +196,11 @@ export default function ChatWindow({
         {messages.length === 0 && !streamingMessage ? (
           /* EMPTY STATE */
           <div className="max-w-2xl mx-auto flex flex-col justify-center h-full py-10 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4 animate-pulse">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-black text-gray-950">Ask Aura AI</h3>
-            <p className="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed mt-1.5 font-medium">
+            <h3 className="text-lg font-black text-foreground">Ask Aura AI</h3>
+            <p className="text-xs text-muted-text max-w-sm mx-auto leading-relaxed mt-1.5 font-medium">
               I know your profile preferences, academic GPAs, visa logs, and generated files. Ask any study abroad query below!
             </p>
 
@@ -209,45 +209,45 @@ export default function ChatWindow({
               <Button
                 variant="outline"
                 onClick={() => onTabNavigate("sop")}
-                className="border-gray-150 text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
+                className="border-border text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-primary hover:bg-primary/10/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
               >
                 <span>Write SOP</span>
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onTabNavigate("visa")}
-                className="border-gray-150 text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
+                className="border-border text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-primary hover:bg-primary/10/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
               >
                 <span>Audit Visa Docs</span>
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onTabNavigate("overview")}
-                className="border-gray-150 text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
+                className="border-border text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-primary hover:bg-primary/10/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
               >
                 <span>Shortlist Univs</span>
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onTabNavigate("profile")}
-                className="border-gray-150 text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
+                className="border-border text-[10px] font-extrabold py-2 px-3 rounded-xl cursor-pointer hover:border-blue-600 hover:text-primary hover:bg-primary/10/10 flex flex-col gap-1 items-center justify-center text-center h-16 transition-all"
               >
                 <span>Update Profile</span>
               </Button>
             </div>
 
             {/* Suggested Questions list */}
-            <div className="mt-8 border-t border-gray-100 pt-6">
-              <h5 className="text-[10px] font-black uppercase text-gray-400 tracking-wider mb-3">Suggested queries</h5>
+            <div className="mt-8 border-t border-border pt-6">
+              <h5 className="text-[10px] font-black uppercase text-muted-text tracking-wider mb-3">Suggested queries</h5>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
                 {SUGGESTED_QUESTIONS.map((q, idx) => (
                   <button
                     key={idx}
                     onClick={() => setInputText(q)}
-                    className="p-2.5 text-xs text-gray-500 hover:text-blue-600 bg-gray-50 hover:bg-blue-50/30 border border-gray-100 hover:border-blue-100 rounded-xl cursor-pointer transition-all flex items-center justify-between font-bold leading-normal"
+                    className="p-2.5 text-xs text-muted-foreground hover:text-primary bg-background hover:bg-primary/10/30 border border-border hover:border-primary/20 rounded-xl cursor-pointer transition-all flex items-center justify-between font-bold leading-normal"
                   >
                     <span>{q}</span>
-                    <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 text-blue-600" />
+                    <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-0 group-hover:opacity-100 text-primary" />
                   </button>
                 ))}
               </div>
@@ -264,7 +264,7 @@ export default function ChatWindow({
                 <div key={message.id} className={`flex gap-4 ${isUser ? "justify-end" : "justify-start"}`}>
                   {/* Left avatar icon */}
                   {!isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 select-none">
+                    <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20 select-none">
                       <Sparkles className="w-4 h-4" />
                     </div>
                   )}
@@ -274,8 +274,8 @@ export default function ChatWindow({
                     <div 
                       className={`px-4 py-3.5 rounded-2xl ${
                         isUser 
-                          ? "bg-blue-600 text-white rounded-br-none shadow-sm text-xs font-semibold select-text" 
-                          : "bg-gray-50/90 border border-gray-150 text-gray-900 rounded-bl-none text-xs leading-relaxed"
+                          ? "bg-primary text-white rounded-br-none shadow-sm text-xs font-semibold select-text" 
+                          : "bg-background/90 border border-border text-foreground rounded-bl-none text-xs leading-relaxed"
                       }`}
                     >
                       {isUser ? (
@@ -287,16 +287,16 @@ export default function ChatWindow({
 
                     {/* Metadata controls footer */}
                     {!isUser && (
-                      <div className="flex items-center justify-between px-2 text-[10px] text-gray-400 no-print">
+                      <div className="flex items-center justify-between px-2 text-[10px] text-muted-text no-print">
                         {/* Source citations details */}
-                        <span className="font-semibold text-gray-400 flex items-center gap-1 select-none">
+                        <span className="font-semibold text-muted-text flex items-center gap-1 select-none">
                           ⚡ Context Injected
                         </span>
                         
                         <div className="flex items-center gap-2.5">
                           <button
                             onClick={() => handleCopy(message.id, message.content)}
-                            className="hover:text-gray-900 transition-colors cursor-pointer flex items-center gap-0.5 font-bold"
+                            className="hover:text-foreground transition-colors cursor-pointer flex items-center gap-0.5 font-bold"
                           >
                             {copiedId === message.id ? (
                               <>
@@ -314,7 +314,7 @@ export default function ChatWindow({
                           {/* Thumbs up */}
                           <button
                             onClick={() => handleRate(message.id, 1)}
-                            className={`p-0.5 rounded hover:bg-gray-100 cursor-pointer ${currentRating === 1 ? "text-blue-600 bg-blue-50/50" : ""}`}
+                            className={`p-0.5 rounded hover:bg-muted cursor-pointer ${currentRating === 1 ? "text-primary bg-primary/10/50" : ""}`}
                           >
                             <ThumbsUp className="w-3.5 h-3.5" />
                           </button>
@@ -322,7 +322,7 @@ export default function ChatWindow({
                           {/* Thumbs down */}
                           <button
                             onClick={() => handleRate(message.id, -1)}
-                            className={`p-0.5 rounded hover:bg-gray-100 cursor-pointer ${currentRating === -1 ? "text-rose-600 bg-rose-50/50" : ""}`}
+                            className={`p-0.5 rounded hover:bg-muted cursor-pointer ${currentRating === -1 ? "text-rose-600 bg-rose-50/50" : ""}`}
                           >
                             <ThumbsDown className="w-3.5 h-3.5" />
                           </button>
@@ -332,7 +332,7 @@ export default function ChatWindow({
                   </div>
 
                   {isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-gray-100 border border-gray-200 text-gray-700 flex items-center justify-center shrink-0 font-black text-xs uppercase select-none">
+                    <div className="w-8 h-8 rounded-xl bg-muted border border-border text-foreground/80 flex items-center justify-center shrink-0 font-black text-xs uppercase select-none">
                       U
                     </div>
                   )}
@@ -343,11 +343,11 @@ export default function ChatWindow({
             {/* Streaming block output */}
             {streamingMessage && (
               <div className="flex gap-4 justify-start">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 animate-pulse">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20 animate-pulse">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col gap-1.5 max-w-[80%]">
-                  <div className="px-4 py-3.5 bg-gray-50 border border-gray-150 text-gray-900 rounded-2xl rounded-bl-none text-xs leading-relaxed select-text">
+                  <div className="px-4 py-3.5 bg-background border border-border text-foreground rounded-2xl rounded-bl-none text-xs leading-relaxed select-text">
                     <Markdown content={streamingMessage} />
                   </div>
                 </div>
@@ -357,13 +357,13 @@ export default function ChatWindow({
             {/* Typing Indicator */}
             {isGenerating && !streamingMessage && (
               <div className="flex gap-4 justify-start">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20">
                   <Sparkles className="w-4 h-4" />
                 </div>
-                <div className="px-4 py-3 bg-gray-50 border border-gray-150 rounded-2xl rounded-bl-none flex items-center gap-1.5 h-9 w-16 justify-center shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce delay-150" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce delay-300" />
+                <div className="px-4 py-3 bg-background border border-border rounded-2xl rounded-bl-none flex items-center gap-1.5 h-9 w-16 justify-center shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce delay-150" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce delay-300" />
                 </div>
               </div>
             )}
@@ -373,23 +373,23 @@ export default function ChatWindow({
 
       {/* Reference files attachments bar */}
       {files.length > 0 && messages.length > 0 && (
-        <div className="px-6 py-2 bg-gray-50/50 border-t border-gray-100 flex flex-wrap gap-2 items-center select-none no-print">
-          <span className="text-[10px] font-black uppercase text-gray-400 tracking-wider mr-2">Files Attached:</span>
+        <div className="px-6 py-2 bg-background/50 border-t border-border flex flex-wrap gap-2 items-center select-none no-print">
+          <span className="text-[10px] font-black uppercase text-muted-text tracking-wider mr-2">Files Attached:</span>
           {files.map(file => (
-            <div key={file.id} className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-lg px-2.5 py-1 text-[10px] font-bold text-gray-600">
-              <FileText className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+            <div key={file.id} className="flex items-center gap-1.5 bg-card border border-border rounded-lg px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+              <FileText className="w-3.5 h-3.5 text-primary shrink-0" />
               <span className="truncate max-w-[120px]">{file.filename}</span>
-              <span className="text-[9px] text-gray-400">({roundBytes(file.file_size)})</span>
+              <span className="text-[9px] text-muted-text">({roundBytes(file.file_size)})</span>
             </div>
           ))}
         </div>
       )}
 
       {/* Input console area */}
-      <div className="p-4 sm:p-6 border-t border-gray-100 no-print bg-white select-none rounded-b-3xl">
+      <div className="p-4 sm:p-6 border-t border-border no-print bg-card select-none rounded-b-3xl">
         <div className="max-w-3xl mx-auto flex flex-col gap-2">
           
-          <div className="relative border border-gray-200 focus-within:border-blue-600 rounded-2xl p-2 bg-gray-50 flex flex-col">
+          <div className="relative border border-border focus-within:border-blue-600 rounded-2xl p-2 bg-background flex flex-col">
             <textarea
               rows={2}
               placeholder="Ask anything about shortlists, loans, SOP improvements, or UK vs Canada pathway requirements..."
@@ -400,7 +400,7 @@ export default function ChatWindow({
             />
             
             {/* Control items row */}
-            <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-150 px-1">
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-border px-1">
               <div className="flex items-center gap-2">
                 <input
                   type="file"
@@ -413,12 +413,12 @@ export default function ChatWindow({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-gray-200/50 cursor-pointer flex items-center gap-1 text-[10px] font-bold"
+                  className="p-1.5 rounded-lg text-muted-text hover:text-primary hover:bg-muted/60/50 cursor-pointer flex items-center gap-1 text-[10px] font-bold"
                   title="Upload transcripts, resume, bank statements..."
                   disabled={isUploading}
                 >
                   {isUploading ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
                   ) : (
                     <Paperclip className="w-4 h-4" />
                   )}
@@ -428,7 +428,7 @@ export default function ChatWindow({
                 <button
                   type="button"
                   onClick={() => alert("Voice transcription interface initialized. Standard browser capture integration ready.")}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-gray-200/50 cursor-pointer"
+                  className="p-1.5 rounded-lg text-muted-text hover:text-primary hover:bg-muted/60/50 cursor-pointer"
                   title="Voice dictation (Future Ready)"
                 >
                   <Mic className="w-4 h-4" />
@@ -440,7 +440,7 @@ export default function ChatWindow({
                   <Button
                     onClick={onStopGeneration}
                     type="button"
-                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-[10px] px-3.5 h-8 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-xs border border-gray-200"
+                    className="bg-muted hover:bg-muted/60 text-foreground/80 font-extrabold text-[10px] px-3.5 h-8 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-sm border border-border"
                   >
                     <StopCircle className="w-3.5 h-3.5 text-rose-500" />
                     <span>Stop</span>
@@ -451,7 +451,7 @@ export default function ChatWindow({
                   <Button
                     onClick={onRegenerate}
                     type="button"
-                    className="bg-gray-50 hover:bg-gray-100 text-gray-600 font-extrabold text-[10px] px-3.5 h-8 rounded-xl flex items-center gap-1.5 cursor-pointer border border-gray-200 shadow-xs"
+                    className="bg-background hover:bg-muted text-muted-foreground font-extrabold text-[10px] px-3.5 h-8 rounded-xl flex items-center gap-1.5 cursor-pointer border border-border shadow-sm"
                     title="Regenerate Last response"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
@@ -462,7 +462,7 @@ export default function ChatWindow({
                 <Button
                   onClick={handleSend}
                   disabled={!inputText.trim() || isGenerating}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs h-8 w-8 sm:w-auto sm:px-4 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                  className="bg-primary hover:bg-primary text-white font-extrabold text-xs h-8 w-8 sm:w-auto sm:px-4 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-sm"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Ask AI</span>
@@ -471,7 +471,7 @@ export default function ChatWindow({
             </div>
           </div>
           
-          <span className="text-[9px] text-gray-400 font-semibold text-center mt-1 select-none">
+          <span className="text-[9px] text-muted-text font-semibold text-center mt-1 select-none">
             Aura AI scans context parameters securely. Verify visa checklist details with your counsel planner.
           </span>
         </div>

@@ -207,7 +207,7 @@ function SearchContent() {
               onClick={() => setAiSearchMode(!aiSearchMode)}
               className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none ${aiSearchMode ? "bg-primary" : "bg-slate-800"}`}
             >
-              <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${aiSearchMode ? "translate-x-5" : "translate-x-0"}`} />
+              <div className={`bg-card w-5 h-5 rounded-full shadow-md transform transition-transform duration-200 ${aiSearchMode ? "translate-x-5" : "translate-x-0"}`} />
             </button>
           </div>
         </div>

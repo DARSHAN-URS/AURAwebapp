@@ -22,7 +22,7 @@ const DESTINATIONS = [
     desc: "Steeped in academic prestige with fast-track master's degrees in just 1 year.",
     image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800",
     badge: "Trending",
-    badgeColor: "bg-blue-500",
+    badgeColor: "bg-primary",
   },
   {
     country: "Australia",
@@ -62,13 +62,13 @@ export default function Countries() {
   const { openBooking } = useBooking();
 
   return (
-    <section className="py-24 sm:py-32 bg-[#F8FAFC] border-t border-gray-100" id="destinations">
+    <section className="py-24 sm:py-32 bg-[#F8FAFC] border-t border-border" id="destinations">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
           <div className="max-w-xl">
-            <h2 className="text-3xl sm:text-5xl font-black text-gray-950 tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-5xl font-black text-foreground tracking-tight leading-[1.1]">
               Study in the World's{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                 Leading Hubs
@@ -77,7 +77,7 @@ export default function Countries() {
           </div>
           <Button
             onClick={openBooking}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded-full text-xs flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-blue-600/20"
+            className="bg-primary hover:bg-primary text-white font-bold px-6 py-2 rounded-full text-xs flex items-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-blue-600/20"
           >
             Get Country Guide
             <ArrowRight className="w-3.5 h-3.5" />

@@ -12,7 +12,7 @@ export default function FinalCTA() {
   const { openBooking } = useBooking();
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-card">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -63,7 +63,7 @@ export default function FinalCTA() {
                   <Button
                     onClick={openBooking}
                     size="lg"
-                    className="bg-white hover:bg-gray-50 text-blue-700 font-black px-8 rounded-full shadow-xl hover:scale-[1.02] transition-all duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer h-12"
+                    className="bg-card hover:bg-background text-primary font-black px-8 rounded-full shadow-xl hover:scale-[1.02] transition-all duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer h-12"
                   >
                     <Calendar className="w-4 h-4" />
                     Book Free Consultation
@@ -72,7 +72,7 @@ export default function FinalCTA() {
                     <Button
                       variant="outline"
                       size="lg"
-                      className="w-full border-white/30 text-white hover:bg-white/10 font-bold px-8 rounded-full transition-all duration-200 text-sm flex items-center justify-center gap-2 h-12 cursor-pointer"
+                      className="w-full border-white/30 text-white hover:bg-card/10 font-bold px-8 rounded-full transition-all duration-200 text-sm flex items-center justify-center gap-2 h-12 cursor-pointer"
                     >
                       Try AI Tools Free
                       <ArrowRight className="w-4 h-4" />
@@ -121,7 +121,7 @@ export default function FinalCTA() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                    className="flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4"
+                    className="flex items-center gap-4 bg-card/10 backdrop-blur-md border border-white/20 rounded-2xl p-4"
                   >
                     <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-white/30 shrink-0">
                       <Image src={item.avatar} alt={item.name} fill className="object-cover" sizes="44px" />
@@ -137,7 +137,7 @@ export default function FinalCTA() {
                   </motion.div>
                 ))}
 
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center">
+                <div className="bg-card/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center">
                   <p className="text-white font-black text-lg">25,000+</p>
                   <p className="text-blue-200 text-xs font-medium">Students successfully guided this year</p>
                 </div>

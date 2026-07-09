@@ -35,7 +35,7 @@ const countryData = [
 const COUNTRY_COLORS = ["#3b82f6", "#6366f1", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444"];
 
 const KPI_CARDS = [
-  { label: "Students Guided", value: "25,000+", delta: "+18% this year", icon: Users, color: "text-blue-500" },
+  { label: "Students Guided", value: "25,000+", delta: "+18% this year", icon: Users, color: "text-primary" },
   { label: "Universities Matched", value: "1,500+", delta: "+120 added", icon: GraduationCap, color: "text-indigo-500" },
   { label: "Visa Success Rate", value: "98.4%", delta: "Consistently maintained", icon: ShieldCheck, color: "text-emerald-500" },
   { label: "Applications Filed", value: "42,000+", delta: "+32% YoY growth", icon: TrendingUp, color: "text-violet-500" },

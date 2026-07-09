@@ -11,7 +11,7 @@ const WHY = [
     icon: Globe2,
     title: "One Platform, End to End",
     description: "From your first university search to your arrival abroad, everything lives in one place — university matching, admissions, accommodation, loans, and career support.",
-    color: "bg-blue-50 text-blue-600 border-blue-100/50",
+    color: "bg-primary/10 text-primary border-primary/20/50",
   },
   {
     icon: Sparkles,
@@ -47,31 +47,31 @@ const WHY = [
 
 export default function WhyAura() {
   return (
-    <section className="py-24 sm:py-32 bg-[#F8FAFC] border-t border-gray-100" id="why-us">
+    <section className="py-24 sm:py-32 bg-[#F8FAFC] border-t border-border" id="why-us">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
           {/* Left: Sticky text column */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
-            <h2 className="text-3xl sm:text-5xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
+            <h2 className="text-3xl sm:text-5xl font-black text-foreground tracking-tight leading-[1.1] mb-6">
               Why Students Choose Aura Routes AI
             </h2>
-            <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium mb-8">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-medium mb-8">
               Traditional study abroad agencies operate on commissions, leading them to recommend partner colleges that may not match your profile.
               <br /><br />
               Aura Routes AI was built to be different — transparent, AI-driven, and student-first from day one.
             </p>
 
             {/* Highlight proof point */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100/50 flex items-center justify-center font-black text-base shrink-0">
                   98%
                 </div>
                 <div>
-                  <h4 className="font-black text-gray-950 text-sm">Visa Approval Rate</h4>
-                  <p className="text-xs text-gray-400 font-medium mt-0.5">Verified across all processed student applications</p>
+                  <h4 className="font-black text-foreground text-sm">Visa Approval Rate</h4>
+                  <p className="text-xs text-muted-text font-medium mt-0.5">Verified across all processed student applications</p>
                 </div>
               </div>
             </div>
@@ -88,16 +88,16 @@ export default function WhyAura() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: i * 0.07 }}
-                  className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md hover:border-blue-100/50 hover:-translate-y-0.5 transition-all duration-300 flex gap-4"
+                  className="bg-card p-6 rounded-2xl border border-border shadow-sm hover:shadow-md hover:border-primary/20/50 hover:-translate-y-0.5 transition-all duration-300 flex gap-4"
                 >
                   <div className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 ${item.color}`}>
                     <Icon className="w-4.5 h-4.5" />
                   </div>
                   <div>
-                    <h3 className="font-black text-gray-950 text-sm mb-1.5 tracking-tight">
+                    <h3 className="font-black text-foreground text-sm mb-1.5 tracking-tight">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed font-medium">
+                    <p className="text-xs text-muted-foreground leading-relaxed font-medium">
                       {item.description}
                     </p>
                   </div>
