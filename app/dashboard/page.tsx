@@ -874,16 +874,30 @@ function StudentDashboardContent() {
         </div>
 
         {/* Footer info logout */}
-        <div className="border-t border-border pt-4 px-2">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-primary/15 text-primary flex items-center justify-center font-bold text-xs">
-              {profile?.full_name?.charAt(0) || "P"}
+        <div className="border-t border-border pt-4 px-2 flex flex-col gap-2">
+          <button
+            onClick={() => router.push("/settings")}
+            className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted text-left border border-transparent hover:border-border transition-all duration-200 cursor-pointer group"
+          >
+            <div className="relative w-8 h-8 rounded-full overflow-hidden bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+              {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                <img
+                  src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="text-xs font-bold text-primary">
+                  {profile?.full_name?.charAt(0) || user?.user_metadata?.full_name?.charAt(0) || "P"}
+                </div>
+              )}
             </div>
-            <div className="truncate">
-              <h4 className="text-xs font-extrabold text-foreground truncate">{profile?.full_name || "Priyan Bose"}</h4>
-              <p className="text-[10px] text-muted-text truncate">{profile?.email || "priyan@gmail.com"}</p>
+            <div className="truncate flex-grow">
+              <h4 className="text-xs font-extrabold text-foreground truncate">{profile?.full_name || user?.user_metadata?.full_name || "Priyan Bose"}</h4>
+              <p className="text-[10px] text-muted-text truncate">{profile?.email || user?.email || "priyan@gmail.com"}</p>
             </div>
-          </div>
+            <ChevronRight className="w-3.5 h-3.5 text-muted-text group-hover:text-foreground transition-colors shrink-0" />
+          </button>
 
           <Button
             variant="ghost"
@@ -979,7 +993,34 @@ function StudentDashboardContent() {
                 </nav>
               </div>
 
-              <div className="border-t border-border pt-4">
+              <div className="border-t border-border pt-4 flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    router.push("/settings");
+                  }}
+                  className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted text-left border border-transparent hover:border-border transition-all duration-200 cursor-pointer group"
+                >
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+                    {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                      <img
+                        src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture}
+                        alt="Profile"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-xs font-bold text-primary">
+                        {profile?.full_name?.charAt(0) || user?.user_metadata?.full_name?.charAt(0) || "P"}
+                      </div>
+                    )}
+                  </div>
+                  <div className="truncate flex-grow">
+                    <h4 className="text-xs font-extrabold text-foreground truncate">{profile?.full_name || user?.user_metadata?.full_name || "Priyan Bose"}</h4>
+                    <p className="text-[10px] text-muted-text truncate">{profile?.email || user?.email || "priyan@gmail.com"}</p>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-muted-text group-hover:text-foreground transition-colors shrink-0" />
+                </button>
+
                 <Button
                   onClick={async () => {
                     await signOut();
@@ -1069,29 +1110,7 @@ function StudentDashboardContent() {
               </AnimatePresence>
             </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => router.push("/settings")}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-background hover:bg-muted border border-border shadow-sm transition-all duration-200 cursor-pointer group"
-              >
-                <div className="relative h-6 w-6 rounded-full overflow-hidden bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
-                  {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
-                    <img
-                      src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture}
-                      alt="Profile"
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-[10px] font-bold text-primary group-hover:scale-105 transition-transform duration-200">
-                      {profile?.full_name?.charAt(0) || user?.user_metadata?.full_name?.charAt(0) || "P"}
-                    </div>
-                  )}
-                </div>
-                <span className="text-xs font-bold text-foreground/85 pr-1 select-none">
-                  {profile?.full_name || user?.user_metadata?.full_name || "Profile"}
-                </span>
-              </button>
-            </div>
+
 
           </div>
         </header>

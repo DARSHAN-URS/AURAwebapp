@@ -9,7 +9,7 @@ import { NAV_LINKS } from "@/constants";
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname && pathname.startsWith("/dashboard")) {
+  if (pathname !== "/") {
     return null;
   }
   const currentYear = new Date().getFullYear();

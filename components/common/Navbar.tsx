@@ -152,8 +152,8 @@ export default function Navbar() {
   const { openBooking } = useBooking();
   const { user, signOut } = useAuth();
 
-  // Hide navbar entirely on dashboard & settings pages (they have their own sidebar)
-  const shouldHide = pathname && (pathname.startsWith("/dashboard") || pathname.startsWith("/settings"));
+  // Hide navbar entirely on all pages except the landing page
+  const shouldHide = pathname !== "/";
 
   // Redirect logged-in users away from the landing page to dashboard
   useEffect(() => {
