@@ -101,7 +101,7 @@ interface VaultFile {
 function StudentDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const initialTab = searchParams.get("tab") || "overview";
 
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -808,9 +808,7 @@ function StudentDashboardContent() {
     { id: "reports", label: "My AI Reports", icon: FileText },
     { id: "vault", label: "Document Vault", icon: FolderLock },
     { id: "payments", label: "Billing Center", icon: Receipt },
-    { id: "appointments", label: "Consultation Appts", icon: CalendarDays },
-    { id: "profile", label: "Profile Settings", icon: UserCog },
-    { id: "settings", label: "Dashboard Settings", icon: Settings2 }
+    { id: "appointments", label: "Consultation Appts", icon: CalendarDays }
   ];
 
   const handleTabChange = (tabId: string) => {
@@ -889,11 +887,14 @@ function StudentDashboardContent() {
 
           <Button
             variant="ghost"
-            onClick={() => router.push("/")}
+            onClick={async () => {
+              await signOut();
+              router.push("/");
+            }}
             className="w-full text-left justify-start text-xs font-bold text-muted-text hover:text-red-600 hover:bg-red-50 py-2 px-3 rounded-xl cursor-pointer flex items-center gap-2"
           >
             <LogOut className="w-4 h-4" />
-            <span>Return to Landing</span>
+            <span>Log out</span>
           </Button>
         </div>
       </aside>
@@ -980,11 +981,14 @@ function StudentDashboardContent() {
 
               <div className="border-t border-border pt-4">
                 <Button
-                  onClick={() => router.push("/")}
+                  onClick={async () => {
+                    await signOut();
+                    router.push("/");
+                  }}
                   className="w-full bg-background hover:bg-muted text-foreground/80 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>Log Out Portal</span>
+                  <span>Log out</span>
                 </Button>
               </div>
             </motion.div>
@@ -1066,9 +1070,27 @@ function StudentDashboardContent() {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-xs font-bold text-foreground/80 bg-background px-2.5 py-1 rounded-full uppercase">
-                Student Account
-              </span>
+              <button
+                onClick={() => router.push("/settings")}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-background hover:bg-muted border border-border shadow-sm transition-all duration-200 cursor-pointer group"
+              >
+                <div className="relative h-6 w-6 rounded-full overflow-hidden bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+                  {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                    <img
+                      src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture}
+                      alt="Profile"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-[10px] font-bold text-primary group-hover:scale-105 transition-transform duration-200">
+                      {profile?.full_name?.charAt(0) || user?.user_metadata?.full_name?.charAt(0) || "P"}
+                    </div>
+                  )}
+                </div>
+                <span className="text-xs font-bold text-foreground/85 pr-1 select-none">
+                  {profile?.full_name || user?.user_metadata?.full_name || "Profile"}
+                </span>
+              </button>
             </div>
 
           </div>
