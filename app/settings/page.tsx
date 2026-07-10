@@ -64,6 +64,7 @@ import {
   StudentSettingsResponse,
   StudentDocument
 } from "@/services/profile";
+import { supabase } from "@/lib/supabaseClient";
 
 // Tab types matching sidebar items
 type ActiveTab =
@@ -80,9 +81,16 @@ interface Toast {
   type: "success" | "error" | "info";
 }
 
-export default function SettingsPage() {
+export default function SettingsPage({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+
+  // Redirect to dashboard tab if accessed directly outside embedded context
+  useEffect(() => {
+    if (!isEmbedded) {
+      router.replace("/dashboard?tab=profile");
+    }
+  }, [isEmbedded, router]);
 
   // Tab State
   const [activeTab, setActiveTab] = useState<ActiveTab>("profile");
@@ -95,6 +103,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<StudentProfileResponse | null>(null);
   const [settings, setSettings] = useState<StudentSettingsResponse | null>(null);
   const [documents, setDocuments] = useState<StudentDocument[]>([]);
+  const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [savingField, setSavingField] = useState<string | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -136,6 +145,22 @@ export default function SettingsPage() {
       setProfile(profileData);
       setSettings(settingsData);
       setDocuments(docsData);
+
+      try {
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        if (token) {
+          const invoicesRes = await fetch(`${apiBaseUrl}/api/billing/invoices`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (invoicesRes.ok) {
+            const invoicesData = await invoicesRes.json();
+            setInvoices(invoicesData);
+          }
+        }
+      } catch (billingErr) {
+        console.warn("Failed to fetch billing receipts contextually:", billingErr);
+      }
     } catch (err: any) {
       showToast(err.message || "Failed to load profile records.", "error");
     } finally {
@@ -146,11 +171,13 @@ export default function SettingsPage() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      router.push("/login");
+      if (!isEmbedded) {
+        router.push("/login");
+      }
       return;
     }
     loadAllData();
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router, isEmbedded]);
 
   // Edit card helper
   const startEditing = (cardId: string, initialData: any) => {
@@ -395,18 +422,18 @@ export default function SettingsPage() {
   const getCompletionChecklist = () => {
     if (!profile) return [];
     return [
-      { name: "Personal Profile", score: profile.completion_scores.personal },
-      { name: "Academic Details", score: profile.completion_scores.academic },
-      { name: "Financial Profile", score: profile.completion_scores.financial },
-      { name: "Uploaded Docs", score: profile.completion_scores.documents }
+      { name: "Personal Profile", score: profile?.completion_scores?.personal || 0 },
+      { name: "Academic Details", score: profile?.completion_scores?.academic || 0 },
+      { name: "Financial Profile", score: profile?.completion_scores?.financial || 0 },
+      { name: "Uploaded Docs", score: profile?.completion_scores?.documents || 0 }
     ];
   };
 
   // AI Recommendation Engine
   const getAIRecommendation = () => {
     if (!profile) return "Set up your profile to enable university matching.";
-    const acad = profile.academic;
-    const personal = profile.personal;
+    const acad = profile?.academic;
+    const personal = profile?.personal;
     
     if (!acad?.ielts_score && !acad?.toefl_score && !acad?.pte_score) {
       return "Complete your IELTS/TOEFL/PTE score to improve university search matching.";
@@ -417,7 +444,7 @@ export default function SettingsPage() {
     if (!personal?.passport_number) {
       return "Provide your passport details to speed up visa readiness auditing.";
     }
-    if (!profile.preferences.preferred_countries || profile.preferences.preferred_countries.length === 0) {
+    if (!profile?.preferences?.preferred_countries || profile?.preferences?.preferred_countries.length === 0) {
       return "Select preferred target destinations to receive accurate country lists.";
     }
     return "Your profile is in great shape! Ready to shortlist university targets.";
@@ -427,16 +454,16 @@ export default function SettingsPage() {
   const getVisaReadiness = () => {
     if (!profile) return 0;
     let score = 25; // base readiness
-    if (profile.personal.passport_number) score += 25;
-    if (profile.financial.savings > 0 || profile.financial.education_loan > 0) score += 25;
-    if (profile.financial.sponsor) score += 15;
+    if (profile?.personal?.passport_number) score += 25;
+    if ((profile?.financial?.savings || 0) > 0 || (profile?.financial?.education_loan || 0) > 0) score += 25;
+    if (profile?.financial?.sponsor) score += 15;
     if (documents.some(d => d.category === "Visa" || d.category === "Financial")) score += 10;
     return Math.min(score, 100);
   };
 
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center font-sans">
+      <div className={isEmbedded ? "flex items-center justify-center py-20 font-sans" : "min-h-screen bg-[#f8fafc] flex items-center justify-center font-sans"}>
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
           <p className="text-slate-500 text-sm font-semibold animate-pulse">Loading Profile Hub...</p>
@@ -446,7 +473,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 py-10 px-4 md:px-8 font-sans">
+    <div className={isEmbedded ? "text-slate-800 font-sans w-full" : "min-h-screen bg-[#f8fafc] text-slate-800 py-10 px-4 md:px-8 font-sans"}>
       
       {/* Toast Alert Portal */}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm">
@@ -475,26 +502,30 @@ export default function SettingsPage() {
       </div>
 
       {/* Page Title Header */}
-      <div className="max-w-7xl mx-auto mb-8 select-none flex justify-between items-center px-2">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">My Profile</h1>
-          <p className="text-xs text-slate-500 mt-1">Manage your academic credentials and preferences for global admissions.</p>
+      {!isEmbedded && (
+        <div className="max-w-7xl mx-auto mb-8 select-none flex justify-between items-center px-2">
+          <div>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">My Profile</h1>
+            <p className="text-xs text-slate-500 mt-1">Manage your academic credentials and preferences for global admissions.</p>
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className={isEmbedded ? "max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8" : "max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8"}>
         
         {/* LEFT COLUMN: Sidebar Navigation & HUD */}
         <div className="lg:col-span-1 flex flex-col gap-6">
           
           {/* Back to Dashboard Link */}
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer w-fit select-none group border border-slate-200 bg-white rounded-2xl px-4.5 py-2.5 hover:bg-slate-50 shadow-xs"
-          >
-            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform text-blue-600" />
-            <span>Back to Dashboard</span>
-          </button>
+          {!isEmbedded && (
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer w-fit select-none group border border-slate-200 bg-white rounded-2xl px-4.5 py-2.5 hover:bg-slate-50 shadow-xs"
+            >
+              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform text-blue-600" />
+              <span>Back to Dashboard</span>
+            </button>
+          )}
 
           {/* Profile HUD score widget */}
           {profile && (
@@ -514,12 +545,12 @@ export default function SettingsPage() {
                 </div>
                 <div className="min-w-0">
                   <h3 className="font-extrabold text-slate-850 text-sm truncate pr-1">
-                    {profile.personal.full_name || "Aura Student"}
+                    {profile?.personal?.full_name || "Aura Student"}
                   </h3>
                   <div className="flex items-center gap-1 mt-1">
-                    <UserCheck className={`h-3.5 w-3.5 ${profile.verification_status === "Verified" ? "text-emerald-500" : "text-amber-500"}`} />
+                    <UserCheck className={`h-3.5 w-3.5 ${profile?.verification_status === "Verified" ? "text-emerald-500" : "text-amber-500"}`} />
                     <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">
-                      {profile.verification_status}
+                      {profile?.verification_status}
                     </span>
                   </div>
                 </div>
@@ -579,11 +610,10 @@ export default function SettingsPage() {
                         <p className="text-[11px] text-slate-500 mt-0.5">Upload a photo for admissions applications.</p>
                       </div>
                     </div>
-
                     <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
                       <div className="relative h-20 w-20 rounded-full overflow-hidden bg-white border border-slate-200 flex items-center justify-center shadow-xs">
-                        {profile.photo_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
-                          <img src={profile.photo_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture} alt="Profile" className="h-full w-full object-cover" />
+                        {profile?.photo_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                          <img src={profile?.photo_url || user?.user_metadata?.avatar_url || user?.user_metadata?.picture} alt="Profile" className="h-full w-full object-cover" />
                         ) : (
                           <User className="h-10 w-10 text-slate-300" />
                         )}
@@ -597,7 +627,7 @@ export default function SettingsPage() {
                             <UploadCloud className="h-4 w-4" />
                             Change Picture
                           </button>
-                          {profile.photo_url && (
+                          {profile?.photo_url && (
                             <button
                               onClick={handleAvatarDelete}
                               className="px-4 py-2 bg-slate-100 hover:bg-slate-250 text-xs font-bold rounded-xl text-rose-600 border border-slate-200/80 transition-all cursor-pointer"
@@ -631,12 +661,12 @@ export default function SettingsPage() {
                       {editingCard !== "basic_details" && (
                         <button
                           onClick={() => startEditing("basic_details", {
-                            full_name: profile.personal.full_name || "",
-                            date_of_birth: profile.personal.date_of_birth || "",
-                            gender: profile.personal.gender || "",
-                            nationality: profile.personal.nationality || "",
-                            country_residence: profile.personal.country_residence || "",
-                            city: profile.personal.city || ""
+                            full_name: profile?.personal?.full_name || "",
+                            date_of_birth: profile?.personal?.date_of_birth || "",
+                            gender: profile?.personal?.gender || "",
+                            nationality: profile?.personal?.nationality || "",
+                            country_residence: profile?.personal?.country_residence || "",
+                            city: profile?.personal?.city || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -726,27 +756,27 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Full Name</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.full_name || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.full_name || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Date of Birth</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.date_of_birth || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.date_of_birth || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Gender</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.gender || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.gender || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Nationality</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.nationality || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.nationality || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Residence Country</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.country_residence || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.country_residence || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">City</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.city || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.city || "—"}</p>
                         </div>
                       </div>
                     )}
@@ -765,8 +795,8 @@ export default function SettingsPage() {
                       {editingCard !== "contact_details" && (
                         <button
                           onClick={() => startEditing("contact_details", {
-                            email: profile.personal.email || "",
-                            phone: profile.personal.phone || ""
+                            email: profile?.personal?.email || "",
+                            phone: profile?.personal?.phone || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-255 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -816,11 +846,11 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email address</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.email || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.email || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone number</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.phone || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.phone || "—"}</p>
                         </div>
                       </div>
                     )}
@@ -839,8 +869,8 @@ export default function SettingsPage() {
                       {editingCard !== "passport_details" && (
                         <button
                           onClick={() => startEditing("passport_details", {
-                            passport_number: profile.personal.passport_number || "",
-                            passport_expiry: profile.personal.passport_expiry || ""
+                            passport_number: profile?.personal?.passport_number || "",
+                            passport_expiry: profile?.personal?.passport_expiry || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -890,11 +920,11 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Passport Number</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.passport_number || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.passport_number || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Expiry date</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.personal.passport_expiry || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.personal?.passport_expiry || "—"}</p>
                         </div>
                       </div>
                     )}
@@ -920,11 +950,11 @@ export default function SettingsPage() {
                       {editingCard !== "academic_history" && (
                         <button
                           onClick={() => startEditing("academic_history", {
-                            highest_qualification: profile.academic.highest_qualification || "",
-                            college: profile.academic.college || "",
-                            grad_year: profile.academic.grad_year || "",
-                            university: profile.academic.university || "",
-                            backlogs: profile.academic.backlogs || 0
+                            highest_qualification: profile?.academic?.highest_qualification || "",
+                            college: profile?.academic?.college || "",
+                            grad_year: profile?.academic?.grad_year || "",
+                            university: profile?.academic?.university || "",
+                            backlogs: profile?.academic?.backlogs || 0
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -1001,23 +1031,23 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Highest Qualification</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.highest_qualification || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.highest_qualification || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">School / College</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.college || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.college || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">University Name</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.university || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.university || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Graduation Year</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.grad_year || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.grad_year || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Backlogs</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.backlogs ?? 0}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.backlogs ?? 0}</p>
                         </div>
                       </div>
                     )}
@@ -1036,10 +1066,10 @@ export default function SettingsPage() {
                       {editingCard !== "academic_scores" && (
                         <button
                           onClick={() => startEditing("academic_scores", {
-                            gpa_10th: profile.academic.gpa_10th || "",
-                            gpa_12th: profile.academic.gpa_12th || "",
-                            cgpa_bachelors: profile.academic.cgpa_bachelors || "",
-                            cgpa_masters: profile.academic.cgpa_masters || ""
+                            gpa_10th: profile?.academic?.gpa_10th || "",
+                            gpa_12th: profile?.academic?.gpa_12th || "",
+                            cgpa_bachelors: profile?.academic?.cgpa_bachelors || "",
+                            cgpa_masters: profile?.academic?.cgpa_masters || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -1111,19 +1141,19 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">10th Percentage</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.gpa_10th ? `${profile.academic.gpa_10th}%` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.gpa_10th ? `${profile?.academic?.gpa_10th}%` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">12th Percentage</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.gpa_12th ? `${profile.academic.gpa_12th}%` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.gpa_12th ? `${profile?.academic?.gpa_12th}%` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bachelor's CGPA</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.cgpa_bachelors || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.cgpa_bachelors || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Master's CGPA</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.cgpa_masters || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.cgpa_masters || "—"}</p>
                         </div>
                       </div>
                     )}
@@ -1142,16 +1172,16 @@ export default function SettingsPage() {
                       {editingCard !== "standard_tests" && (
                         <button
                           onClick={() => startEditing("standard_tests", {
-                            ielts_score: profile.academic.ielts_score || "",
-                            ielts_expiry: profile.academic.ielts_expiry || "",
-                            toefl_score: profile.academic.toefl_score || "",
-                            toefl_expiry: profile.academic.toefl_expiry || "",
-                            pte_score: profile.academic.pte_score || "",
-                            pte_expiry: profile.academic.pte_expiry || "",
-                            gre_score: profile.academic.gre_score || "",
-                            gre_expiry: profile.academic.gre_expiry || "",
-                            gmat_score: profile.academic.gmat_score || "",
-                            gmat_expiry: profile.academic.gmat_expiry || ""
+                            ielts_score: profile?.academic?.ielts_score || "",
+                            ielts_expiry: profile?.academic?.ielts_expiry || "",
+                            toefl_score: profile?.academic?.toefl_score || "",
+                            toefl_expiry: profile?.academic?.toefl_expiry || "",
+                            pte_score: profile?.academic?.pte_score || "",
+                            pte_expiry: profile?.academic?.pte_expiry || "",
+                            gre_score: profile?.academic?.gre_score || "",
+                            gre_expiry: profile?.academic?.gre_expiry || "",
+                            gmat_score: profile?.academic?.gmat_score || "",
+                            gmat_expiry: profile?.academic?.gmat_expiry || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -1279,23 +1309,23 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">IELTS</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.ielts_score ? `${profile.academic.ielts_score} (Exp: ${profile.academic.ielts_expiry || "N/A"})` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.ielts_score ? `${profile?.academic?.ielts_score} (Exp: ${profile?.academic?.ielts_expiry || "N/A"})` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TOEFL</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.toefl_score ? `${profile.academic.toefl_score} (Exp: ${profile.academic.toefl_expiry || "N/A"})` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.toefl_score ? `${profile?.academic?.toefl_score} (Exp: ${profile?.academic?.toefl_expiry || "N/A"})` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PTE Score</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.pte_score ? `${profile.academic.pte_score} (Exp: ${profile.academic.pte_expiry || "N/A"})` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.pte_score ? `${profile?.academic?.pte_score} (Exp: ${profile?.academic?.pte_expiry || "N/A"})` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">GRE Score</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.gre_score ? `${profile.academic.gre_score} (Exp: ${profile.academic.gre_expiry || "N/A"})` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.gre_score ? `${profile?.academic?.gre_score} (Exp: ${profile?.academic?.gre_expiry || "N/A"})` : "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">GMAT Score</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.academic.gmat_score ? `${profile.academic.gmat_score} (Exp: ${profile.academic.gmat_expiry || "N/A"})` : "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.academic?.gmat_score ? `${profile?.academic?.gmat_score} (Exp: ${profile?.academic?.gmat_expiry || "N/A"})` : "—"}</p>
                         </div>
                       </div>
                     )}
@@ -1317,8 +1347,8 @@ export default function SettingsPage() {
                             setNewWorkItem({ role: "", company: "", years: "" });
                             setNewCertItem("");
                             startEditing("work_certs", {
-                              work_experience: profile.academic.work_experience || [],
-                              certifications: profile.academic.certifications || []
+                              work_experience: profile?.academic?.work_experience || [],
+                              certifications: profile?.academic?.certifications || []
                             });
                           }}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
@@ -1455,11 +1485,11 @@ export default function SettingsPage() {
                       <div className="space-y-4 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Work Experience</p>
-                          {(!profile.academic.work_experience || profile.academic.work_experience.length === 0) ? (
+                          {(!profile?.academic?.work_experience || profile?.academic?.work_experience?.length === 0) ? (
                             <p className="text-slate-400 font-semibold italic text-xs">No work experience listed.</p>
                           ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {profile.academic.work_experience.map((work: any, idx: number) => (
+                              {profile?.academic?.work_experience?.map((work: any, idx: number) => (
                                 <div key={idx} className="p-3 bg-slate-50/50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-bold">
                                   <div>
                                     <p className="text-slate-800">{work.role}</p>
@@ -1474,11 +1504,11 @@ export default function SettingsPage() {
 
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Certifications</p>
-                          {(!profile.academic.certifications || profile.academic.certifications.length === 0) ? (
+                          {(!profile?.academic?.certifications || profile?.academic?.certifications?.length === 0) ? (
                             <p className="text-slate-400 font-semibold italic text-xs">No certifications uploaded.</p>
                           ) : (
                             <div className="flex flex-wrap gap-2">
-                              {profile.academic.certifications.map((cert: string, idx: number) => (
+                              {profile?.academic?.certifications?.map((cert: string, idx: number) => (
                                 <span key={idx} className="inline-flex px-3 py-1 bg-blue-50 text-blue-700 border border-blue-100 rounded-xl text-[10px] font-bold">
                                   {cert}
                                 </span>
@@ -1510,12 +1540,12 @@ export default function SettingsPage() {
                       {editingCard !== "study_pref" && (
                         <button
                           onClick={() => startEditing("study_pref", {
-                            preferred_countries_str: profile.preferences.preferred_countries.join(", "),
-                            preferred_courses_str: profile.preferences.preferred_courses.join(", "),
-                            preferred_universities_str: (profile.preferences.preferred_universities || []).join(", "),
-                            degree_level: profile.preferences.degree_level || "",
-                            target_intake: profile.preferences.target_intake || "",
-                            career_goals: profile.preferences.career_goals || ""
+                            preferred_countries_str: (profile?.preferences?.preferred_countries || []).join(", "),
+                            preferred_courses_str: (profile?.preferences?.preferred_courses || []).join(", "),
+                            preferred_universities_str: (profile?.preferences?.preferred_universities || []).join(", "),
+                            degree_level: profile?.preferences?.degree_level || "",
+                            target_intake: profile?.preferences?.target_intake || "",
+                            career_goals: profile?.preferences?.career_goals || ""
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -1620,28 +1650,28 @@ export default function SettingsPage() {
                         <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Preferred Countries</p>
-                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile.preferences.preferred_countries.join(", ") || "—"}</p>
+                            <p className="text-slate-800 font-bold mt-1 text-xs">{(profile?.preferences?.preferred_countries || []).join(", ") || "—"}</p>
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Preferred Courses</p>
-                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile.preferences.preferred_courses.join(", ") || "—"}</p>
+                            <p className="text-slate-800 font-bold mt-1 text-xs">{(profile?.preferences?.preferred_courses || []).join(", ") || "—"}</p>
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Target Universities</p>
-                            <p className="text-slate-800 font-bold mt-1 text-xs">{(profile.preferences.preferred_universities || []).join(", ") || "—"}</p>
+                            <p className="text-slate-800 font-bold mt-1 text-xs">{(profile?.preferences?.preferred_universities || []).join(", ") || "—"}</p>
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Degree Level</p>
-                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile.preferences.degree_level || "—"}</p>
+                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.preferences?.degree_level || "—"}</p>
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Target Intake</p>
-                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile.preferences.target_intake || "—"}</p>
+                            <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.preferences?.target_intake || "—"}</p>
                           </div>
                         </div>
                         <div className="pt-2 border-t border-slate-100">
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Career Goals</p>
-                          <p className="text-slate-700 font-semibold mt-1 text-xs leading-relaxed">{profile.preferences.career_goals || "—"}</p>
+                          <p className="text-slate-700 font-semibold mt-1 text-xs leading-relaxed">{profile?.preferences?.career_goals || "—"}</p>
                         </div>
                       </div>
                     )}
@@ -1660,13 +1690,13 @@ export default function SettingsPage() {
                       {editingCard !== "financial_budget" && (
                         <button
                           onClick={() => startEditing("financial_budget", {
-                            budget: profile.preferences.budget || "",
-                            scholarship_required: profile.preferences.scholarship_required,
-                            annual_family_income: profile.financial.annual_family_income || "",
-                            savings: profile.financial.savings || 0,
-                            education_loan: profile.financial.education_loan || 0,
-                            sponsor: profile.financial.sponsor || "",
-                            currency: profile.financial.currency || "USD"
+                            budget: profile?.preferences?.budget || "",
+                            scholarship_required: !!profile?.preferences?.scholarship_required,
+                            annual_family_income: profile?.financial?.annual_family_income || "",
+                            savings: profile?.financial?.savings || 0,
+                            education_loan: profile?.financial?.education_loan || 0,
+                            sponsor: profile?.financial?.sponsor || "",
+                            currency: profile?.financial?.currency || "USD"
                           })}
                           className="px-3.5 py-1.5 text-xs font-bold border border-slate-250 hover:bg-slate-50 rounded-xl cursor-pointer text-slate-650"
                         >
@@ -1768,32 +1798,76 @@ export default function SettingsPage() {
                       <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs select-none">
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Max Annual Budget</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.preferences.budget || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.preferences?.budget || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Annual Family Income</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.financial.annual_family_income || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.financial?.annual_family_income || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Liquid Savings</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{(profile.financial.savings ?? 0).toLocaleString()} {profile.financial.currency}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{(profile?.financial?.savings ?? 0).toLocaleString()} {profile?.financial?.currency}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Education Loan approved</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{(profile.financial.education_loan ?? 0).toLocaleString()} {profile.financial.currency}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{(profile?.financial?.education_loan ?? 0).toLocaleString()} {profile?.financial?.currency}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sponsor</p>
-                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile.financial.sponsor || "—"}</p>
+                          <p className="text-slate-800 font-bold mt-1 text-xs">{profile?.financial?.sponsor || "—"}</p>
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Scholarship Required</p>
-                          <p className={`mt-1 text-xs font-bold ${profile.preferences.scholarship_required ? "text-blue-600" : "text-slate-500"}`}>
-                            {profile.preferences.scholarship_required ? "Yes" : "No"}
+                          <p className={`mt-1 text-xs font-bold ${profile?.preferences?.scholarship_required ? "text-blue-600" : "text-slate-500"}`}>
+                            {profile?.preferences?.scholarship_required ? "Yes" : "No"}
                           </p>
                         </div>
                       </div>
                     )}
+                  </div>
+
+                  {/* Card C: Billing & Invoices (Contextual migration) */}
+                  <div className="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-8 shadow-xs">
+                    <div className="flex items-center gap-3 mb-6">
+                      <CreditCard className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <h2 className="text-sm font-extrabold text-slate-900">Billing & Receipts</h2>
+                        <p className="text-[11px] text-slate-500 mt-0.5">Download receipts for purchased premium services.</p>
+                      </div>
+                    </div>
+
+                    <div className="overflow-x-auto select-none">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-slate-100 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                            <th className="pb-3 pr-4">Invoice ID</th>
+                            <th className="pb-3 px-4">Service</th>
+                            <th className="pb-3 px-4 text-right">Amount</th>
+                            <th className="pb-3 pl-4 text-center">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {invoices.length === 0 ? (
+                            <tr>
+                              <td colSpan={4} className="text-center text-xs text-slate-400 py-6 italic font-medium">No purchases logged.</td>
+                            </tr>
+                          ) : (
+                            invoices.map((inv) => (
+                              <tr key={inv.id} className="border-b border-slate-50 text-[11px] font-bold text-slate-700 hover:bg-slate-50/50">
+                                <td className="py-3 pr-4 font-mono">{inv.receipt_number}</td>
+                                <td className="py-3 px-4 text-slate-600">{inv.service_title}</td>
+                                <td className="py-3 px-4 text-right text-slate-900 font-extrabold">₹{inv.amount}</td>
+                                <td className="py-3 pl-4 text-center">
+                                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-full text-[9px] uppercase font-bold">
+                                    {inv.status}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                 </div>
@@ -2010,7 +2084,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.email}
+                          checked={!!settings?.notifications?.email}
                           onChange={(e) => handleNotificationChange("email", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2023,7 +2097,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.whatsapp}
+                          checked={!!settings?.notifications?.whatsapp}
                           onChange={(e) => handleNotificationChange("whatsapp", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2036,7 +2110,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.in_app}
+                          checked={!!settings?.notifications?.in_app}
                           onChange={(e) => handleNotificationChange("in_app", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2062,7 +2136,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.ai_updates}
+                          checked={!!settings?.notifications?.ai_updates}
                           onChange={(e) => handleNotificationChange("ai_updates", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2075,7 +2149,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.consultation}
+                          checked={!!settings?.notifications?.consultation}
                           onChange={(e) => handleNotificationChange("consultation", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2088,7 +2162,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.payments}
+                          checked={!!settings?.notifications?.payments}
                           onChange={(e) => handleNotificationChange("payments", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2101,7 +2175,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.scholarships}
+                          checked={!!settings?.notifications?.scholarships}
                           onChange={(e) => handleNotificationChange("scholarships", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2114,7 +2188,7 @@ export default function SettingsPage() {
                         </div>
                         <input
                           type="checkbox"
-                          checked={settings.notifications.visa}
+                          checked={!!settings?.notifications?.visa}
                           onChange={(e) => handleNotificationChange("visa", e.target.checked)}
                           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                         />
@@ -2176,18 +2250,18 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-3">
-                      {settings.connected_accounts.length === 0 ? (
+                      {(!settings?.connected_accounts || settings?.connected_accounts?.length === 0) ? (
                         <p className="text-xs text-slate-400 italic">No connected accounts.</p>
                       ) : (
-                        settings.connected_accounts.map((acc, idx) => (
+                        settings?.connected_accounts?.map((acc, idx) => (
                           <div key={idx} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-xs">
                             <div className="flex items-center gap-3">
                               <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-sm text-white shadow-md shadow-blue-500/10">
                                 G
                               </div>
                               <div>
-                                <p className="text-xs font-extrabold text-slate-850 capitalize">{acc.provider} Login</p>
-                                <p className="text-[10px] text-slate-500 font-medium">{acc.email || "Linked Identity"}</p>
+                                <p className="text-xs font-extrabold text-slate-850 capitalize">{acc?.provider} Login</p>
+                                <p className="text-[10px] text-slate-500 font-medium">{acc?.email || "Linked Identity"}</p>
                               </div>
                             </div>
                             <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-xl select-none">
@@ -2211,11 +2285,11 @@ export default function SettingsPage() {
 
                     <div className="space-y-4">
                       <div className="space-y-3">
-                        {settings.security.active_sessions.map((sess, idx) => (
+                        {(settings?.security?.active_sessions || [])?.map((sess, idx) => (
                           <div key={idx} className="flex justify-between items-center py-2.5 border-b border-slate-100 last:border-0">
                             <div>
-                              <p className="text-xs font-bold text-slate-855">{sess.device}</p>
-                              <p className="text-[9px] text-slate-400 font-bold mt-0.5">IP: {sess.ip}</p>
+                              <p className="text-xs font-bold text-slate-855">{sess?.device}</p>
+                              <p className="text-[9px] text-slate-400 font-bold mt-0.5">IP: {sess?.ip}</p>
                             </div>
                             <span className="text-[9px] bg-emerald-50 border border-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full font-bold select-none">
                               Active Now
@@ -2252,7 +2326,7 @@ export default function SettingsPage() {
                         <div>
                           <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Preferred Language</label>
                           <select
-                            value={settings.language.preferred_language}
+                            value={settings?.language?.preferred_language || "English"}
                             onChange={(e) => handleLanguageChange(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-bold focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-xs"
                           >
@@ -2265,7 +2339,7 @@ export default function SettingsPage() {
                         <div>
                           <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Interface Theme</label>
                           <select
-                            value={settings.appearance.theme}
+                            value={settings?.appearance?.theme || "light"}
                             onChange={(e) => handleThemeChange(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 font-bold focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-xs"
                           >
@@ -2380,8 +2454,8 @@ export default function SettingsPage() {
                   <div className="min-w-0">
                     <h4 className="text-xs font-bold text-slate-800">Target Matches</h4>
                     <p className="text-[10px] text-slate-500 mt-0.5 leading-relaxed font-semibold">
-                      {profile.preferences.preferred_countries && profile.preferences.preferred_countries.length > 0 ? (
-                        `Matching universities in ${profile.preferences.preferred_countries.join(", ")}.`
+                      {profile?.preferences?.preferred_countries && profile?.preferences?.preferred_countries?.length > 0 ? (
+                        `Matching universities in ${profile?.preferences?.preferred_countries?.join(", ")}.`
                       ) : (
                         "Add target study destinations to receive matching options."
                       )}
@@ -2397,7 +2471,7 @@ export default function SettingsPage() {
                   <div className="min-w-0">
                     <h4 className="text-xs font-bold text-slate-800">Scholarships</h4>
                     <p className="text-[10px] text-slate-500 mt-0.5 leading-relaxed font-semibold">
-                      {profile.preferences.scholarship_required ? (
+                      {profile?.preferences?.scholarship_required ? (
                         "Matching with Commonwealth & Global Excellence grants."
                       ) : (
                         "Flag scholarship requirements in preferences to scan waiver programs."

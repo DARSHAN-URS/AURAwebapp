@@ -30,7 +30,13 @@ import {
   ArrowRight,
   ExternalLink,
   GraduationCap,
-  MessageSquare
+  MessageSquare,
+  Home,
+  Compass,
+  Sparkles,
+  User,
+  FolderOpen,
+  ClipboardList
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/common/AuthContext";
@@ -42,6 +48,9 @@ import JourneyKanban from "@/components/journey/JourneyKanban";
 import JourneyCalendar from "@/components/journey/JourneyCalendar";
 import JourneyTasks from "@/components/journey/JourneyTasks";
 import JourneyAnalytics from "@/components/journey/JourneyAnalytics";
+import SettingsPage from "@/app/settings/page";
+import ApplicationManager from "@/app/applications/page";
+import UniversityMatcher from "@/app/universities/page";
 
 interface Activity {
   id: string;
@@ -802,28 +811,28 @@ function StudentDashboardContent() {
 
   // Collapsible sidebar menu tab navigation items
   const menuItems = [
-    { id: "overview", label: "Overview", icon: LayoutDashboard },
-    { id: "journey", label: "Student Journey", icon: TrendingUp },
-    { id: "aura-ai", label: "Aura AI Assistant", icon: MessageSquare },
-    { id: "reports", label: "My AI Reports", icon: FileText },
-    { id: "vault", label: "Document Vault", icon: FolderLock },
-    { id: "payments", label: "Billing Center", icon: Receipt },
-    { id: "appointments", label: "Consultation Appts", icon: CalendarDays }
+    { id: "overview", label: "Overview", icon: Home },
+    { id: "journey", label: "My Journey", icon: Compass },
+    { id: "aura-ai", label: "Aura AI", icon: Sparkles },
+    { id: "universities", label: "Universities", icon: GraduationCap },
+    { id: "applications", label: "Applications", icon: ClipboardList },
+    { id: "vault", label: "Documents", icon: FolderOpen },
+    { id: "appointments", label: "Consultations", icon: CalendarDays },
+    { id: "profile", label: "My Profile", icon: User }
   ];
 
   const handleTabChange = (tabId: string) => {
-    if (tabId === "profile" || tabId === "settings") {
-      setMobileMenuOpen(false);
-      router.push("/settings");
-      return;
+    let finalTab = tabId;
+    if (tabId === "settings") {
+      finalTab = "profile";
     }
-    if (stats && stats.profile_completeness < 50 && tabId !== "profile") {
+    if (stats && stats.profile_completeness < 50 && finalTab !== "profile") {
       alert(`Please complete at least 50% of your profile (current completeness: ${stats.profile_completeness}%) to explore all platform tools!`);
       return;
     }
-    setActiveTab(tabId);
+    setActiveTab(finalTab);
     setMobileMenuOpen(false);
-    router.push(`/dashboard?tab=${tabId}`);
+    router.push(`/dashboard?tab=${finalTab}`);
   };
 
   const getUnreadNotifications = () => notifications.filter(n => !n.is_read);
@@ -876,7 +885,7 @@ function StudentDashboardContent() {
         {/* Footer info logout */}
         <div className="border-t border-border pt-4 px-2 flex flex-col gap-2">
           <button
-            onClick={() => router.push("/settings")}
+            onClick={() => handleTabChange("profile")}
             className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted text-left border border-transparent hover:border-border transition-all duration-200 cursor-pointer group"
           >
             <div className="relative w-8 h-8 rounded-full overflow-hidden bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
@@ -925,7 +934,7 @@ function StudentDashboardContent() {
         <div className="flex items-center gap-3">
           {/* Notifications bell */}
           <div className="relative">
-            <button onClick={() => handleTabChange("notifications")} className="p-1.5 text-muted-foreground hover:text-foreground">
+            <button onClick={() => handleTabChange("profile")} className="p-1.5 text-muted-foreground hover:text-foreground">
               <Bell className="w-5 h-5" />
               {stats && stats.unread_notifications_count > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center">
@@ -997,7 +1006,7 @@ function StudentDashboardContent() {
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    router.push("/settings");
+                    handleTabChange("profile");
                   }}
                   className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted text-left border border-transparent hover:border-border transition-all duration-200 cursor-pointer group"
                 >
@@ -1181,9 +1190,18 @@ function StudentDashboardContent() {
                           <p className="text-[10px] font-bold text-muted-text uppercase mt-0.5">Purchases</p>
                         </div>
                       </div>
-                      <span className="text-[10px] text-muted-text font-semibold text-center">
-                        Active Licenses: {stats.purchased_services.length} Premium services
-                      </span>
+                      <div className="flex flex-col items-center gap-1.5 mt-2">
+                        <span className="text-[10px] text-muted-text font-semibold text-center">
+                          Active Licenses: {stats.purchased_services.length} Premium services
+                        </span>
+                        <button 
+                          onClick={() => router.push("/services")}
+                          className="text-[10px] text-primary hover:underline font-bold text-center cursor-pointer flex items-center justify-center gap-1"
+                        >
+                          Explore Premium Services
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
 
                   </div>
@@ -1335,72 +1353,73 @@ function StudentDashboardContent() {
                     </div>
                   </div>
 
-                </motion.div>
-              )}
+                  {/* AI Reports & Drafts Overview Widget */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                    
+                    {/* SOP Drafts */}
+                    <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+                      <div className="border-b border-gray-50 pb-3 mb-6 flex justify-between items-center">
+                        <h3 className="text-xs font-black uppercase text-muted-text tracking-wider">Statement of Purpose Drafts</h3>
+                        <button onClick={() => router.push("/sop")} className="text-[10px] text-primary hover:underline font-bold">
+                          Create SOP
+                        </button>
+                      </div>
 
-              {/* TAB 2: AI REPORTS WORKSPACE */}
-              {activeTab === "reports" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="flex flex-col gap-8"
-                >
-                  <div className="border-b border-border pb-4">
-                    <h2 className="text-xl font-black text-foreground">AI Reports & Workspace Logs</h2>
-                    <p className="text-xs text-muted-text mt-1">Access drafted SOPs and visa document assessment archives.</p>
-                  </div>
-
-                  {/* SOP Documents */}
-                  <div>
-                    <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-4">Statement of Purpose Drafts</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      {aiSops.length === 0 ? (
-                        <p className="text-xs text-muted-text py-3">No SOP drafts available. Generate one under the SOP page.</p>
-                      ) : (
-                        aiSops.map((sop) => (
-                          <div 
-                            key={sop.id}
-                            onClick={() => router.push(`/sop/editor/${sop.id}`)}
-                            className="bg-card border border-border hover:border-primary/40 rounded-2xl p-5 shadow-sm flex justify-between items-center cursor-pointer group"
-                          >
-                            <div>
-                              <h4 className="font-extrabold text-foreground text-sm group-hover:text-primary transition-colors leading-tight">
-                                {sop.title}
-                              </h4>
-                              <p className="text-[10px] text-muted-text mt-0.5 leading-snug">{sop.target}</p>
+                      <div className="flex flex-col gap-4">
+                        {aiSops.slice(0, 3).length === 0 ? (
+                          <p className="text-center text-xs text-muted-text py-6 font-medium">No SOP drafts available.</p>
+                        ) : (
+                          aiSops.slice(0, 3).map((sop) => (
+                            <div 
+                              key={sop.id}
+                              onClick={() => router.push(`/sop/editor/${sop.id}`)}
+                              className="bg-background border border-border hover:border-primary/40 rounded-2xl p-4 flex justify-between items-center cursor-pointer group transition-all"
+                            >
+                              <div className="truncate pr-4">
+                                <h4 className="font-extrabold text-foreground text-xs group-hover:text-primary transition-colors truncate">
+                                  {sop.title}
+                                </h4>
+                                <p className="text-[10px] text-muted-text mt-0.5 leading-snug truncate">{sop.target}</p>
+                              </div>
+                              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-primary transition-all shrink-0" />
                             </div>
-                            <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary transition-all" />
-                          </div>
-                        ))
-                      )}
+                          ))
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Visa Auditor logs */}
-                  <div className="mt-4">
-                    <h3 className="font-extrabold text-foreground text-xs uppercase tracking-wider mb-4">Visa Readiness Audits</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      {aiVisas.length === 0 ? (
-                        <p className="text-xs text-muted-text py-3">No Visa reports compiled. Run checks under the Visa page.</p>
-                      ) : (
-                        aiVisas.map((v) => (
-                          <div 
-                            key={v.id}
-                            onClick={() => router.push(`/visa-check/results/${v.id}`)}
-                            className="bg-card border border-border hover:border-primary/40 rounded-2xl p-5 shadow-sm flex justify-between items-center cursor-pointer group"
-                          >
-                            <div>
-                              <h4 className="font-extrabold text-foreground text-sm group-hover:text-primary transition-colors leading-tight">
-                                {v.title}
-                              </h4>
-                              <p className="text-[10px] text-muted-text mt-0.5 leading-snug">{v.target}</p>
+                    {/* Visa readiness check reports */}
+                    <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+                      <div className="border-b border-gray-50 pb-3 mb-6 flex justify-between items-center">
+                        <h3 className="text-xs font-black uppercase text-muted-text tracking-wider">Visa Readiness Audits</h3>
+                        <button onClick={() => router.push("/visa-check")} className="text-[10px] text-primary hover:underline font-bold">
+                          Run Audit
+                        </button>
+                      </div>
+
+                      <div className="flex flex-col gap-4">
+                        {aiVisas.slice(0, 3).length === 0 ? (
+                          <p className="text-center text-xs text-muted-text py-6 font-medium">No Visa reports compiled.</p>
+                        ) : (
+                          aiVisas.slice(0, 3).map((v) => (
+                            <div 
+                              key={v.id}
+                              onClick={() => router.push(`/visa-check/results/${v.id}`)}
+                              className="bg-background border border-border hover:border-primary/40 rounded-2xl p-4 flex justify-between items-center cursor-pointer group transition-all"
+                            >
+                              <div className="truncate pr-4">
+                                <h4 className="font-extrabold text-foreground text-xs group-hover:text-primary transition-colors truncate">
+                                  {v.title}
+                                </h4>
+                                <p className="text-[10px] text-muted-text mt-0.5 leading-snug truncate">{v.target}</p>
+                              </div>
+                              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-primary transition-all shrink-0" />
                             </div>
-                            <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary transition-all" />
-                          </div>
-                        ))
-                      )}
+                          ))
+                        )}
+                      </div>
                     </div>
+
                   </div>
 
                 </motion.div>
@@ -1457,56 +1476,6 @@ function StudentDashboardContent() {
                 </motion.div>
               )}
 
-              {/* TAB 4: BILLING CENTER PANEL */}
-              {activeTab === "payments" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="flex flex-col gap-8"
-                >
-                  <div className="border-b border-border pb-4">
-                    <h2 className="text-xl font-black text-foreground">Billing Center & Receipts</h2>
-                    <p className="text-xs text-muted-text mt-1">Download official receipts and invoices for premium services.</p>
-                  </div>
-
-                  <div className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse">
-                        <thead>
-                          <tr className="bg-background border-b border-border text-[10px] font-bold text-muted-text uppercase tracking-widest">
-                            <th className="py-4 px-6">Invoice ID</th>
-                            <th className="py-4 px-6">Service Package</th>
-                            <th className="py-4 px-6 text-right">Amount</th>
-                            <th className="py-4 px-6 text-center">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {invoices.length === 0 ? (
-                            <tr>
-                              <td colSpan={4} className="text-center text-xs text-muted-text py-12">No purchases logged.</td>
-                            </tr>
-                          ) : (
-                            invoices.map((inv) => (
-                              <tr key={inv.id} className="border-b border-gray-50 text-xs font-semibold text-foreground/80 hover:bg-background/50">
-                                <td className="py-4 px-6">{inv.receipt_number}</td>
-                                <td className="py-4 px-6">{inv.service_title}</td>
-                                <td className="py-4 px-6 text-right font-extrabold text-foreground">₹{inv.amount}</td>
-                                <td className="py-4 px-6 text-center">
-                                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-full text-[10px] uppercase font-bold">
-                                    {inv.status}
-                                  </span>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                </motion.div>
-              )}
 
               {/* TAB 5: CONSULTATION APPOINTMENTS PANEL */}
               {activeTab === "appointments" && (
@@ -1523,10 +1492,17 @@ function StudentDashboardContent() {
 
                   <div className="flex flex-col gap-6">
                     {appointments.length === 0 ? (
-                      <div className="border border-dashed border-border rounded-3xl p-12 text-center bg-background/50">
-                        <CalendarDays className="w-10 h-10 text-gray-300 mx-auto mb-4" />
+                      <div className="border border-dashed border-border rounded-3xl p-12 text-center bg-background/50 flex flex-col items-center">
+                        <CalendarDays className="w-10 h-10 text-gray-300 mb-4" />
                         <h3 className="font-bold text-foreground text-sm">No Appointments</h3>
                         <p className="text-xs text-muted-text mt-1">Unlock 1-on-1 calls under services catalog packages.</p>
+                        <Button 
+                          onClick={() => router.push("/services")}
+                          className="bg-primary hover:bg-primary text-white font-bold px-5 py-2.5 rounded-full text-xs cursor-pointer shadow-sm mt-5 flex items-center gap-1.5"
+                        >
+                          <span>Book Consultation Slot</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
                       </div>
                     ) : (
                       appointments.map((appt) => (
@@ -1559,343 +1535,40 @@ function StudentDashboardContent() {
                 </motion.div>
               )}
 
-              {/* TAB 6: NOTIFICATIONS LIST */}
-              {activeTab === "notifications" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="flex flex-col gap-8"
-                >
-                  <div className="border-b border-border pb-4">
-                    <h2 className="text-xl font-black text-foreground">Notification Center</h2>
-                    <p className="text-xs text-muted-text mt-1">Track payment unlocks and audit status changes.</p>
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    {notifications.length === 0 ? (
-                      <p className="text-center text-xs text-muted-text py-6">No alerts available.</p>
-                    ) : (
-                      notifications.map((notif) => (
-                        <div 
-                          key={notif.id}
-                          onClick={() => handleMarkAsRead(notif.id)}
-                          className={`border rounded-2xl p-5 flex flex-col justify-between transition-all relative overflow-hidden ${
-                            notif.is_read 
-                              ? "bg-card border-border opacity-60" 
-                              : "bg-primary/10/20 border-primary/20 shadow-sm"
-                          }`}
-                        >
-                          {!notif.is_read && <div className="absolute top-0 left-0 bottom-0 w-1 bg-primary" />}
-                          
-                          <div>
-                            <h4 className="font-extrabold text-foreground text-sm flex items-center gap-2">
-                              <span>{notif.title}</span>
-                              {!notif.is_read && (
-                                <span className="text-[8px] font-black text-primary bg-primary/10 px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                                  Unread
-                                </span>
-                              )}
-                            </h4>
-                            <p className="text-xs text-muted-foreground leading-relaxed mt-1">{notif.message}</p>
-                            <span className="text-[9px] text-muted-text block mt-2">
-                              {new Date(notif.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                </motion.div>
-              )}
 
               {/* TAB 7: PROFILE SETTINGS */}
-              {activeTab === "profile" && profile && (
+              {activeTab === "profile" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="flex flex-col gap-8"
+                  className="w-full"
                 >
-                  <div className="border-b border-border pb-4">
-                    <h2 className="text-xl font-black text-foreground">Student Profile Settings</h2>
-                    <p className="text-xs text-muted-text mt-1">Configure study goals, qualifications and contacts.</p>
-                  </div>
-
-                  <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-sm">
-                    <form onSubmit={handleUpdateProfile} className="flex flex-col gap-6">
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Full Name</label>
-                          <input
-                            type="text"
-                            value={profile.full_name}
-                            onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Contact Phone</label>
-                          <input
-                            type="text"
-                            value={profile.phone}
-                            onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Country Residence</label>
-                          <input
-                            type="text"
-                            value={profile.country_residence}
-                            onChange={(e) => setProfile({ ...profile, country_residence: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Nationality</label>
-                          <input
-                            type="text"
-                            value={profile.nationality}
-                            onChange={(e) => setProfile({ ...profile, nationality: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Education Qualification</label>
-                          <input
-                            type="text"
-                            value={profile.qualification}
-                            onChange={(e) => setProfile({ ...profile, qualification: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Preferred Study Destination</label>
-                          <input
-                            type="text"
-                            value={profile.preferred_country}
-                            onChange={(e) => setProfile({ ...profile, preferred_country: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Target Degree & Course</label>
-                          <input
-                            type="text"
-                            value={profile.preferred_course}
-                            onChange={(e) => setProfile({ ...profile, preferred_course: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-bold text-muted-text uppercase">Preferred Intake</label>
-                          <input
-                            type="text"
-                            value={profile.preferred_intake}
-                            onChange={(e) => setProfile({ ...profile, preferred_intake: e.target.value })}
-                            className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end pt-4">
-                        <Button
-                          type="submit"
-                          className="bg-primary hover:bg-primary text-white font-bold py-3 px-8 rounded-full text-xs cursor-pointer shadow-md w-full sm:w-fit"
-                        >
-                          Save Profile Changes
-                        </Button>
-                      </div>
-
-                    </form>
-                  </div>
-
+                  <SettingsPage isEmbedded={true} />
                 </motion.div>
               )}
 
-              {/* TAB 8: SETTINGS PANEL */}
-              {activeTab === "settings" && (
+              {/* TAB: UNIVERSITIES MATCHING */}
+              {activeTab === "universities" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="flex flex-col gap-8"
+                  className="w-full"
                 >
-                  <div className="border-b border-border pb-4">
-                    <h2 className="text-xl font-black text-foreground">Dashboard Preferences</h2>
-                    <p className="text-xs text-muted-text mt-1">Manage notification channels, WhatsApp opt-ins and general settings.</p>
-                  </div>
+                  <UniversityMatcher isEmbedded={true} />
+                </motion.div>
+              )}
 
-                  <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-sm flex flex-col gap-6">
-                    
-                    <div className="flex justify-between items-center border-b border-gray-50 pb-4">
-                      <div>
-                        <h4 className="font-extrabold text-foreground text-sm">Email Alerts</h4>
-                        <p className="text-[11px] text-muted-text mt-0.5">Receive report ready logs and payment confirmations.</p>
-                      </div>
-                      <input
-                        type="checkbox"
-                        checked={emailNotif}
-                        onChange={(e) => setEmailNotif(e.target.checked)}
-                        className="w-4 h-4 accent-blue-600 cursor-pointer"
-                      />
-                    </div>
-
-                    <div className="flex justify-between items-center border-b border-gray-50 pb-4">
-                      <div>
-                        <h4 className="font-extrabold text-foreground text-sm">SMS Reminders</h4>
-                        <p className="text-[11px] text-muted-text mt-0.5">Receive reminders on upcoming consultant calls.</p>
-                      </div>
-                      <input
-                        type="checkbox"
-                        checked={smsNotif}
-                        onChange={(e) => setSmsNotif(e.target.checked)}
-                        className="w-4 h-4 accent-blue-600 cursor-pointer"
-                      />
-                    </div>
-
-                    {/* WhatsApp Preferences section */}
-                    <div className="border-b border-gray-50 pb-6 flex flex-col gap-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="font-extrabold text-foreground text-sm">WhatsApp Auto Notifications</h4>
-                          <p className="text-[11px] text-muted-text mt-0.5">Get instant updates directly on your mobile chat.</p>
-                        </div>
-                        <input
-                          type="checkbox"
-                          checked={whatsappEnabled}
-                          onChange={(e) => setWhatsappEnabled(e.target.checked)}
-                          className="w-4 h-4 accent-blue-600 cursor-pointer"
-                        />
-                      </div>
-
-                      {whatsappEnabled && (
-                        <div className="bg-background border border-border rounded-2xl p-4 flex flex-col gap-3">
-                          <span className="text-[9px] font-bold text-muted-text uppercase tracking-wide">Category Subscriptions</span>
-                          <div className="grid grid-cols-2 gap-3 text-xs">
-                            <label className="flex items-center gap-2 cursor-pointer font-bold text-foreground/80">
-                              <input type="checkbox" checked={whatsappCategories.includes("eligibility")} onChange={() => handleToggleWhatsappCategory("eligibility")} className="accent-blue-600" />
-                              <span>Eligibility Report Alerts</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer font-bold text-foreground/80">
-                              <input type="checkbox" checked={whatsappCategories.includes("payments")} onChange={() => handleToggleWhatsappCategory("payments")} className="accent-blue-600" />
-                              <span>Payments Confirmation</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer font-bold text-foreground/80">
-                              <input type="checkbox" checked={whatsappCategories.includes("sop")} onChange={() => handleToggleWhatsappCategory("sop")} className="accent-blue-600" />
-                              <span>SOP Ready Alerts</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer font-bold text-foreground/80">
-                              <input type="checkbox" checked={whatsappCategories.includes("documents")} onChange={() => handleToggleWhatsappCategory("documents")} className="accent-blue-600" />
-                              <span>Document Checker Scans</span>
-                            </label>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-2 pt-2">
-                      <label className="text-xs font-bold text-muted-text uppercase">Preferred Language</label>
-                      <select
-                        value={langSetting}
-                        onChange={(e) => setLangSetting(e.target.value)}
-                        className="bg-background border border-border rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-600 font-medium w-full sm:w-60"
-                      >
-                        <option value="English">English</option>
-                        <option value="German">Deutsch (German)</option>
-                        <option value="French">Français (French)</option>
-                      </select>
-                    </div>
-
-                    <div className="flex justify-end gap-3 pt-4">
-                      <Button
-                        onClick={handleUpdateWhatsappPreferences}
-                        className="bg-muted/80 hover:bg-muted/60 text-foreground/90 border border-border font-bold py-3 px-8 rounded-full text-xs cursor-pointer"
-                      >
-                        Save WhatsApp Settings
-                      </Button>
-                      <Button
-                        onClick={() => alert("Preferences saved successfully!")}
-                        className="bg-primary hover:bg-primary text-white font-bold py-3 px-8 rounded-full text-xs cursor-pointer shadow-md"
-                      >
-                        Save Main Settings
-                      </Button>
-                    </div>
-
-                  </div>
-
-                  {/* WhatsApp Delivery Logs History Table */}
-                  <div className="bg-card border border-border rounded-3xl p-6 sm:p-10 shadow-sm flex flex-col gap-6">
-                    <div>
-                      <h3 className="font-extrabold text-foreground text-sm">WhatsApp Auto Delivery Logs</h3>
-                      <p className="text-xs text-muted-text mt-1">Audit status checks for auto triggered WhatsApp events.</p>
-                    </div>
-
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse">
-                        <thead>
-                          <tr className="bg-background border-b border-border text-[10px] font-bold text-muted-text uppercase tracking-widest">
-                            <th className="py-4 px-6">Event</th>
-                            <th className="py-4 px-6">Phone Number</th>
-                            <th className="py-4 px-6">Compiled Message</th>
-                            <th className="py-4 px-6 text-center">Status</th>
-                            <th className="py-4 px-6 text-center">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {whatsappHistory.length === 0 ? (
-                            <tr>
-                              <td colSpan={5} className="text-center text-xs text-muted-text py-6">No notification logs recorded.</td>
-                            </tr>
-                          ) : (
-                            whatsappHistory.map((notif) => (
-                              <tr key={notif.id} className="border-b border-gray-50 text-xs font-semibold text-foreground/80">
-                                <td className="py-4 px-6 font-extrabold text-foreground">{notif.event_type}</td>
-                                <td className="py-4 px-6 font-bold">{notif.phone_number}</td>
-                                <td className="py-4 px-6 max-w-[200px] truncate">{notif.message}</td>
-                                <td className="py-4 px-6 text-center">
-                                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] uppercase font-bold ${
-                                    notif.status === "Sent" 
-                                      ? "bg-emerald-50 text-emerald-700 border border-emerald-100" 
-                                      : "bg-amber-50 text-amber-700 border border-amber-100"
-                                  }`}>
-                                    {notif.status}
-                                  </span>
-                                </td>
-                                <td className="py-4 px-6 text-center">
-                                  {notif.status === "Failed" || notif.status === "Retry" ? (
-                                    <button
-                                      onClick={() => handleRetryNotification(notif.id)}
-                                      className="text-[9px] font-black text-primary hover:underline cursor-pointer"
-                                    >
-                                      Retry
-                                    </button>
-                                  ) : (
-                                    <span className="text-[9px] text-muted-text font-bold">N/A</span>
-                                  )}
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
+              {/* TAB: APPLICATIONS MANAGER */}
+              {activeTab === "applications" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="w-full"
+                >
+                  <ApplicationManager isEmbedded={true} />
                 </motion.div>
               )}
 

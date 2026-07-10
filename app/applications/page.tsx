@@ -75,8 +75,15 @@ interface Application {
   timeline: TimelineEvent[];
 }
 
-export default function ApplicationManager() {
+export default function ApplicationManager({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const router = useRouter();
+
+  // Redirect to dashboard tab if accessed directly outside embedded context
+  React.useEffect(() => {
+    if (!isEmbedded) {
+      router.replace("/dashboard?tab=applications");
+    }
+  }, [isEmbedded, router]);
   
   // View states
   const [viewMode, setViewMode] = useState<"kanban" | "list" | "calendar">("kanban");
@@ -316,8 +323,8 @@ export default function ApplicationManager() {
   };
 
   return (
-    <div className="bg-card min-h-screen pt-32 pb-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+    <div className={isEmbedded ? "w-full text-foreground py-2" : "bg-card min-h-screen pt-32 pb-24"}>
+      <div className={isEmbedded ? "w-full max-w-6xl" : "container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl"}>
         
         {/* Header Title */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-12 border-b border-border pb-6">

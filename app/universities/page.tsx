@@ -42,8 +42,16 @@ interface UniversityRecommendation {
   ai_recommendation_summary: string;
 }
 
-export default function UniversityMatcher() {
+export default function UniversityMatcher({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const router = useRouter();
+
+  // Redirect to dashboard tab if accessed directly outside embedded context
+  React.useEffect(() => {
+    if (!isEmbedded) {
+      router.replace("/dashboard?tab=universities");
+    }
+  }, [isEmbedded, router]);
+
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -203,7 +211,7 @@ export default function UniversityMatcher() {
   };
 
   return (
-    <div className="bg-card min-h-screen pt-32 pb-24 flex items-center justify-center">
+    <div className={isEmbedded ? "w-full text-foreground py-2" : "bg-card min-h-screen pt-32 pb-24 flex items-center justify-center"}>
       {/* Dynamic printer rules */}
       <style jsx global>{`
         @media print {
@@ -214,7 +222,7 @@ export default function UniversityMatcher() {
         }
       `}</style>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl" id="print-area">
+      <div className={isEmbedded ? "w-full max-w-5xl" : "container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl"} id="print-area">
         
         {/* Full-screen AI Matching Loader */}
         {loading && (
