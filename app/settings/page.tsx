@@ -473,7 +473,81 @@ export default function SettingsPage({ isEmbedded = false }: { isEmbedded?: bool
   }
 
   return (
-    <div className={isEmbedded ? "text-slate-800 font-sans w-full" : "min-h-screen bg-[#f8fafc] text-slate-800 py-10 px-4 md:px-8 font-sans"}>
+    <div className={isEmbedded ? "text-foreground font-sans w-full aura-profile-settings" : "min-h-screen bg-background text-foreground py-10 px-4 md:px-8 font-sans aura-profile-settings"}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .aura-profile-settings .bg-white {
+          background-color: var(--card) !important;
+        }
+        .aura-profile-settings .bg-slate-50,
+        .aura-profile-settings .bg-slate-50\\/50,
+        .aura-profile-settings .bg-slate-100 {
+          background-color: var(--background) !important;
+        }
+        .aura-profile-settings .border-slate-100,
+        .aura-profile-settings .border-slate-150,
+        .aura-profile-settings .border-slate-200,
+        .aura-profile-settings .border-slate-200\\/80,
+        .aura-profile-settings .border-slate-250 {
+          border-color: var(--border) !important;
+        }
+        .aura-profile-settings .text-slate-900,
+        .aura-profile-settings .text-slate-850,
+        .aura-profile-settings .text-slate-800,
+        .aura-profile-settings .text-slate-750,
+        .aura-profile-settings .text-slate-700,
+        .aura-profile-settings .text-slate-600 {
+          color: var(--foreground) !important;
+        }
+        .aura-profile-settings .text-slate-650,
+        .aura-profile-settings .text-slate-500,
+        .aura-profile-settings .text-slate-400 {
+          color: var(--muted-foreground) !important;
+        }
+        .aura-profile-settings input,
+        .aura-profile-settings select,
+        .aura-profile-settings textarea {
+          background-color: var(--background) !important;
+          color: var(--foreground) !important;
+          border-color: var(--border) !important;
+        }
+        .aura-profile-settings input:focus,
+        .aura-profile-settings select:focus,
+        .aura-profile-settings textarea:focus {
+          border-color: var(--primary) !important;
+          outline: none;
+        }
+        .aura-profile-settings .hover\\:bg-slate-50:hover {
+          background-color: var(--accent) !important;
+        }
+        .aura-profile-settings .bg-slate-100,
+        .aura-profile-settings .bg-slate-150 {
+          background-color: var(--secondary) !important;
+          color: var(--foreground) !important;
+        }
+        .aura-profile-settings .bg-slate-100:hover,
+        .aura-profile-settings .bg-slate-150:hover {
+          background-color: var(--accent) !important;
+        }
+        .aura-profile-settings .text-blue-650,
+        .aura-profile-settings .text-blue-600 {
+          color: var(--primary) !important;
+        }
+        .aura-profile-settings .bg-blue-600 {
+          background-color: var(--primary) !important;
+          color: var(--primary-foreground) !important;
+        }
+        .aura-profile-settings .bg-blue-600:hover {
+          background-color: var(--primary) !important;
+          opacity: 0.9;
+        }
+        .aura-profile-settings .border-t-slate-100,
+        .aura-profile-settings .border-t-slate-200 {
+          border-top-color: var(--border) !important;
+        }
+        .aura-profile-settings .border-slate-100 {
+          border-color: var(--border) !important;
+        }
+      `}} />
       
       {/* Toast Alert Portal */}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm">
