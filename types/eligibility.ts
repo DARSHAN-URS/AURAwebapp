@@ -21,7 +21,7 @@ export interface EnglishProficiency {
 }
 
 export interface StudyPreferences {
-  preferredCountry: "Canada" | "UK" | "USA" | "Australia" | "Germany" | "Ireland" | "New Zealand" | "Dubai";
+  preferredCountry: string;
   preferredCourse: string;
   preferredIntake: string;
   budgetRange: string;

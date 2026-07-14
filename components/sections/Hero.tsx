@@ -37,8 +37,8 @@ const FLOATING_CARDS = [
   },
   {
     icon: ShieldCheck,
-    title: "98.4% Visa Success",
-    sub: "AI-verified document audits",
+    title: "AI Document Audit",
+    sub: "Verify before you submit",
     iconBg: "bg-indigo-500/15 text-indigo-400",
     pos: "absolute top-1/2 -translate-y-1/2 -left-2 sm:left-0",
     delay: 0.8,
@@ -62,10 +62,10 @@ const FLOATING_CARDS = [
 ];
 
 const STATS = [
-  { value: "25K+", label: "Students Guided" },
   { value: "1,500+", label: "Universities" },
-  { value: "98.4%", label: "Visa Success" },
-  { value: "1M+", label: "Student Beds" },
+  { value: "500K+", label: "Courses Catalog" },
+  { value: "50+", label: "Target Countries" },
+  { value: "24/7", label: "AI Student Suite" },
 ];
 
 const floatAnim = (delay: number): any => ({

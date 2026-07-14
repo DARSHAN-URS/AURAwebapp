@@ -33,8 +33,8 @@ const WHY = [
   },
   {
     icon: TrendingUp,
-    title: "High Success Rates",
-    description: "With AI document checkers scanning SOPs, LORs, and financial documentation for gaps, we achieve a consistent visa approval rate of 98.4%.",
+    title: "Pre-Refusal Document Audits",
+    description: "Our AI checks your SOP drafts, financial files, and academic certificates against embassy guidelines to identify potential gaps before submission.",
     color: "bg-rose-50 text-rose-600 border-rose-100/50",
   },
   {
@@ -66,12 +66,12 @@ export default function WhyAura() {
             {/* Highlight proof point */}
             <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100/50 flex items-center justify-center font-black text-base shrink-0">
-                  98%
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100/50 flex items-center justify-center font-black text-sm shrink-0">
+                  AI
                 </div>
                 <div>
-                  <h4 className="font-black text-foreground text-sm">Visa Approval Rate</h4>
-                  <p className="text-xs text-muted-text font-medium mt-0.5">Verified across all processed student applications</p>
+                  <h4 className="font-black text-foreground text-sm">Pre-Refusal Auditing</h4>
+                  <p className="text-xs text-muted-text font-medium mt-0.5">Identify and resolve critical visa file gaps instantly</p>
                 </div>
               </div>
             </div>

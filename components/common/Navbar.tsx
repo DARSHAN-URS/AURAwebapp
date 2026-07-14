@@ -152,8 +152,8 @@ export default function Navbar() {
   const { openBooking } = useBooking();
   const { user, signOut } = useAuth();
 
-  // Hide navbar entirely on all pages except the landing page
-  const shouldHide = pathname !== "/";
+  // Hide navbar entirely on all pages except the landing page and Study in India routes
+  const shouldHide = pathname !== "/" && !pathname.startsWith("/india");
 
   // Redirect logged-in users away from the landing page to dashboard
   useEffect(() => {
@@ -255,6 +255,7 @@ export default function Navbar() {
                     <Globe2 className="w-3.5 h-3.5" />
                     Explorer
                   </Link>
+                  <Link href="/india" className={navLinkClass("/india")}>🇮🇳 Study in India</Link>
                   <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
                 </>
               )}
@@ -395,6 +396,7 @@ export default function Navbar() {
                   <>
                     {[
                       { label: "Home", href: "/" },
+                      { label: "🇮🇳 Study in India", href: "/india" },
                       { label: "About", href: "/about" },
                       { label: "Services", href: "/services" },
                       { label: "AI Matcher", href: "/universities" },

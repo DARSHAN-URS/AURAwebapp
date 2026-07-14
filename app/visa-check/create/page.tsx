@@ -37,6 +37,15 @@ export default function VisaCheckWizard() {
   const [country, setCountry] = useState("Canada");
   const [visaType, setVisaType] = useState("Student Visa");
 
+  const handleCountryChange = (val: string) => {
+    setCountry(val);
+    if (val === "India") {
+      setVisaType("NRI Admission");
+    } else {
+      setVisaType("Student Visa");
+    }
+  };
+
   // Parent Check ID
   const [checkId, setCheckId] = useState<string | null>(null);
   const [slots, setSlots] = useState<DocumentSlot[]>([]);
@@ -97,6 +106,15 @@ export default function VisaCheckWizard() {
           { type: "GAMCA Medical Fit Certificate", required: true, uploaded: false, progress: 0 },
           { type: "Police Clearance Certificate", required: true, uploaded: false, progress: 0 },
           { type: "Letter of Acceptance", required: true, uploaded: false, progress: 0 }
+        ];
+      case "India":
+        return [
+          { type: "Class 12 Marksheet", required: true, uploaded: false, progress: 0 },
+          { type: "Class 10 Marksheet", required: true, uploaded: false, progress: 0 },
+          { type: "Passport", required: false, uploaded: false, progress: 0 },
+          { type: "NEET Score Card", required: false, uploaded: false, progress: 0 },
+          { type: "DASA/CIWG Certificate", required: false, uploaded: false, progress: 0 },
+          { type: "NRI Sponsor Documents", required: false, uploaded: false, progress: 0 }
         ];
       default:
         return [
@@ -283,7 +301,7 @@ export default function VisaCheckWizard() {
                   <label className="text-xs font-bold text-muted-text uppercase">Target Country</label>
                   <select
                     value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    onChange={(e) => handleCountryChange(e.target.value)}
                     className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                   >
                     <option value="Canada">Canada</option>
@@ -293,19 +311,29 @@ export default function VisaCheckWizard() {
                     <option value="Australia">Australia</option>
                     <option value="Schengen">Schengen Zone</option>
                     <option value="Gulf">Gulf (GCC)</option>
+                    <option value="India">India</option>
                   </select>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-muted-text uppercase">Visa Type</label>
+                  <label className="text-xs font-bold text-muted-text uppercase">Visa / Admission Category</label>
                   <select
                     value={visaType}
                     onChange={(e) => setVisaType(e.target.value)}
                     className="bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-600 font-medium"
                   >
-                    <option value="Student Visa">Student Visa</option>
-                    <option value="Work Visa">Work Visa</option>
-                    <option value="Visitor Visa">Visitor Visa</option>
+                    {country === "India" ? (
+                      <>
+                        <option value="NRI Admission">NRI / CIWG / DASA Admission</option>
+                        <option value="Student Visa">Student Visa (for International Students)</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="Student Visa">Student Visa</option>
+                        <option value="Work Visa">Work Visa</option>
+                        <option value="Visitor Visa">Visitor Visa</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>

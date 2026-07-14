@@ -38,7 +38,7 @@ export const englishProficiencySchema = z.object({
 
 // Step 4: Study Preferences Schema
 export const studyPreferencesSchema = z.object({
-  preferredCountry: z.enum(["Canada", "UK", "USA", "Australia", "Germany", "Ireland", "New Zealand", "Dubai"]),
+  preferredCountry: z.string().min(1, "Select preferred country"),
   preferredCourse: z.string().min(1, "Select or enter preferred major course"),
   preferredIntake: z.string().min(1, "Select preferred intake"),
   budgetRange: z.string().min(1, "Select your annual budget range"),

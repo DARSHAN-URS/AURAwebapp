@@ -17,6 +17,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://auraroutes.com"),
   title: "Aura Routes AI | Intelligent Routes to Global Careers",
   description: "Aura Routes AI is your AI-Powered Global Career Partner. We use advanced AI profile evaluation, university matching, SOP drafting, and direct visa processing to secure admissions at 1500+ top global universities.",
   keywords: [

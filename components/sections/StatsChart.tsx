@@ -35,10 +35,10 @@ const countryData = [
 const COUNTRY_COLORS = ["#3b82f6", "#6366f1", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444"];
 
 const KPI_CARDS = [
-  { label: "Students Guided", value: "25,000+", delta: "+18% this year", icon: Users, color: "text-primary" },
-  { label: "Universities Matched", value: "1,500+", delta: "+120 added", icon: GraduationCap, color: "text-indigo-500" },
-  { label: "Visa Success Rate", value: "98.4%", delta: "Consistently maintained", icon: ShieldCheck, color: "text-emerald-500" },
-  { label: "Applications Filed", value: "42,000+", delta: "+32% YoY growth", icon: TrendingUp, color: "text-violet-500" },
+  { label: "Verified Universities", value: "1,500+", delta: "Global admission pathways", icon: GraduationCap, color: "text-primary" },
+  { label: "Available Courses", value: "500,000+", delta: "Undergrad, postgrad & medical", icon: Users, color: "text-indigo-500" },
+  { label: "Global Destinations", value: "50+", delta: "International study tracks", icon: ShieldCheck, color: "text-emerald-500" },
+  { label: "AI Student Tools", value: "7 Services", delta: "Interactive digital checkers", icon: TrendingUp, color: "text-violet-500" },
 ];
 
 interface TooltipProps {
@@ -116,12 +116,12 @@ export default function StatsChart() {
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-black text-foreground text-sm">Student Enrollments vs Visas Approved</h3>
+                <h3 className="font-black text-foreground text-sm">AI Tool Queries vs Profile Evaluations</h3>
                 <p className="text-[11px] text-muted-foreground mt-0.5">July 2024 – June 2025</p>
               </div>
               <div className="flex items-center gap-4 text-[10px] font-semibold">
-                <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 rounded bg-primary inline-block" />Students</span>
-                <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 rounded bg-violet-500 inline-block" />Visas</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 rounded bg-primary inline-block" />Queries</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 rounded bg-violet-500 inline-block" />Evaluations</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={220}>
@@ -140,8 +140,8 @@ export default function StatsChart() {
                 <XAxis dataKey="month" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="students" name="Students" stroke="#3b82f6" strokeWidth={2} fill="url(#gradStudents)" dot={false} activeDot={{ r: 4, fill: "#3b82f6" }} />
-                <Area type="monotone" dataKey="visas" name="Visas" stroke="#8b5cf6" strokeWidth={2} fill="url(#gradVisas)" dot={false} activeDot={{ r: 4, fill: "#8b5cf6" }} />
+                <Area type="monotone" dataKey="students" name="Queries" stroke="#3b82f6" strokeWidth={2} fill="url(#gradStudents)" dot={false} activeDot={{ r: 4, fill: "#3b82f6" }} />
+                <Area type="monotone" dataKey="visas" name="Evaluations" stroke="#8b5cf6" strokeWidth={2} fill="url(#gradVisas)" dot={false} activeDot={{ r: 4, fill: "#8b5cf6" }} />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
@@ -156,7 +156,7 @@ export default function StatsChart() {
           >
             <div className="mb-6">
               <h3 className="font-black text-foreground text-sm">Top Destinations</h3>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Students by country 2024–25</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Database courses count by country</p>
             </div>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={countryData} layout="vertical" margin={{ top: 0, right: 5, left: 10, bottom: 0 }}>
@@ -164,7 +164,7 @@ export default function StatsChart() {
                 <XAxis type="number" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
                 <YAxis type="category" dataKey="country" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} width={55} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="count" name="Students" radius={[0, 6, 6, 0]} maxBarSize={18}>
+                <Bar dataKey="count" name="Courses" radius={[0, 6, 6, 0]} maxBarSize={18}>
                   {countryData.map((_, index) => (
                     <Cell key={index} fill={COUNTRY_COLORS[index % COUNTRY_COLORS.length]} />
                   ))}

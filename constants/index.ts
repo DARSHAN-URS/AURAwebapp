@@ -221,8 +221,8 @@ export const WHY_AURA_ROUTES = [
     description: "We don't stop at admissions. Aura Routes manages your education loans, verified housing near your campus, flight bookings, and post-study settlement assistance.",
   },
   {
-    title: "High Success Rates",
-    description: "With AI document checkers scanning for gaps in SOPs, LORs, and financial documentation, we achieve a consistent visa approval rate of 98.4%.",
+    title: "AI Visa Pre-Refusal Checks",
+    description: "Our AI document checker scans your SOP drafts and financial paperwork against embassy guidelines to identify potential gaps before submission.",
   },
 ];
 

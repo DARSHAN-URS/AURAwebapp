@@ -85,6 +85,8 @@ interface DashboardStats {
   unread_notifications_count: number;
   total_drafts_count: number;
   total_payments_count: number;
+  country_tier?: number;
+  country_tier_name?: string;
 }
 
 interface StudentProfile {
@@ -1144,8 +1146,8 @@ function StudentDashboardContent() {
                   className="flex flex-col gap-8"
                 >
                   {/* Welcome banner grid */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
                     {/* Welcome Card & Profile completeness */}
                     <div className="lg:col-span-2 bg-card border border-border rounded-3xl p-8 shadow-sm flex flex-col justify-between min-h-[220px]">
                       <div>
@@ -1201,6 +1203,43 @@ function StudentDashboardContent() {
                           Explore Premium Services
                           <ArrowRight className="w-3 h-3" />
                         </button>
+                      </div>
+                    </div>
+
+                    {/* Country Access Card */}
+                    <div className="bg-card border border-border rounded-3xl p-8 shadow-sm flex flex-col justify-between min-h-[220px]">
+                      <div>
+                        <h3 className="text-xs font-black uppercase text-muted-text tracking-wider">Country Access</h3>
+                        <div className="mt-4 flex flex-col gap-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-muted-text">Active Tier:</span>
+                            <span className="text-xs font-black text-foreground uppercase">
+                              {stats.country_tier_name || "Free"}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-muted-text">Destinations:</span>
+                            <span className="text-xs font-black text-primary">
+                              {stats.country_tier === 3 ? "All Unlocked" : (stats.country_tier === 2 ? "20+ Countries" : "10 Free Countries")}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 border-t border-gray-50 dark:border-border/30 pt-4 flex flex-col gap-2">
+                        {(!stats.country_tier || stats.country_tier < 3) && (
+                          <button
+                            onClick={() => router.push("/services")}
+                            className="w-full bg-primary hover:bg-primary/95 text-white font-bold py-2 rounded-xl text-[10px] text-center shadow-sm cursor-pointer"
+                          >
+                            Upgrade Access Tier
+                          </button>
+                        )}
+                        {stats.country_tier === 3 && (
+                          <div className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-2.5 py-1.5 rounded-xl text-center uppercase tracking-wide">
+                            ✓ Ultimate Access Unlocked
+                          </div>
+                        )}
                       </div>
                     </div>
 

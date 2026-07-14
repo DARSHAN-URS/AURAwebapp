@@ -24,6 +24,29 @@ export default function EligibilityFormPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [countryTier, setCountryTier] = useState<number>(1);
+
+  useEffect(() => {
+    const fetchUserTier = async () => {
+      try {
+        const token = localStorage.getItem("supabase_token") || "";
+        if (!token) return;
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const res = await fetch(`${apiBaseUrl}/api/dashboard`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.country_tier) {
+            setCountryTier(data.country_tier);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch user tier details:", err);
+      }
+    };
+    fetchUserTier();
+  }, []);
   
   const totalSteps = 5;
 
@@ -203,7 +226,7 @@ export default function EligibilityFormPage() {
                   <EnglishProficiency register={register} errors={errors} watch={watch} />
                 )}
                 {currentStep === 4 && (
-                  <StudyPreferences register={register} errors={errors} />
+                  <StudyPreferences register={register} errors={errors} countryTier={countryTier} />
                 )}
                 {currentStep === 5 && (
                   <AdditionalInfo register={register} errors={errors} watch={watch} />
