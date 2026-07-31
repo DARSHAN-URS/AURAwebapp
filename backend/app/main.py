@@ -1,42 +1,50 @@
+"""
+Healthcare AI Suite — Unified FastAPI Backend
+=============================================
+Modular Monolith serving all products from one engine:
+  - Aura Routes  (/api/aura/*)
+  - NursePass    (/api/nursepass/*)
+  - FMGE AI      (/api/fmge/*)
+  - Common       (/api/common/*)
+
+All existing route prefixes are preserved for backward compatibility.
+"""
 import logging
 import os
+import time
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .database import engine, Base, SessionLocal
-from .api.endpoints import router as eligibility_router
-from .api.payments import router as payments_router
-from .api.sop import router as sop_router
-from .api.visa_checker import router as visa_checker_router
-from .api.dashboard import router as dashboard_router
-from .api.chat import router as chat_router
-from .api.university_matcher import router as university_matcher_router
-from .api.applications import router as applications_router
-from .api.visa_success import router as visa_success_router
-from .api.scholarships import router as scholarships_router
-from .api.notifications import router as notifications_router
-from .api.journey import router as journey_router
-from .api.explorer import router as explorer_router
-from .api.knowledge import router as knowledge_router
-from .api.communication import router as communication_router
-from .api.profile import router as profile_router
-from .services.payment_service import seed_initial_services, seed_dashboard_defaults, seed_universities, seed_applications, seed_scholarships, seed_whatsapp_defaults
+
+# ─── Product Routers (new namespaced aggregates) ───────────────────────────────
+from .api.aura import aura_router
+from .api.nursepass import nursepass_router
+from .api.common import common_router
+from .api.fmge import fmge_router
+
+# ─── Seed Services ────────────────────────────────────────────────────────────
+from .services.payment_service import (
+    seed_initial_services, seed_dashboard_defaults, seed_universities,
+    seed_applications, seed_scholarships, seed_whatsapp_defaults,
+    seed_indian_colleges, seed_mbbs_universities
+)
 from .services.explorer_service import seed_explorer_data
 from .services.knowledge_service import seed_knowledge_data
 from .services.communication_service import seed_communication_data
+from .services.nursepass_service import seed_nursepass_data
 
-# Configure Logger logs
+# ─── Logger ───────────────────────────────────────────────────────────────────
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create database tables automatically if they do not exist
+# ─── Database Initialization ──────────────────────────────────────────────────
 try:
     logger.info("Initializing database schemas...")
     Base.metadata.create_all(bind=engine)
     logger.info("Database initialized successfully.")
-    
-    # Trigger seeder
+
     db = SessionLocal()
     try:
         seed_initial_services(db)
@@ -48,19 +56,32 @@ try:
         seed_explorer_data(db)
         seed_knowledge_data(db)
         seed_communication_data(db)
+        seed_indian_colleges(db)
+        seed_mbbs_universities(db)
+        seed_nursepass_data(db)
     finally:
         db.close()
 except Exception as e:
-    logger.error(f"Failed to initialize database tables or seed services: {str(e)}")
+    logger.error(f"Failed to initialize database or seed data: {str(e)}")
 
+# ─── FastAPI Application ───────────────────────────────────────────────────────
 app = FastAPI(
-    title="Aura Routes AI Engine",
-    description="FastAPI Backend for Aura Routes AI Eligibility Checker & Service Payments",
-    version="1.0.0"
+    title="Healthcare AI Suite — Unified Backend",
+    description=(
+        "Production-grade FastAPI Modular Monolith powering:\n"
+        "• **Aura Routes** — Study Abroad, Visa & University Portal\n"
+        "• **NursePass** — AI Nursing Licensing Exam Prep (NCLEX, CBT, OET, DHA, HAAD, MOH)\n"
+        "• **FMGE AI** — Medical Licensing Exam Prep (Coming Soon)\n\n"
+        "All products share one backend, one database, one AI engine, one payment engine, and one auth system."
+    ),
+    version="2.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json"
 )
 
-# Parse CORS Origins lists
-origins = [origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]
+# ─── CORS Configuration ───────────────────────────────────────────────────────
+origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
@@ -70,7 +91,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Add secure HTTP response headers middleware
+# ─── Security Headers Middleware ───────────────────────────────────────────────
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -78,45 +99,66 @@ async def add_security_headers(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
+        "style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
+    )
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     return response
 
-# Enforce unified global unhandled exception formatting
+# ─── Product Source Detection Middleware ───────────────────────────────────────
+@app.middleware("http")
+async def detect_product_source(request: Request, call_next):
+    """Automatically detect which SaaS product is calling this backend."""
+    origin = request.headers.get("origin", "") or request.headers.get("referer", "")
+    if "nursepass" in origin:
+        request.state.product = "NURSEPASS"
+    elif "fmge" in origin:
+        request.state.product = "FMGE"
+    else:
+        request.state.product = "AURA"
+    response = await call_next(request)
+    response.headers["X-Product-Source"] = request.state.product
+    return response
+
+# ─── Global Exception Handler ─────────────────────────────────────────────────
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    logger.error(f"Unhandled system exception: {str(exc)}", exc_info=True)
+    logger.error(f"Unhandled exception: {str(exc)}", exc_info=True)
     app_env = os.getenv("APP_ENV", "production").lower()
-    
-    # Hide details in production to safeguard database/schema structure
-    err_detail = "An internal server error occurred. Support has been notified."
-    if app_env == "development":
-        err_detail = str(exc)
-        
-    return JSONResponse(
-        status_code=500,
-        content={"detail": err_detail}
-    )
+    detail = str(exc) if app_env == "development" else "An internal server error occurred. Support has been notified."
+    return JSONResponse(status_code=500, content={"detail": detail})
 
-# Register routes
-app.include_router(eligibility_router)
-app.include_router(payments_router)
-app.include_router(sop_router)
-app.include_router(visa_checker_router)
-app.include_router(dashboard_router)
-app.include_router(chat_router)
-app.include_router(university_matcher_router)
-app.include_router(applications_router)
-app.include_router(visa_success_router)
-app.include_router(scholarships_router)
-app.include_router(notifications_router)
-app.include_router(journey_router)
-app.include_router(explorer_router)
-app.include_router(knowledge_router)
-app.include_router(communication_router)
-app.include_router(profile_router)
+# ─── Register Product Routers ─────────────────────────────────────────────────
+# New namespaced product routers (Healthcare AI Suite monorepo architecture)
+app.include_router(aura_router)
+app.include_router(nursepass_router)
+app.include_router(common_router)
+app.include_router(fmge_router)
 
-@app.get("/health")
+# ─── Root & Suite-Level Endpoints ─────────────────────────────────────────────
+@app.get("/health", tags=["Health"])
 def health_check():
-    return {"status": "healthy", "service": "Aura AI Engine"}
+    """Root health check — for Railway, Docker, and load balancer probes."""
+    return {
+        "status": "healthy",
+        "service": "Healthcare AI Suite — Unified Backend",
+        "version": "2.0.0",
+        "products": ["aura-routes", "nursepass", "fmge-ai"],
+        "timestamp": time.time()
+    }
+
+@app.get("/", tags=["Root"])
+def root():
+    return {
+        "name": "Healthcare AI Suite",
+        "description": "Unified backend serving Aura Routes, NursePass, and FMGE AI",
+        "docs": "/api/docs",
+        "health": "/health",
+        "products": {
+            "aura_routes": {"health": "/api/aura/health", "docs": "https://auraroutes.com"},
+            "nursepass": {"health": "/api/nursepass/health", "docs": "https://nursepass.com"},
+            "fmge_ai": {"health": "/api/fmge/health", "status": "coming_soon"}
+        }
+    }

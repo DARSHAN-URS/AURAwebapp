@@ -1143,7 +1143,7 @@ class KCArticle(Base):
     reading_time_minutes = Column(Integer, default=5)
     word_count = Column(Integer, default=0)
     difficulty = Column(String(50), default="Beginner")
-    author_name = Column(String(200), default="Aura Routes Team")
+    author_name = Column(String(200), default="Aura Routes AI Team")
     author_role = Column(String(200), default="Study Abroad Expert")
     author_avatar = Column(String(500), nullable=True)
     published_at = Column(DateTime, nullable=True)
@@ -1502,3 +1502,52 @@ class StudentDocument(Base):
     file_path = Column(String(300), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class IndianCollege(Base):
+    __tablename__ = "indian_colleges"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    name = Column(String(200), nullable=False)
+    location = Column(String(200), nullable=True)
+    state = Column(String(100), nullable=False)
+    city = Column(String(100), nullable=False)
+    course = Column(String(100), nullable=False)  # MBBS, Nursing, Engineering, Management
+    specializations = Column(String(500), nullable=True)
+    neet_required = Column(Boolean, default=False)
+    dasa_eligible = Column(Boolean, default=False)
+    ciwg_eligible = Column(Boolean, default=False)
+    nri_fee_structure = Column(String(200), nullable=True)
+    international_fee_structure = Column(String(200), nullable=True)
+    hostel_available = Column(Boolean, default=True)
+    website = Column(String(250), nullable=True)
+    status = Column(String(50), default="Active")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class MBBSUniversity(Base):
+    __tablename__ = "mbbs_universities"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    name = Column(String(250), nullable=False, unique=True)
+    country = Column(String(100), nullable=False)
+    nmc_approved = Column(Boolean, default=True)
+    annual_fees = Column(String(100), nullable=False)
+    hostel_fees = Column(String(100), nullable=True)
+    living_cost = Column(String(100), nullable=False)
+    duration = Column(Integer, nullable=False, default=6)
+    language = Column(String(100), default="English")
+    eligibility = Column(String(500), nullable=True)
+    minimum_neet = Column(Integer, default=137)
+    recognition = Column(String(500), default="WHO, NMC, ECFMG")
+    status = Column(String(50), default="Active")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class UserCountryTier(Base):
+    __tablename__ = "user_country_tiers"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(100), nullable=False, unique=True, index=True)
+    tier_purchased = Column(Integer, nullable=False, default=1)  # 1 = Free, 2 = Tier 2, 3 = Tier 3
+    purchase_date = Column(DateTime, default=datetime.utcnow)
+    payment_id = Column(String(100), nullable=True)
+    expiry = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

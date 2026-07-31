@@ -1,18 +1,23 @@
 import json
 import logging
-import openai
+from .openai_service import ReplicateOpenAIMock
 from typing import Dict, Any, List
 
 from ..config import settings
 
 logger = logging.getLogger(__name__)
 
-# Initialize OpenAI
+# Initialize Replicate mock client
 openai_client = None
 if settings.openai_api_key:
     try:
-        openai_client = openai.OpenAI(api_key=settings.openai_api_key)
-        logger.info("OpenAI client initialized successfully in Visa Success Service.")
+        if settings.openai_api_key.startswith("sk-"):
+            import openai
+            openai_client = openai.OpenAI(api_key=settings.openai_api_key)
+            logger.info("Official OpenAI client initialized successfully in Visa Success Service.")
+        else:
+            openai_client = ReplicateOpenAIMock(api_key=settings.openai_api_key)
+            logger.info("Replicate client proxy initialized successfully in Visa Success Service.")
     except Exception as e:
         logger.error(f"Failed to initialize OpenAI client in Visa Success: {str(e)}")
 

@@ -1,21 +1,86 @@
+import os
+import replicate
 import json
 import logging
-from openai import OpenAI
 from fastapi import HTTPException, status
+from typing import Optional, List
 from ..config import settings
 from ..prompts.eligibility_prompts import SYSTEM_PROMPT, format_eligibility_prompt
 from ..schemas import AIResultEvaluation
 
 logger = logging.getLogger(__name__)
 
-# Initialize OpenAI client
+
+class ReplicateOpenAIMock:
+    def __init__(self, api_key: str):
+        if api_key:
+            os.environ["REPLICATE_API_TOKEN"] = api_key
+            
+        class ChatCompletions:
+            def create(self, model, messages, **kwargs):
+                system_prompt = ""
+                user_prompt = ""
+                for msg in messages:
+                    if isinstance(msg, dict):
+                        role = msg.get("role")
+                        content = msg.get("content")
+                    else:
+                        role = getattr(msg, "role", "")
+                        content = getattr(msg, "content", "")
+                        
+                    if role == "system":
+                        system_prompt = content
+                    elif role == "user":
+                        user_prompt = content
+                
+                replicate_model = f"openai/{model}" if not model.startswith("openai/") else model
+                if replicate_model.startswith("openai/"):
+                    replicate_model = "meta/meta-llama-3-70b-instruct"
+                
+                output = replicate.run(
+                    replicate_model,
+                    input={
+                        "prompt": user_prompt,
+                        "system_prompt": system_prompt,
+                        "temperature": kwargs.get("temperature", 0.2)
+                    }
+                )
+                
+                content = "".join(output)
+                
+                class Message:
+                    def __init__(self, content):
+                        self.content = content
+                
+                class Choice:
+                    def __init__(self, content):
+                        self.message = Message(content)
+                        
+                class Response:
+                    def __init__(self, content):
+                        self.choices = [Choice(content)]
+                        
+                return Response(content)
+                
+        class Chat:
+            def __init__(self):
+                self.completions = ChatCompletions()
+                
+        self.chat = Chat()
+
+
+# Initialize Replicate mock client
 client = None
 if settings.openai_api_key:
-    client = OpenAI(api_key=settings.openai_api_key)
+    if settings.openai_api_key.startswith("sk-"):
+        import openai
+        client = openai.OpenAI(api_key=settings.openai_api_key)
+    else:
+        client = ReplicateOpenAIMock(api_key=settings.openai_api_key)
 else:
     logger.warning("OPENAI_API_KEY is not configured in settings.")
 
-def evaluate_student_profile(profile_dict: dict) -> AIResultEvaluation:
+def evaluate_student_profile(profile_dict: dict, allowed_countries: Optional[List[str]] = None) -> AIResultEvaluation:
     """
     Sends the student profile details to the OpenAI API and returns a structured evaluation.
     Rejects requests and throws error in production if the AI service fails or is unconfigured.
@@ -28,6 +93,8 @@ def evaluate_student_profile(profile_dict: dict) -> AIResultEvaluation:
         )
 
     user_prompt = format_eligibility_prompt(profile_dict)
+    if allowed_countries:
+        user_prompt += f"\n\nCRITICAL SYSTEM FILTER CONSTRAINT: You are ONLY allowed to recommend universities and countries from the following list: {', '.join(allowed_countries)}. DO NOT output any recommendations outside this list."
     
     try:
         logger.info("Calling OpenAI API for student profile evaluation...")

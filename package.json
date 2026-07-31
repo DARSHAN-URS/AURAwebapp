@@ -1,0 +1,32 @@
+{
+  "name": "healthcare-ai-suite",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Healthcare AI Suite — Monorepo powering Aura Routes, NursePass, and FMGE AI",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:aura": "npm run dev --workspace=apps/aura-routes",
+    "dev:nursepass": "npm run dev --workspace=apps/nursepass",
+    "dev:fmge": "npm run dev --workspace=apps/fmge-ai",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "build:aura": "npm run build --workspace=apps/aura-routes",
+    "build:nursepass": "npm run build --workspace=apps/nursepass",
+    "build:fmge": "npm run build --workspace=apps/fmge-ai",
+    "build:all": "npm run build --workspaces --if-present",
+    "lint:all": "npm run lint --workspaces --if-present",
+    "type-check:all": "npm run type-check --workspaces --if-present",
+    "docker:up": "docker-compose -f infrastructure/docker-compose.yml up --build",
+    "docker:down": "docker-compose -f infrastructure/docker-compose.yml down"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/healthcare-ai-suite"
+  }
+}
