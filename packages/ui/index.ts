@@ -3,6 +3,8 @@ export interface UIComponentProps {
   children?: React.ReactNode;
 }
 
+export { default as ProductSwitcher } from "./ProductSwitcher";
+
 export const SUITE_THEME = {
   colors: {
     primary: "#059669",

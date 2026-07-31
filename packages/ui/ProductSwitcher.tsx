@@ -17,9 +17,9 @@ export default function ProductSwitcher({ currentProduct }: ProductSwitcherProps
 
   // Auto-detect current product from path if not provided
   let activeProd: ProductType = currentProduct || "AURA";
-  if (pathname.includes("/exams") || pathname.includes("/nursepass") || pathname.includes("/ai-features") || pathname.includes("/certificates")) {
+  if (pathname && (pathname.includes("/exams") || pathname.includes("/nursepass") || pathname.includes("/ai-features") || pathname.includes("/certificates"))) {
     activeProd = "NURSEPASS";
-  } else if (pathname.includes("/fmge")) {
+  } else if (pathname && pathname.includes("/fmge")) {
     activeProd = "FMGE";
   }
 
